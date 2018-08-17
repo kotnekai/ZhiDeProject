@@ -6,6 +6,8 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
+import com.alipay.sdk.auth.APAuthInfo;
+import com.alipay.sdk.auth.AlipaySDK;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreator;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreator;
@@ -71,6 +73,7 @@ public class ComApplication extends Application {
         Log.d("xyc", "getMsgApi: msgApi1="+msgApi);
         ApplicationHolder.getInstance().setMsgApi(msgApi);
     }
+
 
     /**
      * 获取application实例

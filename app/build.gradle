@@ -40,6 +40,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile project(path: ':okhttputils')
     compile project(':okhttputils')
-
+    compile files('libs/alipaySdk-20180601.jar')
 
 }

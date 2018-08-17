@@ -1,5 +1,7 @@
 package com.zhide.app.view.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -24,7 +26,8 @@ public class MyBillActivity extends BaseActivity {
     SmartRefreshLayout smartRefresh;
     @BindView(R.id.recycleView)
     RecyclerView recycleView;
-    private int selectType =1;
+    private int selectType = 1;
+
     @Override
     protected int getCenterView() {
         return R.layout.activity_my_bill;
@@ -38,6 +41,10 @@ public class MyBillActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    public static Intent makeIntent(Context context) {
+        return new Intent(context, MyBillActivity.class);
     }
 
     @OnClick({R.id.tvAllTab, R.id.tvPayTab, R.id.tvChargeTab})

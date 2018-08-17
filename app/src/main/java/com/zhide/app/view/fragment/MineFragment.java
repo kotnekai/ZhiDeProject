@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.zhide.app.R;
 import com.zhide.app.utils.ToastUtil;
+import com.zhide.app.view.activity.MyBillActivity;
 import com.zhide.app.view.activity.RechargeActivity;
 import com.zhide.app.view.activity.ResetPswActivity;
 import com.zhide.app.view.activity.WithdrawActivity;
@@ -89,6 +90,7 @@ public class MineFragment extends BaseFragment {
                 startActivity(WithdrawActivity.makeIntent(getActivity()));
                 break;
             case R.id.tvMyBill:
+                startActivity(MyBillActivity.makeIntent(getActivity()));
                 break;
             case R.id.llSchool:
                 break;

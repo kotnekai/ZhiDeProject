@@ -3,17 +3,21 @@ package com.zhide.app.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.alipay.sdk.app.PayTask;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.zhide.app.R;
 import com.zhide.app.common.ApplicationHolder;
+import com.zhide.app.delegate.IGetAliPayResult;
 import com.zhide.app.utils.UIUtils;
 import com.zhide.app.view.base.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -42,6 +46,7 @@ public class RechargeActivity extends BaseActivity {
     TextView tvIntroActContent;
     @BindView(R.id.tvReCharge)
     TextView tvReCharge;
+    private IGetAliPayResult alipayResult;
 
     @Override
     protected int getCenterView() {
@@ -70,6 +75,12 @@ public class RechargeActivity extends BaseActivity {
         selectTvList.add(tvCharge100);
         selectTvList.add(tvChargeOther);
         updateTvState(tvCharge30);
+        alipayResult = new IGetAliPayResult() {
+            @Override
+            public void getResult(Map<String, String> result) {
+                Log.d("xyc", "getResult: result="+result);
+            }
+        };
     }
 
     public static Intent makeIntent(Context context) {
@@ -103,12 +114,38 @@ public class RechargeActivity extends BaseActivity {
 
                 break;
             case R.id.tvReCharge:
-                sendPayRequest();
+                //sendPayRequest();
+                aliPayRequest();
                 break;
 
         }
 
     }
+
+    private void aliPayRequest() {
+        //订单信息
+        final String orderInfo = "";
+        //异步处理
+        Runnable payRunnable = new Runnable() {
+
+            @Override
+            public void run() {
+                //新建任务
+                PayTask alipay = new PayTask(RechargeActivity.this);
+                String version = alipay.getVersion();
+                //获取支付结果
+                Map<String, String> result = alipay.payV2(orderInfo, true);
+                alipayResult.getResult(result);
+            }
+        };
+        // 必须异步调用
+        Thread payThread = new Thread(payRunnable);
+        payThread.start();
+    }
+
+    /**
+     * 微信支付
+     */
     private void sendPayRequest() {
 
         PayReq request = new PayReq();
