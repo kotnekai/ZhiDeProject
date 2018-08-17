@@ -14,6 +14,8 @@ import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.zhide.app.R;
 import com.zhide.app.okhttp.MyOkhttpUtils;
 
@@ -32,6 +34,8 @@ import me.weyye.hipermission.PermissionItem;
 public class ComApplication extends Application {
     public static ComApplication mzjApplication;
     public List<Activity> mActivityList = null;
+    private IWXAPI msgApi;
+
     //static 代码段可以防止内存泄露
     static {
         //设置全局的Header构建器
@@ -61,6 +65,11 @@ public class ComApplication extends Application {
          CrashManager.getInstance().init(this); //初始化本地崩溃日志收集
         checkPermission();
         MyOkhttpUtils.initOkhttp(this);
+        msgApi = WXAPIFactory.createWXAPI(this, null);
+        // 将该app注册到微信
+        msgApi.registerApp("wxd930ea5d5a258f4f");
+        Log.d("xyc", "getMsgApi: msgApi1="+msgApi);
+        ApplicationHolder.getInstance().setMsgApi(msgApi);
     }
 
     /**

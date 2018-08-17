@@ -71,4 +71,9 @@
     <string name="charge_IntroContent"> 新用户首次充值不得低于100元;\n旧用户首次充值不得低于30元;</string>
     <string name="with_draw_title">提现</string>
     <string name="reset_password_title">密码重置</string>
+    <!-- WXPayEntryActivity -->
+    <string name="pay_result_tip">支付结果</string>
+    <string name="pay_result_callback_msg" formatted="false">微信支付结果：%s</string>
+    <string name="app_tip">提示</string>
+    <string name="my_bill_title">我的账单</string>
 </resources>

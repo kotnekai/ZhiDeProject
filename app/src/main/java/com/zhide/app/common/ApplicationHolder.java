@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.util.Log;
 
+import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.zhide.app.model.VersionModel;
 
 
@@ -29,6 +30,7 @@ public class ApplicationHolder {
         }
         return instance;
     }
+    private IWXAPI msgApi;
 
     public void setAppContext(Context context) {
         if (context == null) {
@@ -36,6 +38,14 @@ public class ApplicationHolder {
             return;
         }
         mContext = context;
+    }
+    public IWXAPI getMsgApi() {
+        Log.d("xyc", "getMsgApi: msgApi2="+msgApi);
+        return msgApi;
+    }
+
+    public void setMsgApi(IWXAPI msgApi) {
+        this.msgApi = msgApi;
     }
 
     public Context getAppContext() {

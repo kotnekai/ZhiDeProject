@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.zhide.app.R;
+import com.zhide.app.common.ApplicationHolder;
 import com.zhide.app.utils.UIUtils;
 import com.zhide.app.view.base.BaseActivity;
 
@@ -101,10 +103,23 @@ public class RechargeActivity extends BaseActivity {
 
                 break;
             case R.id.tvReCharge:
+                sendPayRequest();
                 break;
 
         }
 
+    }
+    private void sendPayRequest() {
+
+        PayReq request = new PayReq();
+        request.appId = "wxd930ea5d5a258f4f";
+        request.partnerId = "1900000109";
+        request.prepayId = "1101000000140415649af9fc314aa427";
+        request.packageValue = "Sign=WXPay";
+        request.nonceStr = "1101000000140429eb40476f8896f4c9";
+        request.timeStamp = "1398746574";
+        request.sign = "8cb66835007a51af5323b29885c2392c";
+        ApplicationHolder.getInstance().getMsgApi().sendReq(request);
     }
 
     private void updateTvState(TextView tv) {
