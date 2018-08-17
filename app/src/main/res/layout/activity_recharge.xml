@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.activity.RechargeActivity">
+
+    <TextView
+        android:id="@+id/tvTotalBalance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="10dp"
+        android:text="123.34" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:text="账户基本余额" />
+
+    <TextView
+        android:id="@+id/tvCaseBalance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/tvTotalBalance"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="10dp"
+        android:text="123.34" />
+
+    <TextView
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvTotalBalance"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:text="现金余额" />
+
+    <TextView
+        android:id="@+id/tvGiftBalance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/tvCaseBalance"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="10dp"
+        android:text="123.34" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvCaseBalance"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:text="赠送余额" />
+
+    <View
+        android:id="@+id/view1"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_below="@id/tvGiftBalance"
+        android:layout_marginTop="10dp"
+        android:background="@color/divider_color" />
+
+    <TextView
+        android:id="@+id/tvChargeTip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/view1"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:text="充值金额" />
+
+    <TextView
+        android:id="@+id/tvCharge30"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:layout_below="@id/tvChargeTip"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/com_btn_line_bg_blue_black_selector"
+        android:gravity="center"
+        android:text="30元"
+        android:textColor="@drawable/com_text_white_black_selector" />
+
+    <TextView
+        android:id="@+id/tvCharge40"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+
+        android:layout_below="@id/tvChargeTip"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/tvCharge30"
+        android:background="@drawable/com_btn_line_bg_blue_black_selector"
+        android:gravity="center"
+        android:text="40元"
+        android:textColor="@drawable/com_text_white_black_selector" />
+
+    <TextView
+        android:id="@+id/tvCharge50"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:layout_below="@id/tvChargeTip"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+
+        android:layout_toRightOf="@id/tvCharge40"
+        android:background="@drawable/com_btn_line_bg_blue_black_selector"
+        android:gravity="center"
+        android:text="50元"
+        android:textColor="@drawable/com_text_white_black_selector" />
+
+    <TextView
+        android:id="@+id/tvCharge80"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:layout_below="@id/tvCharge30"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+
+        android:background="@drawable/com_btn_line_bg_blue_black_selector"
+        android:gravity="center"
+        android:text="80元"
+        android:textColor="@drawable/com_text_white_black_selector" />
+
+    <TextView
+        android:id="@+id/tvCharge100"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:layout_below="@id/tvCharge30"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/tvCharge30"
+        android:background="@drawable/com_btn_line_bg_blue_black_selector"
+        android:gravity="center"
+        android:text="100元"
+        android:textColor="@drawable/com_text_white_black_selector" />
+
+    <TextView
+        android:id="@+id/tvChargeOther"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:layout_below="@id/tvCharge30"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/tvCharge40"
+        android:background="@drawable/com_btn_line_bg_blue_black_selector"
+        android:gravity="center"
+        android:text="其他"
+        android:textColor="@drawable/com_text_white_black_selector" />
+
+    <TextView
+        android:id="@+id/tvChargeActTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvCharge80"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/charge_introduce" />
+
+    <TextView
+        android:id="@+id/tvIntroActContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvChargeActTitle"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:text="自2018/9/1-2019/09/12充值优惠多多" />
+
+    <TextView
+        android:id="@+id/tvChargeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvIntroActContent"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/charge_introduce" />
+
+    <TextView
+        android:id="@+id/tvIntroContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvChargeTitle"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/charge_IntroContent" />
+
+    <TextView
+        android:id="@+id/tvReCharge"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/tvIntroContent"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/com_btn_blue_5r_bg_shape"
+        android:gravity="center"
+        android:text="确认充值"
+        android:textColor="@color/white" />
+</RelativeLayout>

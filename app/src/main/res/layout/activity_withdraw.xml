@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="10dp"
+
+    tools:context=".view.activity.WithdrawActivity">
+
+    <TextView
+        android:id="@+id/tvPayeeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:text="账户姓名" />
+
+    <EditText
+        android:id="@+id/edtPayeeName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="15dp"
+        android:layout_toRightOf="@id/tvCountTitle"
+        android:background="@null"
+        android:gravity="right"
+        android:hint="请输入姓名" />
+
+    <View
+        android:id="@+id/view1"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@id/tvPayeeTitle"
+        android:layout_marginTop="10dp"
+        android:background="@color/divider_color" />
+
+    <TextView
+        android:id="@+id/tvCountTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/view1"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:text="支付宝账号" />
+
+    <EditText
+        android:id="@+id/edtAcceptCount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/view1"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/tvCountTitle"
+        android:background="@null"
+        android:gravity="right"
+        android:hint="请输入账号" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@id/tvCountTitle"
+        android:layout_marginTop="10dp"
+        android:background="@color/divider_color" />
+
+    <TextView
+        android:id="@+id/tvPhoneTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/view2"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:text="联系电话" />
+
+    <EditText
+        android:id="@+id/edtPhoneNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/view2"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/tvCountTitle"
+        android:background="@null"
+        android:gravity="right"
+        android:hint="1232832323" />
+
+    <View
+        android:id="@+id/view3"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_below="@id/tvPhoneTitle"
+        android:layout_marginTop="10dp"
+        android:background="@color/divider_color" />
+
+    <TextView
+        android:id="@+id/tvSurplusMoney"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/view3"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="¥232.23" />
+
+    <TextView
+        android:id="@+id/tvSurplusTip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvSurplusMoney"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:text="仅退还现金余额，退款后账号赠送余额清零" />
+
+    <TextView
+        android:id="@+id/tvCancel"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/tvSurplusTip"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/com_btn_blue_5r_bg_shape"
+        android:gravity="center"
+        android:text="取消"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/tvSubmit"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/tvCancel"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/com_btn_line_black_shape"
+        android:gravity="center"
+        android:text="提交申请"
+        android:textColor="@color/text_color" />
+</RelativeLayout>

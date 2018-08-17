@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:drawable="@mipmap/washing1"
+        android:duration="150">
+    </item>
+    <item
+        android:drawable="@mipmap/washing2"
+        android:duration="150">
+    </item>
+    <item
+        android:drawable="@mipmap/washing3"
+        android:duration="150">
+    </item>
+    <item
+        android:drawable="@mipmap/washing4"
+        android:duration="150">
+    </item>
+    <item
+        android:drawable="@mipmap/washing5"
+        android:duration="150">
+    </item>
+    <item
+        android:drawable="@mipmap/washing6"
+        android:duration="150">
+    </item>
+    <item
+        android:drawable="@mipmap/washing7"
+        android:duration="150">
+    </item>
+    <item
+        android:drawable="@mipmap/washing8"
+        android:duration="150">
+    </item>
+    <item
+        android:drawable="@mipmap/washing9"
+        android:duration="150">
+    </item>
+    <item
+        android:drawable="@mipmap/washing10"
+        android:duration="150">
+    </item>
+    <item
+        android:drawable="@mipmap/washing11"
+        android:duration="150">
+    </item>
+    <item
+        android:drawable="@mipmap/washing12"
+        android:duration="150">
+    </item>
+    <item
+        android:drawable="@mipmap/washing13"
+        android:duration="150">
+    </item>
+    <item
+        android:drawable="@mipmap/washing14"
+        android:duration="150">
+    </item>
+
+</animation-list>

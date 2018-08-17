@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/llFailureReporting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/text_Item_style"
+            android:text="@string/about_failure_reporting" />
+
+        <View style="@style/divider_margin" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llOperationGuide"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/text_Item_style"
+            android:text="@string/about_operation_guide" />
+
+        <View style="@style/divider_margin" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llVersion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/text_Item_style"
+            android:text="@string/about_version" />
+
+        <View style="@style/divider_margin" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/llServicePhone"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <TextView
+            style="@style/text_Item_style"
+            android:text="@string/about_service_phone" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="28dp"
+            android:gravity="center_vertical"
+            android:text="@string/about_service_phone_number"
+            android:textColor="@color/text_color" />
+
+        <View
+            style="@style/divider_margin"
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
+</LinearLayout>

@@ -1,0 +1,74 @@
+<resources>
+    <string name="app_name">智得能源</string>
+    <string name="login_title">登录</string>
+    <string name="register_title">注册</string>
+    <string name="shower_title">洗澡</string>
+    <string name="recharge_title">充值</string>
+    <string name="home_tab">首页</string>
+    <string name="about_tab">关于</string>
+    <string name="mine_tab">我的</string>
+    <string name="mine_charge">充值</string>
+
+    <string name="dialog_tips_title">提醒</string>
+    <string name="dialog_bluetooth_bind">是否确定绑定该水表</string>
+    <string name="sure">确定</string>
+    <string name="cancel">取消</string>
+
+    <string name="driver_connect_start">点击开始搜索</string>
+    <string name="driver_connect_stop">已经停止搜索</string>
+    <string name="driver_connect_restart">点击重新搜索</string>
+
+    <string name="driver_connect_search">设备搜索中</string>
+    <string name="driver_connect_count" formatted="false">已搜索出%s台</string>
+    <string name="connecting_device">设备连接中···</string>
+    <string name="connected_device">设备已连接</string>
+    <string name="un_connect_device">无法连接设备</string>
+    <string name="error_qr">无效的二维码！</string>
+
+
+    <string name="about_failure_reporting">故障报修</string>
+    <string name="about_operation_guide">操作指引</string>
+    <string name="about_version">版本</string>
+    <string name="about_service_phone">服务电话</string>
+    <string name="about_service_phone_number">400-777-8408</string>
+
+    <string name="shower_driver_reg">设备登记</string>
+
+    <string name="driver_bluetooth_connecting">正在配对</string>
+    <string name="driver_bluetooth_connect_finish">配对结束</string>
+    <string name="driver_bluetooth_connect_fail">配对失败</string>
+    <string name="driver_bluetooth_connect_cancel">取消配对</string>
+
+    <string name="driver_start_using">开始使用</string>
+    <string name="driver_stop_use">线束使用</string>
+
+    <string name="driver_wash_clothes">洗衣中</string>
+    <string name="driver_click_restart">点击重试</string>
+    <string name="driver_click_reconnect">点击重连</string>
+    <string name="driver_connect_success">连接成功</string>
+    <string name="driver_connect_fail">连接失败</string>
+
+    <string name="download_tate_success">下发费率成功</string>
+    <string name="download_tate_fail">下发费率失败</string>
+    <string name="clean_cache_success">清除缓存成功</string>
+
+    <string name="device_no_login">此设备未登记，请先登记</string>
+    <string name="device_login_success">设备登记成功</string>
+    <string name="device_login_select_type">请选择登记类型</string>
+
+    <string name="payment_cards">刷卡消费中</string>
+
+    <string name="water_meter">热水表</string>
+    <string name="water_fountain">饮水机</string>
+    <string name="washing_machine">洗衣机</string>
+    <string name="hair_drier">吹风机</string>
+    <string name="Charger">充电器</string>
+    <string name="air_conditioner">空调</string>
+    <string name="other">其它</string>
+
+
+    <string name="charge_introduce"> 充值活动说明：</string>
+    <string name="charge_IntroContent"> 新用户首次充值不得低于100元;\n旧用户首次充值不得低于30元;</string>
+    <string name="with_draw_title">提现</string>
+    <string name="reset_password_title">密码重置</string>
+</resources>

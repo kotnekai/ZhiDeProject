@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawerLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/tvTitleBar"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="@color/main_blue_color"
+            android:visibility="gone" />
+
+        <RelativeLayout
+            android:id="@+id/rlBaseTitleLayout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_bar_height"
+            android:background="@color/main_blue_color">
+
+            <ImageView
+                android:id="@+id/ivGoBack"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingBottom="15dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="15dp"
+                android:src="@mipmap/fanhui" />
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:text="标题"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/ivNext"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:paddingLeft="10dp"
+                android:paddingRight="15dp"
+                android:src="@mipmap/tianjia_fabu"
+                android:visibility="gone"
+           />
+
+            <TextView
+                android:id="@+id/tvNext"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:paddingRight="15dp"
+                android:paddingLeft="10dp"
+                android:gravity="center"
+                android:text="跳转"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:visibility="gone"
+               />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/llCenterView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" />
+
+        <LinearLayout
+            android:id="@+id/llEmptyPage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <include layout="@layout/com_empty_view_layout" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <!--android:layout_gravity="end"-->
+
+    <RelativeLayout
+        android:id="@+id/rlAddSelectContain"
+        android:layout_width="320dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:background="@color/white">
+
+    </RelativeLayout>
+</android.support.v4.widget.DrawerLayout>
