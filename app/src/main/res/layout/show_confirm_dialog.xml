@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+  >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:background="@drawable/com_white_15r_shape"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="39dp"
+            android:gravity="center"
+            android:lineSpacingExtra="5sp"
+            android:text="确定通过审核"
+            android:textColor="@color/main_page_number_color"
+            android:textSize="18sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="40dp"
+            android:background="@color/divider_color" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvCancel"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="@color/main_page_number_color"
+                android:gravity="center"
+                android:text="取消"
+                android:textSize="18sp" />
+
+            <View
+                android:id="@+id/lineDivide"
+                android:layout_width="0.5dp"
+                android:layout_height="match_parent"
+                android:background="@color/divider_color" />
+
+            <TextView
+                android:id="@+id/tvConfirm"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="确定"
+                android:textColor="#1eabe1"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -12,8 +12,14 @@ import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.zhide.app.R;
 import com.zhide.app.common.ApplicationHolder;
 import com.zhide.app.delegate.IGetAliPayResult;
+import com.zhide.app.eventBus.RechargeInfoEvent;
+import com.zhide.app.model.ReChargeModel;
+import com.zhide.app.utils.ToastUtil;
 import com.zhide.app.utils.UIUtils;
 import com.zhide.app.view.base.BaseActivity;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +32,8 @@ public class RechargeActivity extends BaseActivity {
 
     @BindView(R.id.tvTotalBalance)
     TextView tvTotalBalance;
-    @BindView(R.id.tvCaseBalance)
-    TextView tvCaseBalance;
+    @BindView(R.id.tvCashBalance)
+    TextView tvCashBalance;
     @BindView(R.id.tvGiftBalance)
     TextView tvGiftBalance;
     @BindView(R.id.tvCharge30)
@@ -44,6 +50,8 @@ public class RechargeActivity extends BaseActivity {
     TextView tvChargeOther;
     @BindView(R.id.tvIntroActContent)
     TextView tvIntroActContent;
+    @BindView(R.id.tvIntroContent)
+    TextView tvIntroContent;
     @BindView(R.id.tvReCharge)
     TextView tvReCharge;
     private IGetAliPayResult alipayResult;
@@ -78,7 +86,7 @@ public class RechargeActivity extends BaseActivity {
         alipayResult = new IGetAliPayResult() {
             @Override
             public void getResult(Map<String, String> result) {
-                Log.d("xyc", "getResult: result="+result);
+                Log.d("xyc", "getResult: result=" + result);
             }
         };
     }
@@ -86,6 +94,33 @@ public class RechargeActivity extends BaseActivity {
     public static Intent makeIntent(Context context) {
         Intent intent = new Intent(context, RechargeActivity.class);
         return intent;
+    }
+
+    /**
+     * 第一次进来，，更新界面数据
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onReChargeEvent(RechargeInfoEvent event) {
+        ReChargeModel chargeModel = event.getChargeModel();
+        if (chargeModel == null) {
+            ToastUtil.showShort(getString(R.string.get_net_data_error));
+            return;
+        }
+        updateUI(chargeModel);
+    }
+
+    /**
+     * 更新界面数据
+     *
+     * @param chargeModel
+     */
+    private void updateUI(ReChargeModel chargeModel) {
+        tvTotalBalance.setText(String.valueOf(chargeModel.getTotalBalance()));
+        tvCashBalance.setText(String.valueOf(chargeModel.getCashBalance()));
+        tvGiftBalance.setText(String.valueOf(chargeModel.getGiftBalance()));
+        tvIntroActContent.setText(chargeModel.getChargeActTitle());
+        tvIntroContent.setText(chargeModel.getChargeTitle());
     }
 
     @OnClick({R.id.tvCharge30, R.id.tvCharge40, R.id.tvCharge50, R.id.tvCharge80, R.id.tvCharge100, R.id.tvChargeOther, R.id.tvReCharge})

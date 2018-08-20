@@ -22,7 +22,7 @@
         android:text="账户基本余额" />
 
     <TextView
-        android:id="@+id/tvCaseBalance"
+        android:id="@+id/tvCashBalance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -45,7 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/tvCaseBalance"
+        android:layout_below="@id/tvCashBalance"
         android:layout_marginRight="15dp"
         android:layout_marginTop="10dp"
         android:text="123.34" />
@@ -53,7 +53,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvCaseBalance"
+        android:layout_below="@id/tvCashBalance"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
         android:text="赠送余额" />
@@ -161,7 +161,7 @@
         android:layout_below="@id/tvCharge80"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
-        android:text="@string/charge_introduce" />
+        android:text="@string/charge_act_introduce" />
 
     <TextView
         android:id="@+id/tvIntroActContent"

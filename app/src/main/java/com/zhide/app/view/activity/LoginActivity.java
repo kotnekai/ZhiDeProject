@@ -1,5 +1,7 @@
 package com.zhide.app.view.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -50,6 +52,10 @@ public class LoginActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onLoginEvent(LoginEvent event) {
 
+    }
+
+    public static Intent makeIntent(Context context) {
+        return new Intent(context, LoginActivity.class);
     }
 
     @OnClick({R.id.ivRightIcon, R.id.tvRememberPsw, R.id.tvForgetPsw, R.id.tvLogin})
