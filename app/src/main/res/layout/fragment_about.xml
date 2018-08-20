@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
     <LinearLayout
         android:id="@+id/llFailureReporting"
         android:layout_width="match_parent"
@@ -44,7 +45,7 @@
     </LinearLayout>
 
     <RelativeLayout
-        android:id="@+id/llServicePhone"
+        android:id="@+id/rlServicePhone"
         android:layout_width="match_parent"
         android:layout_height="50dp">
 

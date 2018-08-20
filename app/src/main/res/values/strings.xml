@@ -79,4 +79,9 @@
     <string name="my_bill_title">我的账单</string>
 
     <string name="get_net_data_error">请求数据出错</string>
+
+    <string name="repair_title">故障报修</string>
+    <string name="operate_guide_title">操作指引</string>
+    <string name="bath_operate_guide_tip">洗澡功能操作指引</string>
+
 </resources>

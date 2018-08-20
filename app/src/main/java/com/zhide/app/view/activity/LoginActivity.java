@@ -47,6 +47,13 @@ public class LoginActivity extends BaseActivity {
         setHeaderTitle(UIUtils.getValueString(R.string.login_title));
         setRightTextVisibility(View.VISIBLE);
         setHeader_RightText(UIUtils.getValueString(R.string.register_title));
+        setHeader_RightTextClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(RegisterActivity.makeIntent(LoginActivity.this));
+
+            }
+        });
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -62,7 +69,6 @@ public class LoginActivity extends BaseActivity {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ivRightIcon:
-
                 break;
             case R.id.tvRememberPsw:
                 break;

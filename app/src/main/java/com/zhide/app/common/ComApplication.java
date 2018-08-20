@@ -20,6 +20,7 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.zhide.app.R;
 import com.zhide.app.okhttp.MyOkhttpUtils;
+import com.zhide.app.utils.PickViewUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +73,8 @@ public class ComApplication extends Application {
         msgApi.registerApp("wxd930ea5d5a258f4f");
         Log.d("xyc", "getMsgApi: msgApi1="+msgApi);
         ApplicationHolder.getInstance().setMsgApi(msgApi);
+        PickViewUtil.initTimePickOptions(this);
+
     }
 
 

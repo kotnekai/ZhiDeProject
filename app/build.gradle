@@ -37,6 +37,8 @@ dependencies {
     compile 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-14'
     compile 'com.android.support:recyclerview-v7:26.+'
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
+    compile 'org.jaaksi:pickerview:1.0.1'
+
     testCompile 'junit:junit:4.12'
     compile project(path: ':okhttputils')
     compile project(':okhttputils')
