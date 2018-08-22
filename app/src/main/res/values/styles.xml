@@ -98,4 +98,11 @@
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
+    <!-- 设置pop由下自上的动画 -->
+    <style name="popwindow_anim_style">
+        <item name="android:windowEnterAnimation">@anim/dropdown_in</item>
+        <!-- 指定显示的动画xml -->
+        <item name="android:windowExitAnimation">@anim/dropdown_out</item>
+        <!-- 指定消失的动画xml -->
+    </style>
 </resources>

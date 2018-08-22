@@ -12,6 +12,8 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="15dp"
         android:layout_marginTop="10dp"
+        android:textColor="@color/green_color"
+        android:textSize="17sp"
         android:text="123.34" />
 
     <TextView
@@ -19,7 +21,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
-        android:text="账户基本余额" />
+        android:text="账户基本余额："
+        android:textSize="17sp" />
 
     <TextView
         android:id="@+id/tvCashBalance"
@@ -29,7 +32,8 @@
         android:layout_below="@id/tvTotalBalance"
         android:layout_marginRight="15dp"
         android:layout_marginTop="10dp"
-        android:text="123.34" />
+        android:text="123.34"
+        android:textSize="@dimen/com_text_size_12sp" />
 
     <TextView
 
@@ -38,7 +42,9 @@
         android:layout_below="@id/tvTotalBalance"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
-        android:text="现金余额" />
+
+        android:text="现金余额："
+        android:textSize="@dimen/com_text_size_12sp" />
 
     <TextView
         android:id="@+id/tvGiftBalance"
@@ -48,7 +54,8 @@
         android:layout_below="@id/tvCashBalance"
         android:layout_marginRight="15dp"
         android:layout_marginTop="10dp"
-        android:text="123.34" />
+        android:text="123.34"
+        android:textSize="@dimen/com_text_size_12sp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -56,7 +63,9 @@
         android:layout_below="@id/tvCashBalance"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
-        android:text="赠送余额" />
+        android:text="赠送余额："
+
+        android:textSize="@dimen/com_text_size_12sp" />
 
     <View
         android:id="@+id/view1"
@@ -85,13 +94,12 @@
         android:background="@drawable/com_btn_line_bg_blue_black_selector"
         android:gravity="center"
         android:text="30元"
-        android:textColor="@drawable/com_text_white_black_selector" />
+        android:textColor="@drawable/com_text_white_blue_selector" />
 
     <TextView
         android:id="@+id/tvCharge40"
         android:layout_width="100dp"
         android:layout_height="30dp"
-
         android:layout_below="@id/tvChargeTip"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
@@ -99,7 +107,7 @@
         android:background="@drawable/com_btn_line_bg_blue_black_selector"
         android:gravity="center"
         android:text="40元"
-        android:textColor="@drawable/com_text_white_black_selector" />
+        android:textColor="@drawable/com_text_white_blue_selector" />
 
     <TextView
         android:id="@+id/tvCharge50"
@@ -108,12 +116,11 @@
         android:layout_below="@id/tvChargeTip"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
-
         android:layout_toRightOf="@id/tvCharge40"
         android:background="@drawable/com_btn_line_bg_blue_black_selector"
         android:gravity="center"
         android:text="50元"
-        android:textColor="@drawable/com_text_white_black_selector" />
+        android:textColor="@drawable/com_text_white_blue_selector" />
 
     <TextView
         android:id="@+id/tvCharge80"
@@ -126,7 +133,7 @@
         android:background="@drawable/com_btn_line_bg_blue_black_selector"
         android:gravity="center"
         android:text="80元"
-        android:textColor="@drawable/com_text_white_black_selector" />
+        android:textColor="@drawable/com_text_white_blue_selector" />
 
     <TextView
         android:id="@+id/tvCharge100"
@@ -139,25 +146,30 @@
         android:background="@drawable/com_btn_line_bg_blue_black_selector"
         android:gravity="center"
         android:text="100元"
-        android:textColor="@drawable/com_text_white_black_selector" />
+        android:textColor="@drawable/com_text_white_blue_selector" />
 
-    <TextView
+    <EditText
         android:id="@+id/tvChargeOther"
         android:layout_width="100dp"
         android:layout_height="30dp"
         android:layout_below="@id/tvCharge30"
         android:layout_marginLeft="15dp"
+        android:hint="其他"
         android:layout_marginTop="10dp"
         android:layout_toRightOf="@id/tvCharge40"
         android:background="@drawable/com_btn_line_bg_blue_black_selector"
         android:gravity="center"
-        android:text="其他"
-        android:textColor="@drawable/com_text_white_black_selector" />
+        android:inputType="number"
+        android:textSize="15sp"
+        android:textColorHint="@drawable/com_text_white_blue_selector"
+        android:text=""
+        android:textColor="@drawable/com_text_white_blue_selector" />
 
     <TextView
         android:id="@+id/tvChargeActTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/light_text_blue_color"
         android:layout_below="@id/tvCharge80"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
@@ -176,6 +188,7 @@
         android:id="@+id/tvChargeTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/light_text_blue_color"
         android:layout_below="@id/tvIntroActContent"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.alipay.sdk.app.PayTask;
@@ -12,8 +13,11 @@ import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.zhide.app.R;
 import com.zhide.app.common.ApplicationHolder;
 import com.zhide.app.delegate.IGetAliPayResult;
+import com.zhide.app.delegate.SpinerOnItemClickListener;
 import com.zhide.app.eventBus.RechargeInfoEvent;
 import com.zhide.app.model.ReChargeModel;
+import com.zhide.app.model.SpinnerSelectModel;
+import com.zhide.app.utils.DialogUtils;
 import com.zhide.app.utils.ToastUtil;
 import com.zhide.app.utils.UIUtils;
 import com.zhide.app.view.base.BaseActivity;
@@ -47,7 +51,7 @@ public class RechargeActivity extends BaseActivity {
     @BindView(R.id.tvCharge100)
     TextView tvCharge100;
     @BindView(R.id.tvChargeOther)
-    TextView tvChargeOther;
+    EditText tvChargeOther;
     @BindView(R.id.tvIntroActContent)
     TextView tvIntroActContent;
     @BindView(R.id.tvIntroContent)
@@ -98,6 +102,7 @@ public class RechargeActivity extends BaseActivity {
 
     /**
      * 第一次进来，，更新界面数据
+     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -116,12 +121,15 @@ public class RechargeActivity extends BaseActivity {
      * @param chargeModel
      */
     private void updateUI(ReChargeModel chargeModel) {
-        tvTotalBalance.setText(String.valueOf(chargeModel.getTotalBalance()));
-        tvCashBalance.setText(String.valueOf(chargeModel.getCashBalance()));
-        tvGiftBalance.setText(String.valueOf(chargeModel.getGiftBalance()));
+        tvTotalBalance.setText(String.valueOf(chargeModel.getTotalBalance()) + "元");
+        tvCashBalance.setText(String.valueOf(chargeModel.getCashBalance()) + "元");
+        tvGiftBalance.setText(String.valueOf(chargeModel.getGiftBalance()) + "元");
         tvIntroActContent.setText(chargeModel.getChargeActTitle());
         tvIntroContent.setText(chargeModel.getChargeTitle());
     }
+
+    public static final int aliPayType = 1;
+    public static final int wxPayType = 2;
 
     @OnClick({R.id.tvCharge30, R.id.tvCharge40, R.id.tvCharge50, R.id.tvCharge80, R.id.tvCharge100, R.id.tvChargeOther, R.id.tvReCharge})
     public void onClick(View v) {
@@ -149,12 +157,18 @@ public class RechargeActivity extends BaseActivity {
 
                 break;
             case R.id.tvReCharge:
-                //sendPayRequest();
-                aliPayRequest();
+                DialogUtils.showBottomSelectTypePop(this, new SpinerOnItemClickListener() {
+                    @Override
+                    public void onItemClick(int position, int id) {
+                        if (id == -1 || id == aliPayType) {
+                            aliPayRequest();
+                        } else if (id == wxPayType) {
+                            sendWxPayRequest();
+                        }
+                    }
+                });
                 break;
-
         }
-
     }
 
     private void aliPayRequest() {
@@ -181,7 +195,7 @@ public class RechargeActivity extends BaseActivity {
     /**
      * 微信支付
      */
-    private void sendPayRequest() {
+    private void sendWxPayRequest() {
 
         PayReq request = new PayReq();
         request.appId = "wxd930ea5d5a258f4f";

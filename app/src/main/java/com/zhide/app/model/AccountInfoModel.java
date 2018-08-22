@@ -4,19 +4,37 @@ package com.zhide.app.model;
  * Create by Admin on 2018/8/20
  */
 public class AccountInfoModel {
-    private float accountBalance;//账户余额
+    private float totalMoney;//账户余额
+    private float baseMoney;// 基本余额
+    private float giftMoney;// 赠送余额
     private String userName;//姓名
     private String schoolName;//校区
-    private boolean isMan;//性别
+    private String gender;//性别
     private String StudentId;//学号
     private String IdCardNumber;//身份证号
 
-    public float getAccountBalance() {
-        return accountBalance;
+    public float getTotalMoney() {
+        return totalMoney;
     }
 
-    public void setAccountBalance(float accountBalance) {
-        this.accountBalance = accountBalance;
+    public void setTotalMoney(float totalMoney) {
+        this.totalMoney = totalMoney;
+    }
+
+    public float getBaseMoney() {
+        return baseMoney;
+    }
+
+    public void setBaseMoney(float baseMoney) {
+        this.baseMoney = baseMoney;
+    }
+
+    public float getGiftMoney() {
+        return giftMoney;
+    }
+
+    public void setGiftMoney(float giftMoney) {
+        this.giftMoney = giftMoney;
     }
 
     public String getUserName() {
@@ -35,12 +53,12 @@ public class AccountInfoModel {
         this.schoolName = schoolName;
     }
 
-    public boolean isMan() {
-        return isMan;
+    public String getGender() {
+        return gender;
     }
 
-    public void setMan(boolean man) {
-        isMan = man;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public String getStudentId() {

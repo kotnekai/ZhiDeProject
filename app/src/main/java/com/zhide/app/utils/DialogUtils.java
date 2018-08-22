@@ -1,8 +1,10 @@
 package com.zhide.app.utils;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AlertDialog;
 import android.view.Gravity;
@@ -10,11 +12,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zhide.app.R;
+import com.zhide.app.delegate.SpinerOnItemClickListener;
+import com.zhide.app.model.SpinnerSelectModel;
+import com.zhide.app.view.adapter.SpinerAdapter;
+
+import java.util.List;
 
 
 public class DialogUtils {
@@ -64,7 +76,8 @@ public class DialogUtils {
     }
 
     /**
-     *确认弹窗，，只有一个确认按钮的
+     * 确认弹窗，，只有一个确认按钮的
+     *
      * @param context
      * @param title
      * @param content
@@ -103,6 +116,7 @@ public class DialogUtils {
         dialogWindow.setGravity(Gravity.CENTER_HORIZONTAL);
         dialogWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
+
     public static void showConfirmDialog(Context context, String content, final View.OnClickListener listener) {
         final AlertDialog dialog = new AlertDialog.Builder(context).create();
         View view = LayoutInflater.from(context).inflate(R.layout.show_confirm_dialog, null);
@@ -142,6 +156,134 @@ public class DialogUtils {
                 }
             }
         });
+
+    }
+
+    public static void showBottomListDialog(final Activity context, List<SpinnerSelectModel> list, final SpinerOnItemClickListener listener) {
+        if (list == null || list.size() == 0) {
+            return;
+        }
+        View contentView = LayoutInflater.from(context).inflate(R.layout.common_popup_list_dialog, null);
+        ListView lv_pop = (ListView) contentView.findViewById(R.id.lv_pop);
+        TextView tvCancel = (TextView) contentView.findViewById(R.id.tvCancel);
+        int heightPop;
+        if (list.size() > 1) {
+            heightPop = 140 + 55 * (list.size() - 1);
+        } else {
+            heightPop = 150;
+        }
+        final PopupWindow popWnd = new PopupWindow(contentView, UIUtils.dipToPx(context, 330),
+                UIUtils.dipToPx(context, heightPop));
+        popWnd.setContentView(contentView);
+        popWnd.setTouchable(true);
+        //设置背景,这个没什么效果，不添加会报错
+        popWnd.setBackgroundDrawable(new BitmapDrawable());
+        //设置背景色
+        setBackgroundAlpha(context, 0.5f);
+        popWnd.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                setBackgroundAlpha(context, 1f);
+            }
+        });
+        // 设置此参数获得焦点，否则无法点击
+        popWnd.setFocusable(true);
+        popWnd.setAnimationStyle(R.style.popwindow_anim_style);
+        popWnd.showAtLocation(contentView, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+        SpinerAdapter adapter = new SpinerAdapter(context, list);
+        lv_pop.setAdapter(adapter);
+        lv_pop.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                listener.onItemClick(position, (int) id);
+                if (popWnd.isShowing()) {
+                    //设置背景色
+                    popWnd.dismiss();
+                }
+            }
+        });
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (popWnd.isShowing()) {
+                    //设置背景色
+                    popWnd.dismiss();
+                }
+            }
+        });
+    }
+    // dialog.show();
+    //设置屏幕背景透明效果
+
+    public static void setBackgroundAlpha(Activity context, float alpha) {
+        WindowManager.LayoutParams lp = context.getWindow().getAttributes();
+        lp.alpha = alpha;
+        context.getWindow().setAttributes(lp);
+    }
+
+    public static final  int aliPayType = 1;
+    public static final  int wxPayType = 2;
+    public static void showBottomSelectTypePop(final Activity context, final SpinerOnItemClickListener listener) {
+
+        View contentView = LayoutInflater.from(context).inflate(R.layout.bottom_pop_layout, null);
+
+        ImageView ivClosePop = contentView.findViewById(R.id.ivClosePop);
+        RelativeLayout rlSelectAliPay = contentView.findViewById(R.id.rlSelectAliPay);
+        RelativeLayout rlSelectWxPay = contentView.findViewById(R.id.rlSelectWxPay);
+        final ImageView ivSelectAliPay = contentView.findViewById(R.id.ivSelectAliPay);
+        final ImageView ivSelectWxPay = contentView.findViewById(R.id.ivSelectWxPay);
+
+        final PopupWindow popWnd = new PopupWindow(contentView, UIUtils.getScreenWidth(context),
+                UIUtils.getScreenHeight(context)/3);
+        popWnd.setContentView(contentView);
+        popWnd.setTouchable(true);
+        //设置背景,这个没什么效果，不添加会报错
+        popWnd.setBackgroundDrawable(new BitmapDrawable());
+        //设置背景色
+        setBackgroundAlpha(context, 0.5f);
+        popWnd.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                setBackgroundAlpha(context, 1f);
+            }
+        });
+        ivClosePop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (popWnd.isShowing()) {
+                    popWnd.dismiss();
+                }
+            }
+        });
+        rlSelectAliPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ResourceUtils.setImageResource(ivSelectAliPay, R.mipmap.select_blue);
+                ResourceUtils.setImageResource(ivSelectWxPay, R.mipmap.select_gray);
+                listener.onItemClick(0,aliPayType);
+                if (popWnd.isShowing()) {
+                    popWnd.dismiss();
+                }
+            }
+        });
+        rlSelectWxPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ResourceUtils.setImageResource(ivSelectAliPay, R.mipmap.select_gray);
+                ResourceUtils.setImageResource(ivSelectWxPay, R.mipmap.select_blue);
+                listener.onItemClick(1,wxPayType);
+                if (popWnd.isShowing()) {
+                    popWnd.dismiss();
+                }
+            }
+        });
+        // 设置此参数获得焦点，否则无法点击
+        popWnd.setFocusable(true);
+        popWnd.setAnimationStyle(R.style.popwindow_anim_style);
+        popWnd.showAtLocation(contentView, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+
 
     }
 

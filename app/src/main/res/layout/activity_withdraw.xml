@@ -23,7 +23,8 @@
         android:layout_toRightOf="@id/tvCountTitle"
         android:background="@null"
         android:gravity="right"
-        android:hint="请输入姓名" />
+        android:hint="请输入姓名"
+        android:textSize="15sp" />
 
     <View
         android:id="@+id/view1"
@@ -49,11 +50,13 @@
         android:layout_below="@id/view1"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="15dp"
+
         android:layout_marginTop="10dp"
         android:layout_toRightOf="@id/tvCountTitle"
         android:background="@null"
         android:gravity="right"
-        android:hint="请输入账号" />
+        android:hint="请输入账号"
+        android:textSize="15sp" />
 
     <View
         android:id="@+id/view2"
@@ -83,7 +86,9 @@
         android:layout_toRightOf="@id/tvCountTitle"
         android:background="@null"
         android:gravity="right"
-        android:hint="1232832323" />
+        android:hint="手机号"
+        android:inputType="number"
+        android:textSize="15sp" />
 
     <View
         android:id="@+id/view3"
@@ -93,20 +98,36 @@
         android:layout_marginTop="10dp"
         android:background="@color/divider_color" />
 
-    <TextView
-        android:id="@+id/tvSurplusMoney"
+    <LinearLayout
+        android:id="@+id/llTotalMoney"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/view3"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text="¥232.23" />
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/tvSurplusMoney"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="232.23"
+            android:textColor="@color/normal_text_money_orange_color"
+            android:textSize="24sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="元"
+            android:textColor="@color/normal_text_money_orange_color"
+            android:textSize="18sp" />
+    </LinearLayout>
+
 
     <TextView
         android:id="@+id/tvSurplusTip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvSurplusMoney"
+        android:layout_below="@+id/llTotalMoney"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
         android:text="仅退还现金余额，退款后账号赠送余额清零" />
@@ -130,8 +151,8 @@
         android:layout_below="@id/tvCancel"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:background="@drawable/com_btn_line_black_shape"
+        android:background="@drawable/com_btn_line_blue_no_solid_shape"
         android:gravity="center"
         android:text="提交申请"
-        android:textColor="@color/text_color" />
+        android:textColor="@color/light_text_blue_color" />
 </RelativeLayout>

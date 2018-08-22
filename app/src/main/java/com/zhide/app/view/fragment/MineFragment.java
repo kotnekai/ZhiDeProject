@@ -1,5 +1,6 @@
 package com.zhide.app.view.fragment;
 
+import android.text.Html;
 import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.CheckBox;
@@ -31,8 +32,12 @@ public class MineFragment extends BaseFragment {
     TextView tvRecharge;
     @BindView(R.id.tvWithdraw)
     TextView tvWithdraw;
-    @BindView(R.id.tvMoneyTip)
-    TextView tvMoneyTip;
+    @BindView(R.id.tvDetailMoney)
+    TextView tvDetailMoney;
+
+    @BindView(R.id.tvTotalMoney)
+    TextView tvTotalMoney;
+
     @BindView(R.id.tvMyBill)
     TextView tvMyBill;
     @BindView(R.id.tvUserName)
@@ -41,10 +46,8 @@ public class MineFragment extends BaseFragment {
     LinearLayout llSchool;
     @BindView(R.id.tvSchoolName)
     TextView tvSchoolName;
-    @BindView(R.id.checkMan)
-    CheckBox checkMan;
-    @BindView(R.id.checkWoman)
-    CheckBox checkWoman;
+    @BindView(R.id.tvGender)
+    TextView tvGender;
     @BindView(R.id.tvStuId)
     TextView tvStuId;
     @BindView(R.id.tvIdCard)
@@ -53,6 +56,7 @@ public class MineFragment extends BaseFragment {
     TextView tvResetPsw;
     @BindView(R.id.tvLoginOut)
     TextView tvLoginOut;
+    private float totalMoney;
 
     @Override
     protected void initData() {
@@ -72,19 +76,8 @@ public class MineFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-        checkMan.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                ToastUtil.showShort(isChecked + "");
-            }
-        });
-        checkWoman.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                ToastUtil.showShort(isChecked + "");
-
-            }
-        });
+        tvDetailMoney.setText( Html.fromHtml("（基本余额："+"<font color='#4a86ba'>"+89.98+"</font>元,"+"赠送余额："+"<font color='#f06101'>"
+                +189.98+"</font>元）"));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -98,16 +91,15 @@ public class MineFragment extends BaseFragment {
     }
 
     private void updateUI(AccountInfoModel infoModel) {
-        tvMoneyTip.setText("账户余额：" + infoModel.getAccountBalance());
+        totalMoney = infoModel.getTotalMoney();
+        tvTotalMoney.setText(String.valueOf(totalMoney));
         tvUserName.setText(infoModel.getUserName());
         tvSchoolName.setText(infoModel.getSchoolName());
-        if (infoModel.isMan()) {
-            checkMan.setChecked(true);
-        } else {
-            checkWoman.setChecked(false);
-        }
+        tvGender.setText(infoModel.getGender());
         tvStuId.setText(infoModel.getStudentId());
         tvIdCard.setText(infoModel.getIdCardNumber());
+        tvDetailMoney.setText("（基本余额："+"<font color='#4a86ba'>"+infoModel.getBaseMoney()+"</font>元,"+"赠送余额："+"<font color='#f06101'>"
+        +infoModel.getGiftMoney()+"</font>元）");
     }
 
 
@@ -118,7 +110,7 @@ public class MineFragment extends BaseFragment {
                 startActivity(RechargeActivity.makeIntent(getActivity()));
                 break;
             case R.id.tvWithdraw:
-                startActivity(WithdrawActivity.makeIntent(getActivity()));
+                startActivity(WithdrawActivity.makeIntent(getActivity(),totalMoney));
                 break;
             case R.id.tvMyBill:
                 startActivity(MyBillActivity.makeIntent(getActivity()));
