@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/tvTypeContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:text="热水表" />
+
+    <TextView
+        android:id="@+id/tvTimeData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvTypeContent"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="5dp"
+        android:text="2018/02/12" />
+
+    <TextView
+        android:id="@+id/tvTransMoney"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="20dp"
+        android:text="232.00"
+        android:textSize="24sp" />
+
+    <View
+        android:layout_below="@id/tvTimeData"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/divider_color" />
+</RelativeLayout>
+
+</RelativeLayout>

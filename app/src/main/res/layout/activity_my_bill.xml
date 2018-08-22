@@ -9,6 +9,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:background="@color/main_blue_color"
+
         android:orientation="horizontal">
 
         <TextView
@@ -17,11 +19,13 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="全部" />
+            android:text="全部"
+            android:textColor="@color/white" />
 
         <View
             android:layout_width="0.5dp"
-            android:layout_height="match_parent"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
             android:background="@color/divider_color" />
 
         <TextView
@@ -30,11 +34,13 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="支出" />
+            android:text="支出"
+            android:textColor="@color/white" />
 
         <View
             android:layout_width="0.5dp"
-            android:layout_height="match_parent"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
             android:background="@color/divider_color" />
 
         <TextView
@@ -43,7 +49,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="充值" />
+            android:text="充值"
+            android:textColor="@color/white" />
     </LinearLayout>
 
     <View
