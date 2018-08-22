@@ -133,7 +133,7 @@ public abstract class BaseActivity extends AppCompatActivity implements DrawerLa
         }
         int setColor;
         if (statusColor == 0) {
-            setColor = activity.getResources().getColor(R.color.bluetooth_btn_bg);
+            setColor = activity.getResources().getColor(R.color.title_or_button_bg);
         } else {
             setColor = activity.getResources().getColor(statusColor);
         }

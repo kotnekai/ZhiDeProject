@@ -13,14 +13,14 @@
             android:id="@+id/tvTitleBar"
             android:layout_width="match_parent"
             android:layout_height="10dp"
-            android:background="@color/main_blue_color"
+            android:background="@color/title_or_button_bg"
             android:visibility="gone" />
 
         <RelativeLayout
             android:id="@+id/rlBaseTitleLayout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/title_bar_height"
-            android:background="@color/main_blue_color">
+            android:background="@color/title_or_button_bg">
 
             <ImageView
                 android:id="@+id/ivGoBack"
