@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zhide.app.R;
+import com.zhide.app.utils.ResourceUtils;
+import com.zhide.app.utils.UIUtils;
 import com.zhide.app.view.adapter.FragmentAdapter;
 import com.zhide.app.view.base.BaseActivity;
 import com.zhide.app.view.fragment.HomeFragment;
@@ -65,7 +67,6 @@ public class MainActivity extends BaseActivity {
         return intent;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void initData() {
         fragmentList = new ArrayList<>();
         fragmentList.add(new HomeFragment());
@@ -74,33 +75,33 @@ public class MainActivity extends BaseActivity {
         tvFourthTab.setVisibility(View.GONE);//隐藏一个
         adapter = new FragmentAdapter(fragmentList, getSupportFragmentManager());
         viewPager.setAdapter(adapter);
-        ivHomeTab.setImageDrawable(getDrawable(R.mipmap.home_b));
-        ivAboutTab.setImageDrawable(getDrawable(R.mipmap.about));
-        ivMineTab.setImageDrawable(getDrawable(R.mipmap.me));
+        ivHomeTab.setSelected(true);
+
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+
     @OnClick({R.id.ivHomeTab, R.id.ivAboutTab, R.id.ivMineTab, R.id.tvFourthTab})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ivHomeTab:
                 viewPager.setCurrentItem(0);
-                ivHomeTab.setImageDrawable(getDrawable(R.mipmap.home_b));
-                ivAboutTab.setImageDrawable(getDrawable(R.mipmap.about));
-                ivMineTab.setImageDrawable(getDrawable(R.mipmap.me));
+                ivHomeTab.setSelected(true);
+                ivAboutTab.setSelected(false);
+                ivMineTab.setSelected(false);
 
                 break;
             case R.id.ivAboutTab:
                 viewPager.setCurrentItem(1);
-                ivHomeTab.setImageDrawable(getDrawable(R.mipmap.home));
-                ivAboutTab.setImageDrawable(getDrawable(R.mipmap.about_b));
-                ivMineTab.setImageDrawable(getDrawable(R.mipmap.me));
+                ivHomeTab.setSelected(false);
+                ivAboutTab.setSelected(true);
+                ivMineTab.setSelected(false);
+
                 break;
             case R.id.ivMineTab:
                 viewPager.setCurrentItem(2);
-                ivHomeTab.setImageDrawable(getDrawable(R.mipmap.home));
-                ivAboutTab.setImageDrawable(getDrawable(R.mipmap.about));
-                ivMineTab.setImageDrawable(getDrawable(R.mipmap.me_b));
+                ivHomeTab.setSelected(false);
+                ivAboutTab.setSelected(false);
+                ivMineTab.setSelected(true);
                 break;
             case R.id.tvFourthTab:
 
