@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
-    android:background="@color/white"
-    android:paddingLeft="13dp"
-    android:paddingRight="17dp" >
+    android:layout_height="35dp"
+    android:paddingLeft="23dp"
+    android:paddingRight="27dp">
 
     <ImageView
         android:id="@+id/ivBluetooth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:src="@mipmap/bluetooth_icon" >
-    </ImageView>
+        android:src="@mipmap/bluetooth_icon" />
 
     <LinearLayout
+        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
@@ -22,27 +21,16 @@
         android:layout_toRightOf="@+id/ivBluetooth"
         android:orientation="vertical"
         android:paddingLeft="13dp"
-        android:paddingRight="5dp" >
-        
+        android:paddingRight="5dp">
+
         <TextView
             android:id="@+id/tvAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="A栋1单元"
-            android:textColor="@color/text_color"
-            android:textSize="14sp" >
-        </TextView>
-        
-        <TextView
-            android:id="@+id/tvMac"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="MAC 01 02 03 "
-            android:layout_marginTop="5dp"
-            android:textColor="#CDCDCD"
-            android:textSize="12sp" >
-        </TextView>
-        
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
     </LinearLayout>
 
     <Button
@@ -54,7 +42,12 @@
         android:background="@drawable/dialog_btn2_selecter"
         android:text="绑定"
         android:textColor="@color/white"
-        android:textSize="14sp" >
-    </Button>
+        android:textSize="14sp"></Button>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="5dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white" />
 </RelativeLayout>

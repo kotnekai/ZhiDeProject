@@ -64,10 +64,9 @@ public class ScanBluetoothDeviceAdapter extends BaseAdapter {
 
         ViewHolder viewHolder;
         if (view == null) {
-            view = mInflator.inflate(R.layout.scan_bluetoothdevice_item, viewGroup, false);
+            view = mInflator.inflate(R.layout.item_scan_bluetoothdevice, viewGroup, false);
             viewHolder = new ViewHolder();
             viewHolder.tvAddress = (TextView) view.findViewById(R.id.tvAddress);
-            viewHolder.tvMac = (TextView) view.findViewById(R.id.tvMac);
             viewHolder.btnBinding = (Button) view.findViewById(R.id.btnBinding);
             view.setTag(viewHolder);
         } else {
@@ -76,7 +75,6 @@ public class ScanBluetoothDeviceAdapter extends BaseAdapter {
         BluetoothDevice bluetoothDevice = devices.get(i);
 
         viewHolder.tvAddress.setText(bluetoothDevice.getAddress());
-        viewHolder.tvMac.setText(bluetoothDevice.getName());
         viewHolder.btnBinding.setTag(bluetoothDevice);
         viewHolder.btnBinding.setOnClickListener(new OnClickListener() {
 
@@ -116,7 +114,6 @@ public class ScanBluetoothDeviceAdapter extends BaseAdapter {
 
     static class ViewHolder {
         TextView tvAddress;
-        TextView tvMac;
         Button btnBinding;
     }
 

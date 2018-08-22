@@ -30,15 +30,6 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
         inflater = LayoutInflater.from(mContext);
     }
 
-    public void setHeaderView(View headerView) {
-        mHeaderView = headerView;
-        notifyItemInserted(0);
-    }
-
-    public View getHeaderView() {
-        return mHeaderView;
-    }
-
 
     public int getRealPosition(RecyclerView.ViewHolder holder) {
         int position = holder.getLayoutPosition();
