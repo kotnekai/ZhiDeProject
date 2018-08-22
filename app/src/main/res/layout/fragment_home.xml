@@ -185,5 +185,9 @@
                 android:background="@color/title_or_button_bg" />
 
         </RelativeLayout>
+        <LinearLayout
+            android:id="@+id/llNews"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:orientation="vertical" />
     </LinearLayout>
 </LinearLayout>
