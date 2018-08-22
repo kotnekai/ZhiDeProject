@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@color/white"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
 
     <LinearLayout
         android:id="@+id/llTabLayout"
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:background="@color/main_bg_gray"
         android:layout_alignParentBottom="true"
+        android:background="@color/main_bg_gray"
         android:orientation="horizontal"
         android:paddingTop="5dp">
 
@@ -19,10 +19,11 @@
             android:layout_width="0dp"
             android:layout_height="45dp"
             android:layout_weight="1"
-            android:src="@mipmap/home"
             android:gravity="center"
+            android:src="@drawable/main_frag_home_icon_selector"
             android:tooltipText="首页"
              />
+
 
         <ImageView
             android:id="@+id/ivAboutTab"
@@ -30,10 +31,9 @@
             android:layout_height="45dp"
             android:layout_weight="1"
             android:gravity="center"
+            android:src="@drawable/main_frag_about_icon_selector"
             android:text="@string/about_tab"
-            android:tooltipText="关于"
-            android:src="@mipmap/about"
-            />
+            android:tooltipText="关于" />
 
         <ImageView
             android:id="@+id/ivMineTab"
@@ -41,9 +41,9 @@
             android:layout_height="45dp"
             android:layout_weight="1"
             android:gravity="center"
+            android:src="@drawable/main_frag_mine_icon_selector"
             android:text="@string/mine_tab"
-            android:tooltipText="我的"
-            android:src="@mipmap/me" />
+            android:tooltipText="我的" />
 
         <TextView
             android:id="@+id/tvFourthTab"
