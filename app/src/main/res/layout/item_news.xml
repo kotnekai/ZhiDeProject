@@ -41,4 +41,10 @@
         android:text="欢迎各位新生使用本平台服务，新用户于9月31日前首次充值均享有充100元送50元的优惠。"
         android:textColor="@color/normal_text_desc_color"
         android:textSize="14sp" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/divider_gray_line"/>
 </LinearLayout>

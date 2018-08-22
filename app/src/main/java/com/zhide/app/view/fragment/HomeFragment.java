@@ -5,20 +5,20 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zhide.app.R;
+import com.zhide.app.view.activity.NewsListActivity;
 import com.zhide.app.view.activity.ShowerMainActivity;
 import com.zhide.app.view.base.BaseFragment;
-import com.zhide.app.view.views.RippleBackground;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
+/**
+ * @author Admin create by 2018-08-15
+ */
 public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     @BindView(R.id.llRecharge)
@@ -29,6 +29,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     @BindView(R.id.llNews)
     LinearLayout llNews;
 
+    @BindView(R.id.tvNewsMore)
+    TextView tvNewsMore;
+
     @Override
     protected int setFrgContainView() {
         return R.layout.fragment_home;
@@ -38,9 +41,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     protected void initData() {
 
 
-        for (int i=0;i<3;i++)
-        {
-            View view = LayoutInflater.from(getContext()).inflate(R.layout.item_news,null,false);
+        for (int i = 0; i < 3; i++) {
+            View view = LayoutInflater.from(getContext()).inflate(R.layout.item_news, null, false);
             llNews.addView(view);
         }
 
@@ -48,10 +50,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     protected void initView() {
-        llRecharge.setOnClickListener(this);
-        llShower.setOnClickListener(this);
-
-
     }
 
     @Override
@@ -61,12 +59,16 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
 
     @Override
+    @OnClick({R.id.llRecharge, R.id.llShower, R.id.tvNewsMore})
     public void onClick(View view) {
-        switch (view.getId())
-        {
-            case R.id.llRecharge:break;
+        switch (view.getId()) {
+            case R.id.llRecharge:
+                break;
             case R.id.llShower:
                 ShowerMainActivity.start(getActivity());
+                break;
+            case R.id.tvNewsMore:
+                NewsListActivity.start(getActivity());
                 break;
         }
     }
