@@ -6,6 +6,8 @@
     <color name="title_or_button_bg">#6fbdff</color>
     <color name="bluetooth_btn_bg">#4985b9</color>
     <color name="main_blue_color">#4985b9</color>
+    <color name="main_blue_light_color">#e9fbff</color>
+
 
     <color name="bluetooth_count_color">#ffeb01</color>
     <color name="normal_text_desc_color">#676767</color>
