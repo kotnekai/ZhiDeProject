@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/main_blue_light_color"
     android:orientation="vertical">
 
 
@@ -15,7 +16,6 @@
             style="@style/text_Item_style"
             android:text="@string/about_failure_reporting" />
 
-        <View style="@style/divider_margin" />
     </LinearLayout>
 
     <LinearLayout
@@ -28,7 +28,6 @@
             style="@style/text_Item_style"
             android:text="@string/about_operation_guide" />
 
-        <View style="@style/divider_margin" />
     </LinearLayout>
 
     <LinearLayout
@@ -41,7 +40,7 @@
             style="@style/text_Item_style"
             android:text="@string/about_version" />
 
-        <View style="@style/divider_margin" />
+
     </LinearLayout>
 
     <RelativeLayout
@@ -51,19 +50,18 @@
 
         <TextView
             style="@style/text_Item_style"
+            android:drawableEnd="@null"
             android:text="@string/about_service_phone" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="28dp"
+            android:layout_marginRight="18dp"
             android:gravity="center_vertical"
             android:text="@string/about_service_phone_number"
             android:textColor="@color/text_color" />
 
-        <View
-            style="@style/divider_margin"
-            android:layout_alignParentBottom="true" />
+
     </RelativeLayout>
 </LinearLayout>

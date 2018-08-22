@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.zhide.app.R;
 import com.zhide.app.view.activity.NewsListActivity;
+import com.zhide.app.view.activity.RechargeActivity;
 import com.zhide.app.view.activity.ShowerMainActivity;
 import com.zhide.app.view.base.BaseFragment;
 
@@ -63,6 +64,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.llRecharge:
+                startActivity(RechargeActivity.makeIntent(getActivity()));
                 break;
             case R.id.llShower:
                 ShowerMainActivity.start(getActivity());

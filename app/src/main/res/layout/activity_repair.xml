@@ -3,20 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/main_blue_light_color"
     android:orientation="vertical"
     tools:context=".view.activity.RepairActivity">
 
     <RelativeLayout
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp">
+        android:gravity="center_vertical">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            style="@style/text_Item_style"
+            android:drawableEnd="@mipmap/inside_bottom"
             android:text="设备" />
 
         <TextView
@@ -24,47 +22,42 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:padding="10dp"
+            android:textSize="12sp"
+            android:layout_marginRight="35dp"
+            android:layout_centerVertical="true"
             android:text="请选择" />
 
     </RelativeLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/divider_color" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp">
+
+        android:gravity="center_vertical">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            style="@style/text_Item_style"
+            android:drawableEnd="@mipmap/inside_bottom"
             android:text="故障现象" />
 
         <TextView
             android:id="@+id/tvSelectFault"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:textSize="12sp"
+
             android:layout_alignParentRight="true"
-            android:padding="10dp"
+            android:layout_marginRight="35dp"
             android:text="请选择" />
     </RelativeLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/divider_color" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp">
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
@@ -81,10 +74,6 @@
             android:text="生活区1栋1楼" />
     </RelativeLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:background="@color/divider_color" />
 
     <EditText
         android:id="@+id/edtContent"
@@ -94,19 +83,21 @@
         android:background="@color/white"
         android:gravity="top"
         android:hint="故障详情描述："
-        android:minHeight="100dp"
+        android:minHeight="200dp"
         android:paddingLeft="5dp"
         android:paddingTop="5dp"
         android:textSize="13sp" />
 
     <TextView
         android:id="@+id/tvSubmit"
-        android:layout_width="250dp"
+        android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_marginTop="100dp"
         android:background="@drawable/com_btn_blue_5r_bg_shape"
         android:gravity="center"
-        android:text="提交"
+        android:text="@string/repair_confirm"
         android:textColor="@color/white" />
 </LinearLayout>
