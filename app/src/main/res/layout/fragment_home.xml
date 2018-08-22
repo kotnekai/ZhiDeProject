@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:orientation="vertical"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/llMainControl"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="60dp"
         android:background="@color/main_blue_color"
         android:gravity="center_vertical"
         android:orientation="horizontal">
@@ -94,7 +95,7 @@
     <RelativeLayout
         android:id="@+id/rlMoney"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:gravity="center_vertical">
 
         <TextView
@@ -135,11 +136,20 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <ImageView
-        android:id="@+id/ivGuide"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="170dp"
-        android:background="@mipmap/guide" />
+        android:layout_height="wrap_content"
+        android:background="@color/normal_white_bg_color">
+
+        <ImageView
+            android:id="@+id/ivGuide"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:layout_marginBottom="3dp"
+            android:layout_marginTop="3dp"
+            android:background="@mipmap/guide" />
+    </RelativeLayout>
+
 
     <LinearLayout
         android:id="@+id/llNew"
@@ -153,9 +163,11 @@
             android:background="@color/main_blue_light_color">
 
             <ImageView
-                android:layout_width="180dp" android:layout_alignParentBottom="true"
+                android:layout_width="180dp"
                 android:layout_height="36dp"
+                android:layout_alignParentBottom="true"
                 android:background="@mipmap/news" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -163,8 +175,8 @@
                 android:layout_marginRight="20dp"
                 android:gravity="center_vertical"
                 android:text="@string/more"
-                android:textSize="16dp"
-                android:textColor="@color/main_blue_color" />
+                android:textColor="@color/main_blue_color"
+                android:textSize="16dp" />
 
             <View
                 android:layout_width="match_parent"

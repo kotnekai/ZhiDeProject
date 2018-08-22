@@ -8,49 +8,47 @@
     <LinearLayout
         android:id="@+id/llTabLayout"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="55dp"
         android:background="@color/main_bg_gray"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:paddingTop="5dp">
 
-        <TextView
-            android:id="@+id/tvHomeTab"
+        <ImageView
+            android:id="@+id/ivHomeTab"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="45dp"
             android:layout_weight="1"
-            android:drawableTop="@drawable/main_frag_home_icon_selector"
+            android:src="@mipmap/home"
             android:gravity="center"
-            android:text="@string/home_tab"
             android:tooltipText="首页"
-            android:textColor="@drawable/com_text_blue_gray_selector" />
+             />
 
-        <TextView
-            android:id="@+id/tvAboutTab"
+        <ImageView
+            android:id="@+id/ivAboutTab"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="45dp"
             android:layout_weight="1"
-            android:drawableTop="@drawable/main_frag_home_icon_selector"
             android:gravity="center"
             android:text="@string/about_tab"
             android:tooltipText="关于"
-            android:textColor="@drawable/com_text_blue_gray_selector" />
+            android:src="@mipmap/about"
+            />
 
-        <TextView
-            android:id="@+id/tvMineTab"
+        <ImageView
+            android:id="@+id/ivMineTab"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="45dp"
             android:layout_weight="1"
-            android:drawableTop="@drawable/main_frag_home_icon_selector"
             android:gravity="center"
             android:text="@string/mine_tab"
             android:tooltipText="我的"
-            android:textColor="@drawable/com_text_blue_gray_selector" />
+            android:src="@mipmap/me" />
 
         <TextView
             android:id="@+id/tvFourthTab"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="45dp"
             android:layout_weight="1"
             android:drawableTop="@drawable/main_frag_home_icon_selector"
             android:gravity="center"
