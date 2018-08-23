@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zhide.app.R;
@@ -26,8 +28,8 @@ public class ResetPswActivity extends BaseActivity {
     EditText edtVerifyCode;
     @BindView(R.id.tvGetVerifyCode)
     TextView tvGetVerifyCode;
-    @BindView(R.id.tvLogin)
-    TextView tvLogin;
+    @BindView(R.id.rlReset)
+    RelativeLayout rlReset;
 
     @Override
     protected int getCenterView() {
@@ -50,14 +52,14 @@ public class ResetPswActivity extends BaseActivity {
         return intent;
     }
 
-    @OnClick({R.id.ivRightIcon, R.id.tvGetVerifyCode, R.id.tvLogin})
+    @OnClick({R.id.ivRightIcon, R.id.tvGetVerifyCode, R.id.rlReset})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ivRightIcon:
                 break;
             case R.id.tvGetVerifyCode:
                 break;
-            case R.id.tvLogin:
+            case R.id.rlReset:
                 break;
         }
     }

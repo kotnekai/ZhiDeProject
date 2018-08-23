@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerInParent="true"
-        android:background="@drawable/com_white_15r_shape"
+        android:background="@drawable/com_white_10r_shape"
         android:orientation="vertical">
 
         <TextView

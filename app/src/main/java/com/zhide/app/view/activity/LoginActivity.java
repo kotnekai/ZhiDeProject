@@ -2,9 +2,13 @@ package com.zhide.app.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
+import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zhide.app.R;
@@ -24,18 +28,16 @@ public class LoginActivity extends BaseActivity {
 
     @BindView(R.id.edtPhoneNumber)
     EditText edtPhoneNumber;
-    @BindView(R.id.ivLeftIcon)
-    ImageView ivLeftIcon;
     @BindView(R.id.ivRightIcon)
     ImageView ivRightIcon;
     @BindView(R.id.edtPsw)
     EditText edtPsw;
-    @BindView(R.id.tvLogin)
-    TextView tvLogin;
+    @BindView(R.id.rlLogin)
+    RelativeLayout rlLogin;
     @BindView(R.id.tvForgetPsw)
     TextView tvForgetPsw;
-    @BindView(R.id.tvRememberPsw)
-    TextView tvRememberPsw;
+    @BindView(R.id.ckRememberPsw)
+    CheckBox ckRememberPsw;
 
     @Override
     protected int getCenterView() {
@@ -46,6 +48,7 @@ public class LoginActivity extends BaseActivity {
     protected void initHeader() {
         setHeaderTitle(UIUtils.getValueString(R.string.login_title));
         setRightTextVisibility(View.VISIBLE);
+        setLeftIconVisibility(View.GONE);
         setHeader_RightText(UIUtils.getValueString(R.string.register_title));
         setHeader_RightTextClickListener(new View.OnClickListener() {
             @Override
@@ -54,6 +57,16 @@ public class LoginActivity extends BaseActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initView();
+    }
+
+    private void initView() {
+        tvForgetPsw.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -65,17 +78,17 @@ public class LoginActivity extends BaseActivity {
         return new Intent(context, LoginActivity.class);
     }
 
-    @OnClick({R.id.ivRightIcon, R.id.tvRememberPsw, R.id.tvForgetPsw, R.id.tvLogin})
+    @OnClick({R.id.ivRightIcon, R.id.ckRememberPsw, R.id.tvForgetPsw, R.id.rlLogin})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ivRightIcon:
                 break;
-            case R.id.tvRememberPsw:
+            case R.id.ckRememberPsw:
                 break;
             case R.id.tvForgetPsw:
                 startActivity(ResetPswActivity.makeIntent(this));
                 break;
-            case R.id.tvLogin:
+            case R.id.rlLogin:
                 String userName = edtPhoneNumber.getText().toString().trim();
                 String password = edtPsw.getText().toString().trim();
                 LogicManager.getInstance().login(userName, password);

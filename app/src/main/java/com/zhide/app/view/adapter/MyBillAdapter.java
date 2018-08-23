@@ -46,9 +46,11 @@ public class MyBillAdapter extends RecyclerView.Adapter<MyBillAdapter.MyViewHold
         holder.tvTypeContent.setText(myBillModel.getTypeContent());
         holder.tvTimeData.setText(myBillModel.getTimeData());
         if(myBillModel.getMoneyType()==1){
+            holder.tvTypeContent.setTextColor(ResourceUtils.getInstance().getColor(R.color.light_text_blue_color));
             holder.tvTransMoney.setTextColor(ResourceUtils.getInstance().getColor(R.color.normal_text_money_red_color));
             holder.tvTransMoney.setText("-"+myBillModel.getTransMoney());
         }else {
+            holder.tvTypeContent.setTextColor(ResourceUtils.getInstance().getColor(R.color.main_blue_color));
             holder.tvTransMoney.setTextColor(ResourceUtils.getInstance().getColor(R.color.normal_text_money_green_color));
             holder.tvTransMoney.setText(String.valueOf(myBillModel.getTransMoney()));
         }

@@ -35,6 +35,7 @@ public class MyBillActivity extends BaseActivity {
     RecyclerView recycleView;
     private int selectType = 1;//1,全部，2，支出，3，充值
     private LinearLayoutManager mLayoutManager;
+    private MyBillAdapter adapter;
 
     @Override
     protected int getCenterView() {
@@ -57,9 +58,13 @@ public class MyBillActivity extends BaseActivity {
     private void initData() {
         myBillList = new ArrayList<>();
         for(int i=0;i<10;i++){
-            myBillList.add(new MyBillModel("热水表"+i,"2018/08/"+i,(float)(23.10+i),1));
+            if(i%2==0){
+                myBillList.add(new MyBillModel("热水表"+i,"2018/08/"+i,(float)(23.10+i),1));
+            }else {
+                myBillList.add(new MyBillModel("热水表"+i,"2018/08/"+i,(float)(23.10+i),2));
+            }
         }
-        MyBillAdapter adapter = new MyBillAdapter(this, myBillList);
+        adapter = new MyBillAdapter(this, myBillList);
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
         mLayoutManager.setStackFromEnd(true);
