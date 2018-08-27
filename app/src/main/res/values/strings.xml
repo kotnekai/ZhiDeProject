@@ -104,4 +104,8 @@
     <string name="with_draw_empty_tip">请填写完整信息</string>
     <string name="charge_other_tip">其他</string>
 
+    <string name="register_count_time">%ss后重新发送</string>
+    <string name="register_get_code">获取短信验证码</string>
+    <string name="please_input_phone">请输入手机号码</string>
+
 </resources>

@@ -234,6 +234,13 @@ public abstract class BaseActivity extends AppCompatActivity implements DrawerLa
         tvNext.setVisibility(visibility);
     }
 
+    protected void setHeaderVisibility(int visibility) {
+        if (rlBaseTitleLayout == null) {
+            return;
+        }
+        rlBaseTitleLayout.setVisibility(visibility);
+    }
+
     /**
      * 设置右边图标按钮状态 ，默认隐藏
      * @param visibility

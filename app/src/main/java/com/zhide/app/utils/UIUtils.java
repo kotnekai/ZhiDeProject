@@ -2,9 +2,11 @@ package com.zhide.app.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
 
 
 import com.zhide.app.common.ApplicationHolder;
@@ -169,5 +171,17 @@ public class UIUtils {
         }
         return result;
     }
-
+    /**
+     * 密码显示或隐藏 （切换）
+     */
+    public static void showOrHide(EditText etPassword) {
+        //记住光标开始的位置
+        int pos = etPassword.getSelectionStart();
+        if (etPassword.getInputType() != (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)) {//隐藏密码
+            etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        } else {//显示密码
+            etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+        }
+        etPassword.setSelection(pos);
+    }
 }
