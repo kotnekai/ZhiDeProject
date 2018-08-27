@@ -4,6 +4,19 @@ apply plugin: 'com.jakewharton.butterknife'
 android {
     compileSdkVersion 26
     buildToolsVersion "27.0.2"
+    // 签名配置
+    signingConfigs {
+        release {
+            try {
+                storeFile file("./keystore/zhideKey.jks")
+                storePassword "zhide123456"
+                keyAlias "zhide"
+                keyPassword "zhide123456"
+            } catch (ex) {
+                throw new InvalidUserDataException(ex.toString())
+            }
+        }
+    }
     defaultConfig {
         applicationId "com.zhide.app"
         minSdkVersion 19
