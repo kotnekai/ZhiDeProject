@@ -5,19 +5,24 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.alipay.sdk.app.PayTask;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.zhide.app.R;
 import com.zhide.app.common.ApplicationHolder;
+import com.zhide.app.common.ThreadPoolManager;
+import com.zhide.app.delegate.IConfirmClickListener;
 import com.zhide.app.delegate.IGetAliPayResult;
 import com.zhide.app.delegate.SpinerOnItemClickListener;
 import com.zhide.app.eventBus.RechargeInfoEvent;
+import com.zhide.app.eventBus.PayOrderEvent;
+import com.zhide.app.logic.ChargeManager;
+import com.zhide.app.model.AliPayParamModel;
 import com.zhide.app.model.ReChargeModel;
-import com.zhide.app.model.SpinnerSelectModel;
+import com.zhide.app.model.WXPayParamModel;
 import com.zhide.app.utils.DialogUtils;
+import com.zhide.app.utils.EmptyUtil;
 import com.zhide.app.utils.ToastUtil;
 import com.zhide.app.utils.UIUtils;
 import com.zhide.app.view.base.BaseActivity;
@@ -51,7 +56,7 @@ public class RechargeActivity extends BaseActivity {
     @BindView(R.id.tvCharge100)
     TextView tvCharge100;
     @BindView(R.id.tvChargeOther)
-    EditText tvChargeOther;
+    TextView tvChargeOther;
     @BindView(R.id.tvIntroActContent)
     TextView tvIntroActContent;
     @BindView(R.id.tvIntroContent)
@@ -128,55 +133,109 @@ public class RechargeActivity extends BaseActivity {
         tvIntroContent.setText(chargeModel.getChargeTitle());
     }
 
+    /**
+     * 后台返回支付信息，回调到这里
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onWxChatEvent(PayOrderEvent event) {
+        if (event.isWeChatPay()) {
+            WXPayParamModel wxPayParamModel = event.getWxPayParamModel();
+            if (wxPayParamModel == null) {
+                ToastUtil.showShort(getString(R.string.get_net_data_error));
+                return;
+            }
+            sendWxPayRequest(wxPayParamModel);
+        } else {
+            AliPayParamModel aliPayParamModel = event.getAliPayParamModel();
+            if (aliPayParamModel == null) {
+                ToastUtil.showShort(getString(R.string.get_net_data_error));
+                return;
+            }
+            aliPayRequest(aliPayParamModel);
+        }
+
+    }
+
+
     public static final int aliPayType = 1;
     public static final int wxPayType = 2;
+    public float selectAmount = 30;
 
     @OnClick({R.id.tvCharge30, R.id.tvCharge40, R.id.tvCharge50, R.id.tvCharge80, R.id.tvCharge100, R.id.tvChargeOther, R.id.tvReCharge})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tvCharge30:
                 updateTvState(tvCharge30);
+                selectAmount = 30;
                 break;
             case R.id.tvCharge40:
                 updateTvState(tvCharge40);
+                selectAmount = 40;
                 break;
             case R.id.tvCharge50:
                 updateTvState(tvCharge50);
+                selectAmount = 50;
 
                 break;
             case R.id.tvCharge80:
                 updateTvState(tvCharge80);
+                selectAmount = 80;
 
                 break;
             case R.id.tvCharge100:
                 updateTvState(tvCharge100);
+                selectAmount = 100;
 
                 break;
             case R.id.tvChargeOther:
                 updateTvState(tvChargeOther);
-
+                DialogUtils.showTipsDialog(this, getString(R.string.charge_other_tip), true, new IConfirmClickListener() {
+                    @Override
+                    public void confirmClick(String remarks) {
+                        if (EmptyUtil.isEmpty(remarks)) {
+                            tvChargeOther.setText("其他");
+                        } else {
+                            selectAmount = Float.parseFloat(remarks);
+                            tvChargeOther.setText(remarks + "元");
+                        }
+                    }
+                });
                 break;
             case R.id.tvReCharge:
                 DialogUtils.showBottomSelectTypePop(this, new SpinerOnItemClickListener() {
                     @Override
                     public void onItemClick(int position, int id) {
-                        if (id == -1 || id == aliPayType) {
-                            aliPayRequest();
-                        } else if (id == wxPayType) {
-                            sendWxPayRequest();
-                        }
+                        getPayParams(id);
                     }
                 });
                 break;
         }
     }
 
-    private void aliPayRequest() {
-        //订单信息
-        final String orderInfo = "";
+    /**
+     * 请求服务端进行支付
+     * @param type
+     */
+    private void getPayParams(int type) {
+        if (type == -1 || type == aliPayType) {
+            ChargeManager.getInstance().getAliPayParams(selectAmount);
+        } else if (type == wxPayType) {
+            ChargeManager.getInstance().getWeChatPayParams(selectAmount);
+        }
+    }
+
+    /**
+     * 调起支付宝支付
+     * @param aliPayParamModel
+     */
+    private void aliPayRequest(final AliPayParamModel aliPayParamModel) {
+        final String orderInfo = aliPayParamModel.getOrderInfo();
+        if (EmptyUtil.isEmpty(orderInfo)) {
+            return;
+        }
         //异步处理
         Runnable payRunnable = new Runnable() {
-
             @Override
             public void run() {
                 //新建任务
@@ -195,16 +254,16 @@ public class RechargeActivity extends BaseActivity {
     /**
      * 微信支付
      */
-    private void sendWxPayRequest() {
+    private void sendWxPayRequest(WXPayParamModel paramModel) {
 
         PayReq request = new PayReq();
-        request.appId = "wxd930ea5d5a258f4f";
-        request.partnerId = "1900000109";
-        request.prepayId = "1101000000140415649af9fc314aa427";
-        request.packageValue = "Sign=WXPay";
-        request.nonceStr = "1101000000140429eb40476f8896f4c9";
-        request.timeStamp = "1398746574";
-        request.sign = "8cb66835007a51af5323b29885c2392c";
+        request.appId = paramModel.getAppId();
+        request.partnerId = paramModel.getPartnerId();
+        request.prepayId = paramModel.getPrepayId();
+        request.packageValue = paramModel.getPackageValue();
+        request.nonceStr = paramModel.getNoncestr();
+        request.timeStamp = paramModel.getTimestamp();
+        request.sign = paramModel.getSign();
         ApplicationHolder.getInstance().getMsgApi().sendReq(request);
     }
 

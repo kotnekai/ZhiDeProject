@@ -7,6 +7,8 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AlertDialog;
+import android.text.InputType;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,10 +24,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zhide.app.R;
+import com.zhide.app.delegate.IConfirmClickListener;
 import com.zhide.app.delegate.SpinerOnItemClickListener;
 import com.zhide.app.model.SpinnerSelectModel;
 import com.zhide.app.view.adapter.SpinerAdapter;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 
@@ -80,20 +84,23 @@ public class DialogUtils {
      *
      * @param context
      * @param title
-     * @param content
+     * @param
      */
-    public static void showTipsDialog(Context context, String title, String content) {
+    public static void showTipsDialog(Context context, String title, boolean inputBtn, final IConfirmClickListener listener) {
         final AlertDialog dialog = new AlertDialog.Builder(context).create();
         View view = LayoutInflater.from(context).inflate(R.layout.tips_dialog_view, null);
 
         TextView tvOkBtn = (TextView) view.findViewById(R.id.tvOkBtn);
         TextView tvTitle = (TextView) view.findViewById(R.id.tvTitle);
-        TextView tvContent = (TextView) view.findViewById(R.id.tvContent);
+        final EditText edtContent = (EditText) view.findViewById(R.id.edtContent);
         if (title != null) {
             tvTitle.setText(title);
         }
-        if (content != null) {
-            tvContent.setText(content);
+        if (inputBtn) {
+            edtContent.setEnabled(true);
+            edtContent.setInputType(InputType.TYPE_CLASS_NUMBER);
+        } else {
+            edtContent.setEnabled(false);
         }
         tvOkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,6 +108,7 @@ public class DialogUtils {
                 if (dialog.isShowing()) {
                     dialog.dismiss();
                 }
+                listener.confirmClick(edtContent.getText().toString());
             }
         });
         dialog.setView(view);
@@ -221,8 +229,9 @@ public class DialogUtils {
         context.getWindow().setAttributes(lp);
     }
 
-    public static final  int aliPayType = 1;
-    public static final  int wxPayType = 2;
+    public static final int aliPayType = 1;
+    public static final int wxPayType = 2;
+
     public static void showBottomSelectTypePop(final Activity context, final SpinerOnItemClickListener listener) {
 
         View contentView = LayoutInflater.from(context).inflate(R.layout.bottom_pop_layout, null);
@@ -234,7 +243,7 @@ public class DialogUtils {
         final ImageView ivSelectWxPay = contentView.findViewById(R.id.ivSelectWxPay);
 
         final PopupWindow popWnd = new PopupWindow(contentView, UIUtils.getScreenWidth(context),
-                UIUtils.getScreenHeight(context)/3);
+                UIUtils.getScreenHeight(context) / 3);
         popWnd.setContentView(contentView);
         popWnd.setTouchable(true);
         //设置背景,这个没什么效果，不添加会报错
@@ -261,7 +270,7 @@ public class DialogUtils {
 
                 ResourceUtils.setImageResource(ivSelectAliPay, R.mipmap.select_blue);
                 ResourceUtils.setImageResource(ivSelectWxPay, R.mipmap.select_gray);
-                listener.onItemClick(0,aliPayType);
+                listener.onItemClick(0, aliPayType);
                 if (popWnd.isShowing()) {
                     popWnd.dismiss();
                 }
@@ -273,7 +282,7 @@ public class DialogUtils {
 
                 ResourceUtils.setImageResource(ivSelectAliPay, R.mipmap.select_gray);
                 ResourceUtils.setImageResource(ivSelectWxPay, R.mipmap.select_blue);
-                listener.onItemClick(1,wxPayType);
+                listener.onItemClick(1, wxPayType);
                 if (popWnd.isShowing()) {
                     popWnd.dismiss();
                 }

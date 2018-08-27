@@ -102,5 +102,6 @@
     <string name="bath_operate_guide_tip">洗澡功能操作指引</string>
 
     <string name="with_draw_empty_tip">请填写完整信息</string>
+    <string name="charge_other_tip">其他</string>
 
 </resources>

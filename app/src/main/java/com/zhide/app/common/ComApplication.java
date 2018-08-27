@@ -65,12 +65,12 @@ public class ComApplication extends Application {
     public void onCreate() {
         super.onCreate();
         ApplicationHolder.getInstance().setAppContext(this);
-         CrashManager.getInstance().init(this); //初始化本地崩溃日志收集
+        // CrashManager.getInstance().init(this); //初始化本地崩溃日志收集
         checkPermission();
         MyOkhttpUtils.initOkhttp(this);
         msgApi = WXAPIFactory.createWXAPI(this, null);
         // 将该app注册到微信
-        msgApi.registerApp("wxd930ea5d5a258f4f");
+        msgApi.registerApp(CommonParams.WECHAT_APPID);
         Log.d("xyc", "getMsgApi: msgApi1="+msgApi);
         ApplicationHolder.getInstance().setMsgApi(msgApi);
         PickViewUtil.initTimePickOptions(this);
