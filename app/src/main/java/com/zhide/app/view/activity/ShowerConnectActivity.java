@@ -12,7 +12,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -28,6 +30,7 @@ import com.zhide.app.R;
 import com.zhide.app.utils.DialogUtils;
 import com.zhide.app.utils.ToastUtil;
 import com.zhide.app.view.base.BaseActivity;
+import com.zhide.app.view.views.CircleProgressBar;
 import com.zhide.app.view.widget.TimeView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -43,7 +46,7 @@ import butterknife.BindView;
  *
  * @author Admin
  */
-public class ShowerConnectActivity extends BaseActivity implements WaterCodeListener,View.OnClickListener {
+public class ShowerConnectActivity extends BaseActivity implements WaterCodeListener, View.OnClickListener, View.OnTouchListener {
 
     public static final String DEVICE_MAC = "deviceMac";
     public static final int MSG_AUTO_CONNECT_COMPLETED = 0x09;
@@ -60,14 +63,29 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     private Dialog xiaofeiDialog;
     private BroadcastReceiver mStatusReceive;
 
+    private int diff = 30000;
+    private int days;
+    private int hours;
+    private int minutes;
+    private int seconds;
+    private long curTime;
+    private boolean isStart = false;
+    AnimationDrawable animationDrawable;
+
+
     @BindView(R.id.washing_time)
     TimeView timeView;
+    @BindView(R.id.ivShower)
+    ImageView ivShower;
     @BindView(R.id.ivDeviceState)
-    ImageView imageView;
+    ImageView ivDeviceState;
     @BindView(R.id.progressbar)
     ProgressBar progressBar;
     @BindView(R.id.tvState)
     TextView device_connect_state_txt;
+    @BindView(R.id.circleProgressBar)
+    CircleProgressBar circleProgressBar;
+
 
     @Override
     protected int getCenterView() {
@@ -77,9 +95,9 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     @Override
     protected void initHeader() {
         setHeaderTitle(getString(R.string.shower_title));
-        setRightTextVisibility(View.VISIBLE);
-        setHeader_RightText(getString(R.string.shower_driver_reg));
-        setHeader_RightTextClickListener(this);
+//        setRightTextVisibility(View.VISIBLE);
+//        setHeader_RightText(getString(R.string.shower_driver_reg));
+//        setHeader_RightTextClickListener(this);
     }
 
     @Override
@@ -102,15 +120,21 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
         MAC = intent.getStringExtra(DEVICE_MAC);
         Log.d(mContext.getClass().getSimpleName(), "设备的mac地址：=" + MAC);
 
-        imageView.setOnClickListener(this);
+        ivDeviceState.setOnClickListener(this);
+        ivDeviceState.setOnTouchListener(this);
         myHandler = new MyHandler(ShowerConnectActivity.this);
+
+        circleProgressBar.setSweepAngle(0);
+        circleProgressBar.setText("0");
+        circleProgressBar.setVisibility(View.INVISIBLE);
+        animationDrawable = (AnimationDrawable) ivShower.getDrawable();
+
     }
 
     /**
      * 初始化蓝牙
      */
-    private void initBluetooth()
-    {
+    private void initBluetooth() {
         AnalyTools.setWaterCodeLisnter(this);
 
         mbtService = BluetoothService.sharedManager();
@@ -119,7 +143,7 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
         IntentFilter statusFilter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
         //状态改变
         statusFilter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
-         mStatusReceive = new BroadcastReceiver() {
+        mStatusReceive = new BroadcastReceiver() {
 
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -152,7 +176,7 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
                         case BluetoothDevice.BOND_NONE:
                             // 取消配对/未配对
                             Log.d(mContext.getClass().getSimpleName(), getString(R.string.driver_bluetooth_connect_cancel));
-                            ToastUtil.showShort( getString(R.string.driver_bluetooth_connect_fail));
+                            ToastUtil.showShort(getString(R.string.driver_bluetooth_connect_fail));
                             mStatus = 41;
                             //配对失败
                             break;
@@ -206,21 +230,21 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
             case 31:
                 //连接成功
                 hideProgress();
-                imageView.setImageResource(R.mipmap.dryer_connected);
+                ivDeviceState.setImageResource(R.mipmap.dryer_connected);
                 device_connect_state_txt.setText(getString(R.string.driver_start_using));
                 break;
             case 32:
                 //下发费率成功
                 hideProgress();
-                imageView.setImageResource(R.drawable.animation_water);
-                animationDrawable = (AnimationDrawable) imageView.getDrawable();
+                ivDeviceState.setImageResource(R.drawable.animation_water);
+                animationDrawable = (AnimationDrawable) ivDeviceState.getDrawable();
                 animationDrawable.start();
                 device_connect_state_txt.setText(getString(R.string.driver_stop_use));
                 break;
             case 33:
                 //洗衣机的连接成功
                 hideProgress();
-                imageView.setImageResource(R.mipmap.dryer_connected);
+                ivDeviceState.setImageResource(R.mipmap.dryer_connected);
                 device_connect_state_txt.setText(getString(R.string.driver_start_using));
                 break;
             case 34:
@@ -231,8 +255,8 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
                 break;
             case 36:
                 //洗衣机开始交易
-                imageView.setImageResource(R.drawable.animation_washing);
-                animationDrawable = (AnimationDrawable) imageView.getDrawable();
+                ivDeviceState.setImageResource(R.drawable.animation_washing);
+                animationDrawable = (AnimationDrawable) ivDeviceState.getDrawable();
                 animationDrawable.start();
                 device_connect_state_txt.setText(getString(R.string.driver_wash_clothes));
                 hideProgress();
@@ -251,7 +275,7 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
                 break;
             case 43:
                 //断开连接
-                imageView.setImageResource(R.mipmap.dryer_unconnected);
+                ivDeviceState.setImageResource(R.mipmap.dryer_unconnected);
                 device_connect_state_txt.setText(getString(R.string.driver_click_reconnect));
                 timeView.setVisibility(View.GONE);
                 break;
@@ -264,15 +288,18 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
      * 显示进度
      */
     private void showProgress() {
-        progressBar.setVisibility(View.VISIBLE);
-        imageView.setEnabled(false);
+//        progressBar.setVisibility(View.VISIBLE);
+//        ivDeviceState.setEnabled(false);
+        progressBar.setVisibility(View.GONE);
+        ivDeviceState.setEnabled(true);
     }
+
     /**
      * 隐藏进度
      */
     private void hideProgress() {
         progressBar.setVisibility(View.GONE);
-        imageView.setEnabled(true);
+        ivDeviceState.setEnabled(true);
     }
 
 
@@ -389,11 +416,59 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
         Log.d(mContext.getClass().getSimpleName(), s);
     }
 
-    private int diff = 30000;
-    private int days;
-    private int hours;
-    private int minutes;
-    private int seconds;
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                if (v.getId() == R.id.ivDeviceState) {
+                    if (isStart) {
+                        curTime = System.currentTimeMillis();
+                        circleProgressBar.setVisibility(View.VISIBLE);
+                        circleProgressBar.setSweepAngle(360);
+                        circleProgressBar.setText("360");
+                        circleProgressBar.startCustomAnimation(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                if (System.currentTimeMillis() - curTime > 1500) {
+
+                                    ToastUtil.showLong("停止了");
+                                    animationDrawable.stop();
+                                } else {
+                                    ivDeviceState.setImageResource(R.mipmap.stop);
+                                }
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+                            }
+                        });
+                    }
+                    break;
+                }
+            case MotionEvent.ACTION_UP:
+                if (v.getId() == R.id.ivDeviceState) {
+                    if (isStart) {
+                        circleProgressBar.setVisibility(View.INVISIBLE);
+                        circleProgressBar.clearCustomAnimation();
+                    }
+                    else
+                    {
+                        ivDeviceState.setImageResource(R.mipmap.stop);
+                        isStart = true;
+                        animationDrawable.start();
+                    }
+                }
+                break;
+        }
+        return true;
+
+    }
 
 
     @Override
@@ -465,8 +540,6 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
             connDevice();
         }
     }
-
-
 
 
     @Override
