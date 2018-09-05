@@ -107,5 +107,11 @@
     <string name="register_count_time">%ss后重新发送</string>
     <string name="register_get_code">获取短信验证码</string>
     <string name="please_input_phone">请输入手机号码</string>
-
+    <string name="agreement_tip">我已阅读并同意</string>
+    <string name="agreement_content_tip">《智得能源使用协议》</string>
+    <string name="select_pay_type">请选择支付方式</string>
+    <string name="card_pay_tip">卡片充值说明：</string>
+    <string name="card_pay_content">卡片充值是将账户基本余额转账至用户指定热水卡中;\n
+    充值完成后，请尽快在指定热水设备中刷卡完成转账。</string>
+    <string name="card_bill_title">卡片充值账单</string>
 </resources>

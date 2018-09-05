@@ -2,9 +2,11 @@ package com.zhide.app.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -35,6 +37,11 @@ public class RegisterActivity extends BaseActivity {
     TextView tvRegister;
     @BindView(R.id.rlRegister)
     RelativeLayout rlRegister;
+    @BindView(R.id.cbAgree)
+    CheckBox cbAgree;
+    @BindView(R.id.tvAgreement)
+    TextView tvAgreement;
+
     private final int millisInFuture = 60000;
     private final int countDownInterval = 1000;
     private CountTimer countTimer;
@@ -57,9 +64,11 @@ public class RegisterActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         countTimer = new CountTimer(millisInFuture, countDownInterval);
+        tvAgreement.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
+        tvAgreement.getPaint().setAntiAlias(true);//抗锯齿
     }
 
-    @OnClick({R.id.ivRightIcon, R.id.tvGetVerifyCode, R.id.rlRegister})
+    @OnClick({R.id.ivRightIcon, R.id.tvGetVerifyCode, R.id.rlRegister,R.id.tvAgreement})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ivRightIcon:
@@ -78,6 +87,10 @@ public class RegisterActivity extends BaseActivity {
                 break;
             case R.id.rlRegister:
                 break;
+            case R.id.tvAgreement:
+
+                break;
+
         }
     }
 

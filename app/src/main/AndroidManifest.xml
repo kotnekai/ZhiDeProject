@@ -46,9 +46,7 @@
         <activity
             android:name=".view.activity.LoginActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait">
-
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".view.activity.RechargeActivity"
             android:launchMode="singleTask"
@@ -116,13 +114,17 @@
         <activity
             android:name=".view.activity.NewsListActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".view.activity.LauncherActivity"
+        <activity
+            android:name=".view.activity.LauncherActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".view.activity.CardChargeBillActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

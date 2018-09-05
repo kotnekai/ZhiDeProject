@@ -8,6 +8,7 @@
     <color name="main_blue_color">#4985b9</color>
     <color name="main_blue_light_color">#e9fbff</color>
     <color name="main_bottom_line_color">#6ebcfe</color>
+    <color name="main_light_blue_color">#D8F5FB</color>
 
 
     <color name="bluetooth_count_color">#ffeb01</color>

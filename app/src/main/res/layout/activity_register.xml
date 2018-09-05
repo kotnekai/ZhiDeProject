@@ -13,14 +13,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="210dp"
+        android:layout_height="240dp"
         android:layout_centerInParent="true"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:background="@drawable/com_white_10r_shape">
 
         <LinearLayout
-            android:layout_width="230dp"
+            android:layout_width="260dp"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:paddingLeft="20dp"
@@ -103,6 +103,31 @@
                     android:textColor="@color/main_blue_color"
                     android:textSize="@dimen/com_text_size_14sp" />
             </RelativeLayout>
+
+            <LinearLayout
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <CheckBox
+                    android:id="@+id/cbAgree"
+                    android:layout_width="25dp"
+                    android:layout_height="20dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="@string/agreement_tip"
+                    android:textSize="10sp"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/text_gray"
+                    android:layout_height="wrap_content" />
+                 <TextView
+                     android:id="@+id/tvAgreement"
+                     android:layout_width="wrap_content"
+                     android:textSize="10sp"
+                     android:textColor="@color/main_blue_color"
+                     android:text="@string/agreement_content_tip"
+                     android:layout_height="wrap_content" />
+            </LinearLayout>
 
         </LinearLayout>
 
