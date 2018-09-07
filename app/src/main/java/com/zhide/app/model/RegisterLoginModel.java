@@ -3,7 +3,7 @@ package com.zhide.app.model;
 /**
  * Create by Admin on 2018/9/7
  */
-public class RegisterModel {
+public class RegisterLoginModel {
     private int code;
     private String msg;
     private UserModel data;

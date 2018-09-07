@@ -28,12 +28,14 @@ public class LauncherActivity extends BaseActivity {
     }
 
     private void initData() {
-        String token = PreferencesUtils.getString(CommonParams.USER_TOKEN);
+        startActivity(MainActivity.makeIntent(this));
+
+  /*      String token = PreferencesUtils.getString(CommonParams.USER_TOKEN);
         if (token == null) {
             startActivity(LoginActivity.makeIntent(this));
         } else {
             startActivity(MainActivity.makeIntent(this));
-        }
+        }*/
         overridePendingTransition(R.anim.com_activity_fade_in, R.anim.com_activity_fade_out);
         finish();
 

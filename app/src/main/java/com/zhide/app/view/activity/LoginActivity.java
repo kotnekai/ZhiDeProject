@@ -16,7 +16,9 @@ import com.zhide.app.R;
 import com.zhide.app.common.CommonParams;
 import com.zhide.app.eventBus.LoginEvent;
 import com.zhide.app.logic.LogicManager;
+import com.zhide.app.model.RegisterLoginModel;
 import com.zhide.app.utils.PreferencesUtils;
+import com.zhide.app.utils.ToastUtil;
 import com.zhide.app.utils.UIUtils;
 import com.zhide.app.view.base.BaseActivity;
 
@@ -82,7 +84,15 @@ public class LoginActivity extends BaseActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onLoginEvent(LoginEvent event) {
-
+        RegisterLoginModel dataModel = event.getDataModel();
+        if (dataModel == null) {
+            return;
+        }
+        ToastUtil.showShort(dataModel.getMsg());
+        if (dataModel.getCode() == 1) {
+            startActivity(MainActivity.makeIntent(this));
+            finish();
+        }
     }
 
     public static Intent makeIntent(Context context) {
@@ -118,4 +128,4 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    }
+}

@@ -10,14 +10,13 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zhide.app.R;
 import com.zhide.app.eventBus.RegisterEvent;
 import com.zhide.app.logic.UserManager;
-import com.zhide.app.model.RegisterModel;
+import com.zhide.app.model.RegisterLoginModel;
 import com.zhide.app.utils.EmptyUtil;
 import com.zhide.app.utils.ToastUtil;
 import com.zhide.app.utils.UIUtils;
@@ -115,7 +114,7 @@ public class RegisterActivity extends BaseActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onRegisterEvent(RegisterEvent event) {
-        RegisterModel registerModel = event.getRegisterModel();
+        RegisterLoginModel registerModel = event.getRegisterModel();
         Log.d("admin", "onRegisterEvent: registerModel=" + registerModel);
         if (registerModel == null) {
             return;

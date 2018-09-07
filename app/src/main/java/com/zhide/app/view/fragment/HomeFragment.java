@@ -9,6 +9,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zhide.app.R;
+import com.zhide.app.logic.MainManager;
+import com.zhide.app.logic.UserManager;
 import com.zhide.app.view.activity.NewsListActivity;
 import com.zhide.app.view.activity.RechargeActivity;
 import com.zhide.app.view.activity.ShowerMainActivity;
@@ -41,7 +43,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     @Override
     protected void initData() {
 
-
+        MainManager.getInstance().getMainPageNews();
         for (int i = 0; i < 3; i++) {
             View view = LayoutInflater.from(getContext()).inflate(R.layout.item_news, null, false);
             llNews.addView(view);
