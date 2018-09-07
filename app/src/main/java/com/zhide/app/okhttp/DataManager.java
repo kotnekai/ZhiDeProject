@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.zhide.app.common.ApplicationHolder;
 import com.zhide.app.common.CommonParams;
+import com.zhide.app.utils.DesUtil;
 import com.zhide.app.utils.PreferencesUtils;
 import com.zhide.okhttputils.builder.GetBuilder;
 import com.zhide.okhttputils.builder.PostFileBuilder;
@@ -45,6 +46,7 @@ public class DataManager {
 
     /**
      * 登录成功设置token，这里拿
+     *
      * @return
      */
     private String getToken() {
@@ -53,6 +55,7 @@ public class DataManager {
 
     /**
      * 一般的发送get网络请求
+     *
      * @param url
      * @param params
      * @return
@@ -71,6 +74,7 @@ public class DataManager {
 
     /**
      * 指定MediaType 的网络请求，
+     *
      * @param url
      * @param params
      * @param mediaType
@@ -79,7 +83,8 @@ public class DataManager {
     public RequestCall sendPostRequestData(String url, JSONObject params, MediaType mediaType) {
         String token = getToken();
         PostStringBuilder postStringBuilder = OkHttpUtils.postString().url(url);
-        postStringBuilder.addHeader("X-Authorization", "bearer " + token);
+        // postStringBuilder.addHeader("X-Authorization", "bearer " + token);
+        postStringBuilder.addHeader("Accept", "*/*");
         postStringBuilder.mediaType(mediaType);
         postStringBuilder.content(params.toString());
         return postStringBuilder.build();
@@ -87,6 +92,7 @@ public class DataManager {
 
     /**
      * 默认的post请求
+     *
      * @param url
      * @param params
      * @return
@@ -94,15 +100,44 @@ public class DataManager {
     public RequestCall sendPostRequestData(String url, JSONObject params) {
         String token = getToken();
         PostStringBuilder postStringBuilder = OkHttpUtils.postString().url(url);
-        postStringBuilder.mediaType(MediaType.parse("application/json; charset=utf-8"));
-        postStringBuilder.addHeader("X-Authorization", "bearer " + token);
-        postStringBuilder.content(params.toString());
+        postStringBuilder.mediaType(MediaType.parse("application/x-www-form-urlencoded; charset=utf-8"));
+        //postStringBuilder.addHeader("X-Authorization", "bearer " + token);
+        postStringBuilder.addHeader("Accept", "*/*");
+        String desParams = DesUtil.encrypt(params.toString());
+        String s = DesUtil.decrypt(desParams);
 
+        Log.d("admin", "sendPostRequestData: s=" + s);
+        if (desParams != null) {
+            postStringBuilder.content(desParams);
+        }
         return postStringBuilder.build();
     }
 
     /**
+     * 单个参数的时候用这个方法吧，
+     * 的post请求
+     *
+     * @param url
+     * @param params
+     * @return
+     */
+    public RequestCall sendSinglePostRequestData(String url, String params) {
+        String token = getToken();
+        PostStringBuilder postStringBuilder = OkHttpUtils.postString().url(url);
+        postStringBuilder.mediaType(MediaType.parse("application/x-www-form-urlencoded; charset=utf-8"));
+        //postStringBuilder.addHeader("X-Authorization", "bearer " + token);
+        postStringBuilder.addHeader("Accept", "*/*");
+        String desParams = DesUtil.encrypt(params);
+        String s = DesUtil.decrypt(desParams);
+        Log.d("admin", "sendPostRequestData: s=" + s);
+        postStringBuilder.content(desParams);
+        return postStringBuilder.build();
+    }
+
+
+    /**
      * 只返回code的表单请求。在主线程中返回出去
+     *
      * @param url
      * @param params
      * @param listener
@@ -111,7 +146,8 @@ public class DataManager {
         String token = getToken();
         PostStringBuilder postStringBuilder = OkHttpUtils.postString().url(url);
         postStringBuilder.mediaType(MediaType.parse("application/json; charset=utf-8"));
-        postStringBuilder.addHeader("X-Authorization", "bearer " + token);
+        // postStringBuilder.addHeader("X-Authorization", "bearer " + token);
+        postStringBuilder.addHeader("Accept", "*/*");
         postStringBuilder.content(params.toString());
         postStringBuilder.build().execute(new Callback() {
             @Override
@@ -121,8 +157,8 @@ public class DataManager {
                 ApplicationHolder.getInstance().postMainRunnable(new Runnable() {
                     @Override
                     public void run() {
-                        if(listener!=null){
-                            listener.onSuccessResponse(code,string);
+                        if (listener != null) {
+                            listener.onSuccessResponse(code, string);
                         }
                     }
                 });
@@ -131,8 +167,8 @@ public class DataManager {
 
             @Override
             public void onError(Response response, Call call, Exception e, int i) {
-                if(listener!=null){
-                    listener.onFailedResponse(response,e.getMessage());
+                if (listener != null) {
+                    listener.onFailedResponse(response, e.getMessage());
                 }
             }
 
@@ -145,11 +181,12 @@ public class DataManager {
 
     /**
      * 图片等文件上传
+     *
      * @param url
      * @param file
      * @param listener
      */
-    public void sendPostFileData(String url,File file, final IGetResponseCodeListener listener) {
+    public void sendPostFileData(String url, File file, final IGetResponseCodeListener listener) {
         String token = getToken();
         PostFileBuilder postFileBuilder = OkHttpUtils.postFile();
         postFileBuilder.isFormSubmitFile = true;
@@ -166,8 +203,8 @@ public class DataManager {
                 ApplicationHolder.getInstance().postMainRunnable(new Runnable() {
                     @Override
                     public void run() {
-                        if(listener!=null){
-                            listener.onSuccessResponse(code,string);
+                        if (listener != null) {
+                            listener.onSuccessResponse(code, string);
                         }
                     }
                 });
@@ -176,10 +213,10 @@ public class DataManager {
             }
 
             @Override
-            public void onError(Response response,Call call, Exception e, int i) {
-               if(listener!=null){
-                   listener.onFailedResponse(response,e.getMessage());
-               }
+            public void onError(Response response, Call call, Exception e, int i) {
+                if (listener != null) {
+                    listener.onFailedResponse(response, e.getMessage());
+                }
             }
 
             @Override

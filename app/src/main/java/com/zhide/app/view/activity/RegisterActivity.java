@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -14,10 +15,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zhide.app.R;
+import com.zhide.app.eventBus.RegisterEvent;
+import com.zhide.app.logic.UserManager;
+import com.zhide.app.model.RegisterModel;
 import com.zhide.app.utils.EmptyUtil;
 import com.zhide.app.utils.ToastUtil;
 import com.zhide.app.utils.UIUtils;
 import com.zhide.app.view.base.BaseActivity;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -68,7 +75,7 @@ public class RegisterActivity extends BaseActivity {
         tvAgreement.getPaint().setAntiAlias(true);//抗锯齿
     }
 
-    @OnClick({R.id.ivRightIcon, R.id.tvGetVerifyCode, R.id.rlRegister,R.id.tvAgreement})
+    @OnClick({R.id.ivRightIcon, R.id.tvGetVerifyCode, R.id.rlRegister, R.id.tvAgreement})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ivRightIcon:
@@ -76,7 +83,7 @@ public class RegisterActivity extends BaseActivity {
                 break;
             case R.id.tvGetVerifyCode:
                 String phoneNumber = edtPhoneNumber.getText().toString();
-                if(EmptyUtil.isEmpty(phoneNumber)){
+                if (EmptyUtil.isEmpty(phoneNumber)) {
                     ToastUtil.showShort(getString(R.string.please_input_phone));
                     return;
                 }
@@ -84,13 +91,38 @@ public class RegisterActivity extends BaseActivity {
                     countTimer.cancel();
                     countTimer.start();///开启倒计时
                 }
+                UserManager.getInstance().sendSmsCode(phoneNumber);
                 break;
             case R.id.rlRegister:
+                if (!cbAgree.isChecked()) {
+                    ToastUtil.showShort(getString(R.string.register_agree_tip));
+                    return;
+                }
+                String phone = edtPhoneNumber.getText().toString();
+                String psw = edtPsw.getText().toString();
+                String verifyCode = edtVerifyCode.getText().toString();
+                if (phone.isEmpty() || psw.isEmpty() || verifyCode.isEmpty()) {
+                    return;
+                }
+                UserManager.getInstance().registerUser(phone, psw, verifyCode);
                 break;
             case R.id.tvAgreement:
 
                 break;
 
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onRegisterEvent(RegisterEvent event) {
+        RegisterModel registerModel = event.getRegisterModel();
+        Log.d("admin", "onRegisterEvent: registerModel=" + registerModel);
+        if (registerModel == null) {
+            return;
+        }
+        ToastUtil.showShort(registerModel.getMsg());
+        if (registerModel.getCode() == 1) {
+            startActivity(MainActivity.makeIntent(this));
         }
     }
 

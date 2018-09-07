@@ -16,7 +16,7 @@ public class LogicManager {
      * @param password
      */
     public void login(String userName, String password) {
-        LoginManager.getInstance().login(userName, password);
+        UserManager.getInstance().login(userName, password);
     }
 
 

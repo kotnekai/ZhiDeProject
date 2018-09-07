@@ -12,10 +12,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zhide.app.R;
+import com.zhide.app.eventBus.ModifyPswEvent;
+import com.zhide.app.model.ResponseModel;
 import com.zhide.app.utils.EmptyUtil;
 import com.zhide.app.utils.ToastUtil;
 import com.zhide.app.utils.UIUtils;
 import com.zhide.app.view.base.BaseActivity;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -59,6 +64,19 @@ public class ResetPswActivity extends BaseActivity {
         return intent;
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onModifyPswEvent(ModifyPswEvent event) {
+        ResponseModel responseModel = event.getResponseModel();
+        if (responseModel == null) {
+            return;
+        }
+        int code = responseModel.getCode();
+        ToastUtil.showShort(responseModel.getMsg());
+        if (code == 1) {
+            finish();
+        }
+    }
+
     @OnClick({R.id.ivRightIcon, R.id.tvGetVerifyCode, R.id.rlReset})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -67,7 +85,7 @@ public class ResetPswActivity extends BaseActivity {
                 break;
             case R.id.tvGetVerifyCode:
                 String phoneNumber = edtPhoneNumber.getText().toString();
-                if(EmptyUtil.isEmpty(phoneNumber)){
+                if (EmptyUtil.isEmpty(phoneNumber)) {
                     ToastUtil.showShort(getString(R.string.please_input_phone));
                     return;
                 }
@@ -80,6 +98,7 @@ public class ResetPswActivity extends BaseActivity {
                 break;
         }
     }
+
     /**
      * 点击按钮后倒计时
      */
