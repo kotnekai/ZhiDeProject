@@ -6,8 +6,12 @@ import com.zhide.app.common.CommonUrl;
 import com.zhide.app.eventBus.LoginEvent;
 import com.zhide.app.eventBus.ModifyPswEvent;
 import com.zhide.app.eventBus.RegisterEvent;
+import com.zhide.app.eventBus.SchoolInfoEvent;
+import com.zhide.app.eventBus.UserInfoEvent;
 import com.zhide.app.model.RegisterLoginModel;
 import com.zhide.app.model.ResponseModel;
+import com.zhide.app.model.SchoolInfoModel;
+import com.zhide.app.model.UserInfoModel;
 import com.zhide.app.okhttp.DataManager;
 import com.zhide.okhttputils.callback.GenericsCallback;
 import com.zhide.okhttputils.request.JsonGenericsSerializator;
@@ -35,6 +39,7 @@ public class UserManager {
 
     /**
      * 登录页面
+     *
      * @param userName
      * @param password
      */
@@ -58,8 +63,8 @@ public class UserManager {
 
                     @Override
                     public void onResponse(RegisterLoginModel response, int id) {
-                         EventBus.getDefault().post(new LoginEvent(response));
-                        Log.d("admin", "onResponse: response=" + response.getCode() + "-" + response.getMsg());
+                        EventBus.getDefault().post(new LoginEvent(response));
+                        Log.d("admin", "onResponse: response=" + response.getCode() + "-" + response.getMessage());
                     }
                 });
 
@@ -122,7 +127,7 @@ public class UserManager {
 
                     @Override
                     public void onResponse(RegisterLoginModel response, int id) {
-                        Log.d("admin", "onResponse: response=" + response.getCode() + "-" + response.getMsg());
+                        Log.d("admin", "onResponse: response=" + response.getCode() + "-" + response.getMessage());
                         EventBus.getDefault().post(new RegisterEvent(response));
                     }
                 });
@@ -156,6 +161,64 @@ public class UserManager {
                     public void onResponse(ResponseModel response, int id) {
                         Log.d("admin", "onResponse: response=" + response.getCode() + "-" + response.getMsg());
                         EventBus.getDefault().post(new ModifyPswEvent(response));
+                    }
+                });
+    }
+
+    /**
+     * 请求用户学校信息
+     *
+     * @param userId
+     */
+    public void getUserSchoolInfo(long userId) {
+        JSONObject params = new JSONObject();
+        try {
+            params.put("USI_Id", userId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        dataInstance.sendPostRequestData(CommonUrl.getUserSchoolInfo, params)
+                .execute(new GenericsCallback<SchoolInfoModel>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Response response, Call call, Exception e, int id) {
+                        String message = e.getMessage();
+
+                        Log.d("admin", "onError: message=" + message);
+                    }
+
+                    @Override
+                    public void onResponse(SchoolInfoModel response, int id) {
+                        Log.d("admin", "onResponse: response=" + response.getCode() + "-" + response.getMsg());
+                        EventBus.getDefault().post(new SchoolInfoEvent(response));
+                    }
+                });
+    }
+
+    /**
+     * 请求学生个人信息
+     *
+     * @param userId
+     */
+    public void getUserInfoById(long userId) {
+        JSONObject params = new JSONObject();
+        try {
+            params.put("USI_Id", String.valueOf(userId));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        dataInstance.sendPostRequestData(CommonUrl.getUserInfoById, params)
+                .execute(new GenericsCallback<UserInfoModel>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Response response, Call call, Exception e, int id) {
+                        String message = e.getMessage();
+
+                        Log.d("admin", "onError: message=" + message);
+                    }
+
+                    @Override
+                    public void onResponse(UserInfoModel response, int id) {
+                        Log.d("admin", "onResponse: response=" + response.getCode() + "-" + response.getMsg());
+                        EventBus.getDefault().post(new UserInfoEvent(response));
                     }
                 });
     }

@@ -11,4 +11,5 @@ public class CommonParams {
     public static final String PRF_PSW = "password";
     public static final String PRF_NAME = "username";
     public static final String PRF_PSW_CHECK_STATE = "checkState";
+    public static final String LOGIN_USER_ID = "userId";
 }

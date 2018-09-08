@@ -34,11 +34,14 @@ public class MainManager {
         return instance;
     }
 
+    /**
+     * 请求首页新闻消息列表
+     */
     public void getMainPageNews() {
 
         JSONObject params = new JSONObject();
         try {
-            params.put("news", "news");
+            params.put("ActionMethod ", "news");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -60,5 +63,7 @@ public class MainManager {
                 });
 
     }
+
+
 
 }

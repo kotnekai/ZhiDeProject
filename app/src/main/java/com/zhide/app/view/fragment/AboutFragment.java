@@ -6,6 +6,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zhide.app.R;
+import com.zhide.app.common.CommonParams;
+import com.zhide.app.logic.UserManager;
+import com.zhide.app.utils.PreferencesUtils;
 import com.zhide.app.view.activity.OperateGuideActivity;
 import com.zhide.app.view.activity.RepairActivity;
 import com.zhide.app.view.base.BaseFragment;
@@ -57,6 +60,8 @@ public class AboutFragment extends BaseFragment {
                 startActivity(OperateGuideActivity.makeIntent(getActivity()));
                 break;
             case R.id.llVersion:
+                long userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
+                UserManager.getInstance().getUserInfoById(userId);
                 break;
             case R.id.rlServicePhone:
                 break;

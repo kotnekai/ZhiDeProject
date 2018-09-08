@@ -17,6 +17,7 @@ import com.zhide.app.common.CommonParams;
 import com.zhide.app.eventBus.LoginEvent;
 import com.zhide.app.logic.LogicManager;
 import com.zhide.app.model.RegisterLoginModel;
+import com.zhide.app.utils.DesUtil;
 import com.zhide.app.utils.PreferencesUtils;
 import com.zhide.app.utils.ToastUtil;
 import com.zhide.app.utils.UIUtils;
@@ -88,7 +89,11 @@ public class LoginActivity extends BaseActivity {
         if (dataModel == null) {
             return;
         }
-        ToastUtil.showShort(dataModel.getMsg());
+        RegisterLoginModel.UserModel data = dataModel.getData();
+        if(data!=null){
+            PreferencesUtils.putLong(CommonParams.LOGIN_USER_ID,data.getUSI_Id());
+        }
+        ToastUtil.showShort(dataModel.getMessage());
         if (dataModel.getCode() == 1) {
             startActivity(MainActivity.makeIntent(this));
             finish();
@@ -122,7 +127,7 @@ public class LoginActivity extends BaseActivity {
                     PreferencesUtils.putBoolean(CommonParams.PRF_PSW_CHECK_STATE, false);
                 }
                 LogicManager.getInstance().login(userName, password);
-                startActivity(MainActivity.makeIntent(this));
+               // startActivity(MainActivity.makeIntent(this));
                 break;
 
         }

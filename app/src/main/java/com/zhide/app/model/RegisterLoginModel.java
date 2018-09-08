@@ -5,7 +5,7 @@ package com.zhide.app.model;
  */
 public class RegisterLoginModel {
     private int code;
-    private String msg;
+    private String message;
     private UserModel data;
 
     public int getCode() {
@@ -16,12 +16,12 @@ public class RegisterLoginModel {
         this.code = code;
     }
 
-    public String getMsg() {
-        return msg;
+    public String getMessage() {
+        return message;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public UserModel getData() {
@@ -32,7 +32,7 @@ public class RegisterLoginModel {
         this.data = data;
     }
 
-    private class UserModel {
+    public class UserModel {
         private long USI_Id;
         private String USI_Mobile;
 
@@ -65,7 +65,7 @@ public class RegisterLoginModel {
     public String toString() {
         return "RegisterModel{" +
                 "code=" + code +
-                ", msg='" + msg + '\'' +
+                ", msg='" + message + '\'' +
                 ", data=" + data +
                 '}';
     }

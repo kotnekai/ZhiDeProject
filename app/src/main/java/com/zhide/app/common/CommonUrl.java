@@ -9,6 +9,8 @@ public class CommonUrl {
     public static final String modifyPassword = BASE_URL + "/Student/UserPayInfo_Submit";
     public static final String getMainPageNews = BASE_URL + "/News/Get_NewsList";
     public static final String getCardBillData = BASE_URL + "/Student/Get_User_Student_Card_Purchase";
+    public static final String getUserInfoById = BASE_URL + "/Student/Get_UserInfo";
+    public static final String getUserSchoolInfo = BASE_URL + "/School/Get_SchoolInfo";
 
 
 

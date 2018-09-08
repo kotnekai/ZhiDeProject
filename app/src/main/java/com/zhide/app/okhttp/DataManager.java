@@ -104,9 +104,7 @@ public class DataManager {
         //postStringBuilder.addHeader("X-Authorization", "bearer " + token);
         postStringBuilder.addHeader("Accept", "*/*");
         String desParams = DesUtil.encrypt(params.toString());
-        String s = DesUtil.decrypt(desParams);
 
-        Log.d("admin", "sendPostRequestData: s=" + s);
         if (desParams != null) {
             postStringBuilder.content(desParams);
         }

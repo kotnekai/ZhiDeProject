@@ -119,7 +119,7 @@ public class RegisterActivity extends BaseActivity {
         if (registerModel == null) {
             return;
         }
-        ToastUtil.showShort(registerModel.getMsg());
+        ToastUtil.showShort(registerModel.getMessage());
         if (registerModel.getCode() == 1) {
             startActivity(MainActivity.makeIntent(this));
         }
