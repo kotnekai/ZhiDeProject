@@ -5,6 +5,10 @@ package com.zhide.app.model;
 
 
 public class NewsModel {
+   private long NI_Id;
+   private String NI_Name;// 标题
+   private String NI_Summary;// 标题
+
 
    String title;
    String date;

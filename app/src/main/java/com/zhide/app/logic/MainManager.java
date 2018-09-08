@@ -41,7 +41,7 @@ public class MainManager {
 
         JSONObject params = new JSONObject();
         try {
-            params.put("ActionMethod ", "news");
+            params.put("ActionMethod", "news");
         } catch (JSONException e) {
             e.printStackTrace();
         }
