@@ -16,6 +16,7 @@
     <string name="home_tab">首页</string>
     <string name="about_tab">关于</string>
     <string name="mine_tab">我的</string>
+    <string name="mine_tab_title">个人中心</string>
     <string name="mine_charge">充值</string>
 
     <string name="dialog_tips_title">提醒</string>
