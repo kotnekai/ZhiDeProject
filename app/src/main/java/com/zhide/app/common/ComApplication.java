@@ -74,7 +74,7 @@ public class ComApplication extends Application {
         Log.d("xyc", "getMsgApi: msgApi1="+msgApi);
         ApplicationHolder.getInstance().setMsgApi(msgApi);
         PickViewUtil.initTimePickOptions(this);
-
+        mzjApplication = this;
     }
 
 

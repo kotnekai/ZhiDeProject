@@ -9,8 +9,11 @@ import android.support.v7.widget.RecyclerView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zhide.app.R;
+import com.zhide.app.common.CommonParams;
 import com.zhide.app.eventBus.CardBillEvent;
+import com.zhide.app.logic.BillManager;
 import com.zhide.app.model.CardBillModel;
+import com.zhide.app.utils.PreferencesUtils;
 import com.zhide.app.utils.ToastUtil;
 import com.zhide.app.view.adapter.CardBillAdapter;
 import com.zhide.app.view.base.BaseActivity;
@@ -55,6 +58,13 @@ public class CardChargeBillActivity extends BaseActivity {
         recyclerView.setLayoutManager(mLayoutManager);
         adapter = new CardBillAdapter(this, dataList);
         recyclerView.setAdapter(adapter);
+        loadData();
+    }
+
+    private void loadData() {
+        String userId = PreferencesUtils.getString(CommonParams.LOGIN_USER_ID);
+        BillManager.getInstance().getCardBillData(userId);
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

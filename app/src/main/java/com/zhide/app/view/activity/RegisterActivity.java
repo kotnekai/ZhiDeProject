@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zhide.app.R;
+import com.zhide.app.common.ComApplication;
 import com.zhide.app.eventBus.RegisterEvent;
 import com.zhide.app.logic.UserManager;
 import com.zhide.app.model.RegisterLoginModel;
@@ -69,6 +70,8 @@ public class RegisterActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ComApplication.getApp().addActivity(this);
+
         countTimer = new CountTimer(millisInFuture, countDownInterval);
         tvAgreement.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
         tvAgreement.getPaint().setAntiAlias(true);//抗锯齿
@@ -93,17 +96,27 @@ public class RegisterActivity extends BaseActivity {
                 UserManager.getInstance().sendSmsCode(phoneNumber);
                 break;
             case R.id.rlRegister:
+                String phone = edtPhoneNumber.getText().toString();
+                String psw = edtPsw.getText().toString();
+                String verifyCode = edtVerifyCode.getText().toString();
+                if (phone.isEmpty()) {
+                    ToastUtil.showShort(getString(R.string.register_no_phone));
+                    return;
+                }
+                if (psw.isEmpty()) {
+                    ToastUtil.showShort(getString(R.string.register_no_psw));
+                    return;
+                }
+                if (verifyCode.isEmpty()) {
+                    ToastUtil.showShort(getString(R.string.register_no_code));
+                    return;
+                }
                 if (!cbAgree.isChecked()) {
                     ToastUtil.showShort(getString(R.string.register_agree_tip));
                     return;
                 }
-                String phone = edtPhoneNumber.getText().toString();
-                String psw = edtPsw.getText().toString();
-                String verifyCode = edtVerifyCode.getText().toString();
-                if (phone.isEmpty() || psw.isEmpty() || verifyCode.isEmpty()) {
-                    return;
-                }
                 UserManager.getInstance().registerUser(phone, psw, verifyCode);
+
                 break;
             case R.id.tvAgreement:
 
@@ -122,6 +135,7 @@ public class RegisterActivity extends BaseActivity {
         ToastUtil.showShort(registerModel.getMessage());
         if (registerModel.getCode() == 1) {
             startActivity(MainActivity.makeIntent(this));
+           ComApplication.getApp().removeAllActivity();//登录成功，把登录，，注册页finish
         }
     }
 

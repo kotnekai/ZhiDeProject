@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zhide.app.R;
+import com.zhide.app.common.ComApplication;
 import com.zhide.app.common.CommonParams;
 import com.zhide.app.eventBus.LoginEvent;
 import com.zhide.app.logic.LogicManager;
@@ -68,6 +69,7 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ComApplication.getApp().addActivity(this);
         initView();
     }
 
@@ -91,7 +93,7 @@ public class LoginActivity extends BaseActivity {
         }
         RegisterLoginModel.UserModel data = dataModel.getData();
         if(data!=null){
-            PreferencesUtils.putLong(CommonParams.LOGIN_USER_ID,data.getUSI_Id());
+            PreferencesUtils.putString(CommonParams.LOGIN_USER_ID,String.valueOf(data.getUSI_Id()));
         }
         ToastUtil.showShort(dataModel.getMessage());
         if (dataModel.getCode() == 1) {

@@ -115,5 +115,10 @@
     <string name="card_pay_content">卡片充值是将账户基本余额转账至用户指定热水卡中;\n
     充值完成后，请尽快在指定热水设备中刷卡完成转账。</string>
     <string name="card_bill_title">卡片充值账单</string>
+
     <string name="register_agree_tip">请先同意使用协议</string>
+    <string name="register_no_phone">手机号不能为空</string>
+    <string name="register_no_code">验证码不能为空</string>
+    <string name="register_no_psw">密码不能为空</string>
+
 </resources>

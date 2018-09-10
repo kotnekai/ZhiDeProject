@@ -37,7 +37,11 @@ public class BillManager {
         return instance;
     }
 
-    public void getCardBillData(long userId){
+    /**
+     * 获取卡账单信息
+     * @param userId
+     */
+    public void getCardBillData(String userId){
         JSONObject params = new JSONObject();
         try {
             params.put("USI_Id", userId);

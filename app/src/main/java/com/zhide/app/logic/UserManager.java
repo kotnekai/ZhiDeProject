@@ -199,10 +199,10 @@ public class UserManager {
      *
      * @param userId
      */
-    public void getUserInfoById(long userId) {
+    public void getUserInfoById(String userId) {
         JSONObject params = new JSONObject();
         try {
-            params.put("USI_Id", String.valueOf(userId));
+            params.put("USI_Id", userId);
         } catch (JSONException e) {
             e.printStackTrace();
         }
