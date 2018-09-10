@@ -88,6 +88,7 @@ public class MainActivity extends BaseActivity {
                 ivHomeTab.setSelected(true);
                 ivAboutTab.setSelected(false);
                 ivMineTab.setSelected(false);
+                setHeaderTitle(getString(R.string.app_name));
 
                 break;
             case R.id.ivAboutTab:
@@ -95,6 +96,7 @@ public class MainActivity extends BaseActivity {
                 ivHomeTab.setSelected(false);
                 ivAboutTab.setSelected(true);
                 ivMineTab.setSelected(false);
+                setHeaderTitle(getString(R.string.about_tab));
 
                 break;
             case R.id.ivMineTab:
@@ -102,6 +104,8 @@ public class MainActivity extends BaseActivity {
                 ivHomeTab.setSelected(false);
                 ivAboutTab.setSelected(false);
                 ivMineTab.setSelected(true);
+                setHeaderTitle(getString(R.string.mine_tab_title));
+
                 break;
             case R.id.tvFourthTab:
 

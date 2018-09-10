@@ -126,6 +126,7 @@ public class MineFragment extends BaseFragment {
                     @Override
                     public void onClick(View v) {
                         startActivity(LoginActivity.makeIntent(getActivity()));
+                        getActivity().finish();
                     }
                 });
                 break;
