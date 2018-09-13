@@ -2,7 +2,9 @@ package com.zhide.app.logic;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.zhide.app.common.CommonUrl;
+import com.zhide.app.eventBus.ErrorMsgEvent;
 import com.zhide.app.eventBus.LoginEvent;
 import com.zhide.app.eventBus.ModifyPswEvent;
 import com.zhide.app.eventBus.RegisterEvent;
@@ -11,8 +13,10 @@ import com.zhide.app.eventBus.UserInfoEvent;
 import com.zhide.app.model.RegisterLoginModel;
 import com.zhide.app.model.ResponseModel;
 import com.zhide.app.model.SchoolInfoModel;
+import com.zhide.app.model.UserData;
 import com.zhide.app.model.UserInfoModel;
 import com.zhide.app.okhttp.DataManager;
+import com.zhide.app.utils.GsonUtils;
 import com.zhide.okhttputils.callback.GenericsCallback;
 import com.zhide.okhttputils.request.JsonGenericsSerializator;
 
@@ -56,9 +60,7 @@ public class UserManager {
                     @Override
                     public void onError(Response response, Call call, Exception e, int id) {
                         String message = e.getMessage();
-                      /*  String errorMsg = JsonUtils.getErrorMsg(response);
-                        EventBus.getDefault().post(new ErrorResponseEvent(errorMsg, CommonPageState.login_page));*/
-                        Log.d("admin", "onError: message=" + message);
+                        EventBus.getDefault().post(new ErrorMsgEvent(message));
                     }
 
                     @Override
@@ -88,9 +90,7 @@ public class UserManager {
                     @Override
                     public void onError(Response response, Call call, Exception e, int id) {
                         String message = e.getMessage();
-                      /*  String errorMsg = JsonUtils.getErrorMsg(response);
-                        EventBus.getDefault().post(new ErrorResponseEvent(errorMsg, CommonPageState.login_page));*/
-                        Log.d("admin", "onError: message=" + message);
+                        EventBus.getDefault().post(new ErrorMsgEvent(message));
                     }
 
                     @Override
@@ -120,9 +120,7 @@ public class UserManager {
                     @Override
                     public void onError(Response response, Call call, Exception e, int id) {
                         String message = e.getMessage();
-                      /*  String errorMsg = JsonUtils.getErrorMsg(response);
-                        EventBus.getDefault().post(new ErrorResponseEvent(errorMsg, CommonPageState.login_page));*/
-                        Log.d("admin", "onError: message=" + message);
+                        EventBus.getDefault().post(new ErrorMsgEvent(message));
                     }
 
                     @Override
@@ -136,14 +134,12 @@ public class UserManager {
     /**
      * 修改密码
      */
-    public void modifyPassword(String userId, String password, String payPassword) {
+    public void modifyPassword(String userId, String password) {
         JSONObject params = new JSONObject();
         try {
             params.put("USI_Id", userId);
             params.put("USI_Pwd", password);
-            if (payPassword != null) {
-                params.put("USI_PayPwd", payPassword);
-            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -152,9 +148,7 @@ public class UserManager {
                     @Override
                     public void onError(Response response, Call call, Exception e, int id) {
                         String message = e.getMessage();
-                      /*  String errorMsg = JsonUtils.getErrorMsg(response);
-                        EventBus.getDefault().post(new ErrorResponseEvent(errorMsg, CommonPageState.login_page));*/
-                        Log.d("admin", "onError: message=" + message);
+                        EventBus.getDefault().post(new ErrorMsgEvent(message));
                     }
 
                     @Override
@@ -182,8 +176,7 @@ public class UserManager {
                     @Override
                     public void onError(Response response, Call call, Exception e, int id) {
                         String message = e.getMessage();
-
-                        Log.d("admin", "onError: message=" + message);
+                        EventBus.getDefault().post(new ErrorMsgEvent(message));
                     }
 
                     @Override
@@ -201,8 +194,9 @@ public class UserManager {
      */
     public void getUserInfoById(String userId) {
         JSONObject params = new JSONObject();
+        //Long.parseLong(userId)
         try {
-            params.put("USI_Id", userId);
+            params.put("USI_Id",18 );
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -211,14 +205,15 @@ public class UserManager {
                     @Override
                     public void onError(Response response, Call call, Exception e, int id) {
                         String message = e.getMessage();
-
-                        Log.d("admin", "onError: message=" + message);
+                        EventBus.getDefault().post(new ErrorMsgEvent(message));
                     }
 
                     @Override
                     public void onResponse(UserInfoModel response, int id) {
-                        Log.d("admin", "onResponse: response=" + response.getCode() + "-" + response.getMsg());
-                        EventBus.getDefault().post(new UserInfoEvent(response));
+                        String data = response.getData();
+                        Gson gson = new Gson();
+                        UserData userData1 = gson.fromJson(data, UserData.class);
+                        EventBus.getDefault().post(new UserInfoEvent(userData1));
                     }
                 });
     }

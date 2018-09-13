@@ -40,6 +40,11 @@ public class CardChargeBillActivity extends BaseActivity {
         return R.layout.activity_card_charge_bill;
     }
 
+    @Override
+    protected SmartRefreshLayout getRefreshView() {
+        return null;
+    }
+
     public static Intent makeIntent(Context context) {
         return new Intent(context, CardChargeBillActivity.class);
     }

@@ -26,6 +26,7 @@ import com.example.jooronjar.utils.AnalyTools;
 import com.example.jooronjar.utils.CMDUtils;
 import com.example.jooronjar.utils.DigitalTrans;
 import com.example.jooronjar.utils.WaterCodeListener;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zhide.app.R;
 import com.zhide.app.utils.DialogUtils;
 import com.zhide.app.utils.ToastUtil;
@@ -90,6 +91,11 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     @Override
     protected int getCenterView() {
         return R.layout.activity_shower_connect;
+    }
+
+    @Override
+    protected SmartRefreshLayout getRefreshView() {
+        return null;
     }
 
     @Override

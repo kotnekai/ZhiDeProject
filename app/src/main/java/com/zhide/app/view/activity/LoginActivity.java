@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zhide.app.R;
 import com.zhide.app.common.ComApplication;
 import com.zhide.app.common.CommonParams;
@@ -49,6 +50,11 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected int getCenterView() {
         return R.layout.activity_login;
+    }
+
+    @Override
+    protected SmartRefreshLayout getRefreshView() {
+        return null;
     }
 
     @Override

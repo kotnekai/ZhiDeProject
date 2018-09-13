@@ -43,6 +43,11 @@ public class MyBillActivity extends BaseActivity {
     }
 
     @Override
+    protected SmartRefreshLayout getRefreshView() {
+        return smartRefresh;
+    }
+
+    @Override
     protected void initHeader() {
         setHeaderTitle(getString(R.string.my_bill_title));
     }
