@@ -35,21 +35,22 @@ public class CardBillModel {
     }
 
     public class DataModel {
-        private String USCP_Money;//消费金额
-        private String USCP_CreateTime;//创建时间
-        private String USCP_Type;//转账类型：主包钱转卡面，卡面转到卡内
-        private String USCP_Channel;//转账渠道：转款机，PC
-        private String USCP_DeviceID;// 设备ID
-        private String USCP_Id;// 表Id
-        private String USI_Id;// 学生Id
-        private String SI_Id;// 学校Id
+        private float USCP_Money;
+        private String USCP_CreateTime;
+        private String USCP_Type;//转账类型：转入卡内，转入卡片
+        private String USCP_Channel;//转账渠道：转款机，PC，APP
+        private String USCP_DeviceID;//设备ID
+        private long USCP_Id;//表Id
+        private long USI_Id;//学生Id
+        private long SI_Id;//学校Id
         private String UCI_Id;//卡Id
+        private float USCP_NextMoney;//变动后余额（即操作后余额）
 
-        public String getUSCP_Money() {
+        public float getUSCP_Money() {
             return USCP_Money;
         }
 
-        public void setUSCP_Money(String USCP_Money) {
+        public void setUSCP_Money(float USCP_Money) {
             this.USCP_Money = USCP_Money;
         }
 
@@ -85,27 +86,27 @@ public class CardBillModel {
             this.USCP_DeviceID = USCP_DeviceID;
         }
 
-        public String getUSCP_Id() {
+        public long getUSCP_Id() {
             return USCP_Id;
         }
 
-        public void setUSCP_Id(String USCP_Id) {
+        public void setUSCP_Id(long USCP_Id) {
             this.USCP_Id = USCP_Id;
         }
 
-        public String getUSI_Id() {
+        public long getUSI_Id() {
             return USI_Id;
         }
 
-        public void setUSI_Id(String USI_Id) {
+        public void setUSI_Id(long USI_Id) {
             this.USI_Id = USI_Id;
         }
 
-        public String getSI_Id() {
+        public long getSI_Id() {
             return SI_Id;
         }
 
-        public void setSI_Id(String SI_Id) {
+        public void setSI_Id(long SI_Id) {
             this.SI_Id = SI_Id;
         }
 
@@ -115,6 +116,14 @@ public class CardBillModel {
 
         public void setUCI_Id(String UCI_Id) {
             this.UCI_Id = UCI_Id;
+        }
+
+        public float getUSCP_NextMoney() {
+            return USCP_NextMoney;
+        }
+
+        public void setUSCP_NextMoney(float USCP_NextMoney) {
+            this.USCP_NextMoney = USCP_NextMoney;
         }
     }
 }

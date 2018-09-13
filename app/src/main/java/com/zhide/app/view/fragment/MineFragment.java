@@ -72,11 +72,11 @@ public class MineFragment extends BaseFragment implements TextWatcher {
     @BindView(R.id.tvLoginOut)
     TextView tvLoginOut;
     private float totalMoney;
-    private String userId;
+    private long userId;
 
     @Override
     protected void initData() {
-        userId = PreferencesUtils.getString(CommonParams.LOGIN_USER_ID);
+        userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
 
         UserManager.getInstance().getUserInfoById(userId);
     }
@@ -195,10 +195,10 @@ public class MineFragment extends BaseFragment implements TextWatcher {
 
     private void submitPersonInfo() {
         String gUid = "";
-        String userId = PreferencesUtils.getString(CommonParams.LOGIN_USER_ID);
+        long userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
 
         UserData userData = new UserData();
-        userData.setUSI_Id(Long.parseLong(userId));
+        userData.setUSI_Id(userId);
         userData.setUSI_TrueName(edtUserName.getText().toString());
         userData.setUSI_SchoolNo(edtStuId.getText().toString());
         // 房间号

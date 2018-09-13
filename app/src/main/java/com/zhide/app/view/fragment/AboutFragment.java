@@ -60,7 +60,7 @@ public class AboutFragment extends BaseFragment {
                 startActivity(OperateGuideActivity.makeIntent(getActivity()));
                 break;
             case R.id.llVersion:
-                String userId = PreferencesUtils.getString(CommonParams.LOGIN_USER_ID);
+                long userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
                 UserManager.getInstance().getUserInfoById(userId);
                 break;
             case R.id.rlServicePhone:

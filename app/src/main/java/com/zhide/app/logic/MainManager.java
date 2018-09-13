@@ -1,7 +1,5 @@
 package com.zhide.app.logic;
 
-import android.util.Log;
-
 import com.zhide.app.common.CommonUrl;
 import com.zhide.app.eventBus.ErrorMsgEvent;
 import com.zhide.app.eventBus.NewsModelEvent;
@@ -9,7 +7,6 @@ import com.zhide.app.eventBus.SaveInfoEvent;
 import com.zhide.app.model.NewsModel;
 import com.zhide.app.model.ResponseModel;
 import com.zhide.app.model.UserData;
-import com.zhide.app.model.UserInfoModel;
 import com.zhide.app.okhttp.DataManager;
 import com.zhide.okhttputils.callback.GenericsCallback;
 import com.zhide.okhttputils.request.JsonGenericsSerializator;

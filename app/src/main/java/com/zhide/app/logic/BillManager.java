@@ -4,7 +4,10 @@ import android.util.Log;
 
 import com.zhide.app.common.CommonUrl;
 import com.zhide.app.eventBus.CardBillEvent;
+import com.zhide.app.eventBus.ErrorMsgEvent;
+import com.zhide.app.eventBus.MyBillEvent;
 import com.zhide.app.model.CardBillModel;
+import com.zhide.app.model.MyBillModel;
 import com.zhide.app.model.ResponseModel;
 import com.zhide.app.okhttp.DataManager;
 import com.zhide.okhttputils.callback.GenericsCallback;
@@ -39,12 +42,13 @@ public class BillManager {
 
     /**
      * 获取卡账单信息
+     *
      * @param userId
      */
-    public void getCardBillData(String userId){
+    public void getCardBillData(long userId) {
         JSONObject params = new JSONObject();
         try {
-            params.put("USI_Id", userId);
+            params.put("USI_Id", 18);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -53,17 +57,38 @@ public class BillManager {
                     @Override
                     public void onError(Response response, Call call, Exception e, int id) {
                         String message = e.getMessage();
-                      /*  String errorMsg = JsonUtils.getErrorMsg(response);
-                        EventBus.getDefault().post(new ErrorResponseEvent(errorMsg, CommonPageState.login_page));*/
-                        Log.d("admin", "onError: message=" + message);
+                        EventBus.getDefault().post(new ErrorMsgEvent(message));
                     }
 
                     @Override
                     public void onResponse(CardBillModel response, int id) {
                         EventBus.getDefault().post(new CardBillEvent(response));
-                       // Log.d("admin", "onResponse: response=" + response.getCode() + "-" + response.getMsg());
                     }
                 });
     }
+
+    public void getMyBillData(long userId) {
+        JSONObject params = new JSONObject();
+        try {
+            params.put("USI_Id", userId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        dataInstance.sendPostRequestData(CommonUrl.getMyBillData, params)
+                .execute(new GenericsCallback<MyBillModel>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Response response, Call call, Exception e, int id) {
+                        String message = e.getMessage();
+                        EventBus.getDefault().post(new ErrorMsgEvent(message));
+                    }
+
+                    @Override
+                    public void onResponse(MyBillModel response, int id) {
+                        EventBus.getDefault().post(new MyBillEvent(response));
+
+                    }
+                });
+    }
+
 
 }

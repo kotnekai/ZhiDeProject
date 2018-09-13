@@ -11,9 +11,16 @@ import android.widget.TextView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zhide.app.R;
+import com.zhide.app.common.CommonParams;
+import com.zhide.app.eventBus.MyBillEvent;
+import com.zhide.app.logic.BillManager;
 import com.zhide.app.model.MyBillModel;
+import com.zhide.app.utils.PreferencesUtils;
 import com.zhide.app.view.adapter.MyBillAdapter;
 import com.zhide.app.view.base.BaseActivity;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +43,7 @@ public class MyBillActivity extends BaseActivity {
     private int selectType = 1;//1,全部，2，支出，3，充值
     private LinearLayoutManager mLayoutManager;
     private MyBillAdapter adapter;
+    private List<MyBillModel.BillData> dataList = new ArrayList<>();
 
     @Override
     protected int getCenterView() {
@@ -58,28 +66,35 @@ public class MyBillActivity extends BaseActivity {
         initData();
     }
 
-    private List<MyBillModel> myBillList;
+    public static Intent makeIntent(Context context) {
+        return new Intent(context, MyBillActivity.class);
+    }
 
     private void initData() {
-        myBillList = new ArrayList<>();
-        for(int i=0;i<10;i++){
-            if(i%2==0){
-                myBillList.add(new MyBillModel("热水表"+i,"2018/08/"+i,(float)(23.10+i),1));
-            }else {
-                myBillList.add(new MyBillModel("热水表"+i,"2018/08/"+i,(float)(23.10+i),2));
-            }
-        }
-        adapter = new MyBillAdapter(this, myBillList);
+        long userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
+        adapter = new MyBillAdapter(this, dataList);
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
         mLayoutManager.setStackFromEnd(true);
         recycleView.setLayoutManager(mLayoutManager);
         recycleView.setAdapter(adapter);
+        BillManager.getInstance().getMyBillData(userId);
     }
 
-    public static Intent makeIntent(Context context) {
-        return new Intent(context, MyBillActivity.class);
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMyBillEvent(MyBillEvent event) {
+        MyBillModel myBillModel = event.getMyBillModel();
+        if(myBillModel==null){
+            return;
+        }
+        List<MyBillModel.BillData> data = myBillModel.getData();
+        if(data==null){
+            return;
+        }
+        dataList.addAll(data);
+        adapter.notifyDataSetChanged();
     }
+
 
     @OnClick({R.id.tvAllTab, R.id.tvPayTab, R.id.tvChargeTab})
     public void onClick(View view) {

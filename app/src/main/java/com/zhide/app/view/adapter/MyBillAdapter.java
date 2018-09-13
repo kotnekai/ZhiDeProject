@@ -22,10 +22,10 @@ import java.util.List;
 public class MyBillAdapter extends RecyclerView.Adapter<MyBillAdapter.MyViewHolder> {
 
     private Context context;
-    private List<MyBillModel> myBillList;
+    private List<MyBillModel.BillData> myBillList;
     private LayoutInflater inflater;
 
-    public MyBillAdapter(Context context, List<MyBillModel> myBillList) {
+    public MyBillAdapter(Context context, List<MyBillModel.BillData> myBillList) {
         this.context = context;
         this.myBillList = myBillList;
         inflater = LayoutInflater.from(context);
@@ -33,26 +33,26 @@ public class MyBillAdapter extends RecyclerView.Adapter<MyBillAdapter.MyViewHold
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = inflater.inflate(R.layout.my_bill_item_view,parent,false);
+        View itemView = inflater.inflate(R.layout.my_bill_item_view, parent, false);
         return new MyViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        MyBillModel myBillModel = myBillList.get(position);
+        MyBillModel.BillData myBillModel = myBillList.get(position);
         if (myBillModel == null) {
             return;
         }
-        holder.tvTypeContent.setText(myBillModel.getTypeContent());
-        holder.tvTimeData.setText(myBillModel.getTimeData());
-        if(myBillModel.getMoneyType()==1){
+        holder.tvTypeContent.setText(myBillModel.getUSB_ChangeThing());
+        holder.tvTimeData.setText(myBillModel.getUSB_CreateTime());
+        if (myBillModel.getUSB_ChangeType().equals("支出")) {
             holder.tvTypeContent.setTextColor(ResourceUtils.getInstance().getColor(R.color.light_text_blue_color));
             holder.tvTransMoney.setTextColor(ResourceUtils.getInstance().getColor(R.color.normal_text_money_red_color));
-            holder.tvTransMoney.setText("-"+myBillModel.getTransMoney());
-        }else {
+            holder.tvTransMoney.setText("-" + myBillModel.getUSB_Money());
+        } else {
             holder.tvTypeContent.setTextColor(ResourceUtils.getInstance().getColor(R.color.main_blue_color));
             holder.tvTransMoney.setTextColor(ResourceUtils.getInstance().getColor(R.color.normal_text_money_green_color));
-            holder.tvTransMoney.setText(String.valueOf(myBillModel.getTransMoney()));
+            holder.tvTransMoney.setText("+" + myBillModel.getUSB_Money());
         }
 
     }

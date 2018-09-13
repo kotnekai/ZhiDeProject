@@ -104,7 +104,7 @@ public class ResetPswActivity extends BaseActivity {
                 }
                 break;
             case R.id.rlReset:
-                String userId = PreferencesUtils.getString(CommonParams.LOGIN_USER_ID);
+                long userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
                 break;
         }
     }
