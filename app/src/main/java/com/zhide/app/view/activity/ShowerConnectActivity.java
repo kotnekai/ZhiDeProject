@@ -27,6 +27,7 @@ import com.example.jooronjar.utils.CMDUtils;
 import com.example.jooronjar.utils.DigitalTrans;
 import com.example.jooronjar.utils.WaterCodeListener;
 import com.zhide.app.R;
+import com.zhide.app.utils.DateUtils;
 import com.zhide.app.utils.DialogUtils;
 import com.zhide.app.utils.ToastUtil;
 import com.zhide.app.view.base.BaseActivity;
@@ -121,7 +122,8 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
         Log.d(mContext.getClass().getSimpleName(), "设备的mac地址：=" + MAC);
 
         ivDeviceState.setOnClickListener(this);
-        ivDeviceState.setOnTouchListener(this);
+
+//        ivDeviceState.setOnTouchListener(this);
         myHandler = new MyHandler(ShowerConnectActivity.this);
 
         circleProgressBar.setSweepAngle(0);
@@ -230,15 +232,16 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
             case 31:
                 //连接成功
                 hideProgress();
-                ivDeviceState.setImageResource(R.mipmap.dryer_connected);
+                ivDeviceState.setImageResource(R.mipmap.start);
                 device_connect_state_txt.setText(getString(R.string.driver_start_using));
                 break;
             case 32:
                 //下发费率成功
                 hideProgress();
-                ivDeviceState.setImageResource(R.drawable.animation_water);
-                animationDrawable = (AnimationDrawable) ivDeviceState.getDrawable();
+                ivShower.setImageResource(R.drawable.animation_shower);
+                animationDrawable = (AnimationDrawable) ivShower.getDrawable();
                 animationDrawable.start();
+                ivDeviceState.setImageResource(R.mipmap.stop);
                 device_connect_state_txt.setText(getString(R.string.driver_stop_use));
                 break;
             case 33:
@@ -464,6 +467,47 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
                         animationDrawable.start();
                     }
                 }
+
+                switch (mStatus) {
+                    case 31:
+                        //连接成功
+                        showProgress();
+                        startdDownfate(mprid, mBuffer, tac_Buffer);
+                        break;
+                    case 32:
+                        //结束费率
+                        showProgress();
+                        CMDUtils.jieshufeilv(mbtService, true);
+                        break;
+                    case 33:
+                        startDeal(mprid, mdecived, mBuffer, tac_Buffer);
+                        showProgress();
+                        break;
+                    case 35:
+                        skipUI();
+                        break;
+                    case 41:
+                        //配对失败
+                        showProgress();
+                        //连接设备
+                        connDevice();
+                        break;
+                    case 42:
+                        //连接失败
+                        showProgress();
+                        //连接设备
+                        connDevice();
+                        break;
+                    case 43:
+                        //断开连接
+                        showProgress();
+                        //连接设备
+                        connDevice();
+                        break;
+                    default:
+                        break;
+                }
+
                 break;
         }
         return true;
@@ -477,46 +521,54 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
             case R.id.tvNext:
                 skipUI();
                 break;
+            case R.id.ivDeviceState:
+
+                switch (mStatus) {
+                    case 31:
+                        //连接成功
+                        showProgress();
+                        startdDownfate( mprid,mBuffer,tac_Buffer);
+                        break;
+                    case 32:
+                        //结束费率
+                        showProgress();
+//                        ivShower.setImageResource(R.drawable.animation_shower);
+                        animationDrawable = (AnimationDrawable) ivShower.getDrawable();
+                        animationDrawable.stop();
+                        CMDUtils.jieshufeilv(mbtService, true);
+                        break;
+                    case 33:
+                        startDeal(mprid, mdecived, mBuffer, tac_Buffer);
+                        showProgress();
+                        break;
+                    case 35:
+                        skipUI();
+                        break;
+                    case 41:
+                        //配对失败
+                        showProgress();
+                        //连接设备
+                        connDevice();
+                        break;
+                    case 42:
+                        //连接失败
+                        showProgress();
+                        //连接设备
+                        connDevice();
+                        break;
+                    case 43:
+                        //断开连接
+                        showProgress();
+                        //连接设备
+                        connDevice();
+                        break;
+                    default:
+                        break;
+                }
+
+                break;
         }
-        switch (mStatus) {
-            case 31:
-                //连接成功
-                showProgress();
-                startdDownfate(mprid, mBuffer, tac_Buffer);
-                break;
-            case 32:
-                //结束费率
-                showProgress();
-                CMDUtils.jieshufeilv(mbtService, true);
-                break;
-            case 33:
-                startDeal(mprid, mdecived, mBuffer, tac_Buffer);
-                showProgress();
-                break;
-            case 35:
-                skipUI();
-                break;
-            case 41:
-                //配对失败
-                showProgress();
-                //连接设备
-                connDevice();
-                break;
-            case 42:
-                //连接失败
-                showProgress();
-                //连接设备
-                connDevice();
-                break;
-            case 43:
-                //断开连接
-                showProgress();
-                //连接设备
-                connDevice();
-                break;
-            default:
-                break;
-        }
+
     }
 
 
@@ -552,6 +604,9 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
 
             // 清除消费数据
             try {
+                //consumeMoneString 实际使用 多少钱
+
+
                 //生成消费数据单据
                 xiaofeiDialog = DialogUtils.createDingdanDialog(
                         mContext, timeid,
@@ -622,13 +677,13 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
         Log.d(mContext.getClass().getSimpleName(), "macType:" + macType);
         Log.d(mContext.getClass().getSimpleName(), "lType:" + lType);
         Log.d(mContext.getClass().getSimpleName(), "charge:" + charge);
-        mprid = mproductid;
-        times = macTime;
-        mdecived = mdeviceid;
-        mBuffer = macBuffer;
-        tac_Buffer = tac_timeBuffer;
-        dType = constype;
-        wtype = macType + "&" + lType;
+        mprid=mproductid;
+        times =macTime;
+        mdecived =mdeviceid;
+        mBuffer =macBuffer;
+        tac_Buffer =tac_timeBuffer;
+        dType =constype;
+        wtype =macType+"&"+lType;
         ToastUtil.showShort("查询成功");
         if (mproductid == 0) {
             ToastUtil.showShort(getString(R.string.device_no_login));
@@ -757,7 +812,7 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     private void startdDownfate(int mproductid, byte[] macBuffer, byte[] tac_timeBuffer) {
         DownRateInfo downRateInfo = new DownRateInfo();
         //时间
-        downRateInfo.ConsumeDT = DigitalTrans.getTimeID();
+        downRateInfo.ConsumeDT = DateUtils.getTimeID();
         //个人账号使用次数
         downRateInfo.UseCount = 100;
         //预扣金额
@@ -794,7 +849,7 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     private void startDeal(int mproductid, int mdeviceid, byte[] macBuffer, byte[] tac_timeBuffer) {
         int tims = 180;
         DealRateInfo dealRateInfo = new DealRateInfo();
-        dealRateInfo.timeId = DigitalTrans.getTimeID();
+        dealRateInfo.timeId = DateUtils.getTimeID();
         dealRateInfo.usecount = 1;
         dealRateInfo.MacType = wtype;
         //扣费方式
