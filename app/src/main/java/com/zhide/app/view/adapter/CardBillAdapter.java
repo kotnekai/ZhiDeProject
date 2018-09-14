@@ -44,8 +44,8 @@ public class CardBillAdapter extends RecyclerView.Adapter<CardBillAdapter.MyView
         }
         holder.tvTransTime.setText(dataModel.getUSCP_CreateTime());
         holder.tvTransType.setText(dataModel.getUSCP_Type());
-        holder.tvTransAmount.setText(dataModel.getUSCP_Money());
-        holder.tvRemainAmount.setText(dataModel.getUSCP_Money());
+      //  holder.tvTransAmount.setText(dataModel.getUSCP_Money());
+     //   holder.tvRemainAmount.setText(dataModel.getUSCP_Money());
 
     }
 

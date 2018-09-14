@@ -3,6 +3,7 @@ package com.zhide.app.view.activity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zhide.app.R;
 import com.zhide.app.common.CommonParams;
 import com.zhide.app.utils.PreferencesUtils;
@@ -13,6 +14,11 @@ public class LauncherActivity extends BaseActivity {
     @Override
     protected int getCenterView() {
         return 0;
+    }
+
+    @Override
+    protected SmartRefreshLayout getRefreshView() {
+        return null;
     }
 
     @Override

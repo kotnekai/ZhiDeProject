@@ -18,6 +18,7 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
 
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zhide.app.R;
 
 import butterknife.BindView;
@@ -47,6 +48,11 @@ public class WebViewActivity extends BaseActivity {
     @Override
     protected int getCenterView() {
         return R.layout.activity_web_view;
+    }
+
+    @Override
+    protected SmartRefreshLayout getRefreshView() {
+        return null;
     }
 
     public static Intent makeIntent(Context context, String title, String url) {

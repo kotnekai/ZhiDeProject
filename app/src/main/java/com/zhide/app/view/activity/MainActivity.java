@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zhide.app.R;
 import com.zhide.app.utils.ResourceUtils;
 import com.zhide.app.utils.UIUtils;
@@ -48,6 +49,11 @@ public class MainActivity extends BaseActivity {
     @Override
     protected int getCenterView() {
         return R.layout.activity_main;
+    }
+
+    @Override
+    protected SmartRefreshLayout getRefreshView() {
+        return null;
     }
 
     @Override

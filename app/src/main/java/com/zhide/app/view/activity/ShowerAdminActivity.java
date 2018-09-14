@@ -20,6 +20,7 @@ import com.example.jooronjar.BluetoothService;
 import com.example.jooronjar.utils.AnalyAdminTools;
 import com.example.jooronjar.utils.CMDUtils;
 import com.example.jooronjar.utils.OnWaterAdminListener;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zhide.app.R;
 import com.zhide.app.utils.ToastUtil;
 import com.zhide.app.view.base.BaseActivity;
@@ -69,6 +70,11 @@ public class ShowerAdminActivity extends BaseActivity implements OnWaterAdminLis
     @Override
     protected int getCenterView() {
         return R.layout.activity_shower_admin;
+    }
+
+    @Override
+    protected SmartRefreshLayout getRefreshView() {
+        return null;
     }
 
     @Override

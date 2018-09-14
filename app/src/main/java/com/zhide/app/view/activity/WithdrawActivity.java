@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zhide.app.R;
 import com.zhide.app.utils.EmptyUtil;
 import com.zhide.app.utils.ToastUtil;
@@ -34,6 +35,11 @@ public class WithdrawActivity extends BaseActivity {
     @Override
     protected int getCenterView() {
         return R.layout.activity_withdraw;
+    }
+
+    @Override
+    protected SmartRefreshLayout getRefreshView() {
+        return null;
     }
 
     @Override

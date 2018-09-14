@@ -14,8 +14,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zhide.app.R;
 import com.zhide.app.eventBus.DefaultEvent;
+import com.zhide.app.eventBus.ErrorMsgEvent;
+import com.zhide.app.eventBus.OkResponseEvent;
+import com.zhide.app.model.ResponseModel;
 import com.zhide.app.utils.ToastUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -59,6 +63,8 @@ public abstract class BaseActivity extends AppCompatActivity implements DrawerLa
      */
     protected abstract int getCenterView();
 
+    protected abstract SmartRefreshLayout getRefreshView();
+
     /**
      * 初始化标题栏的内容，设置标题栏标题，icon，返回事件，等等，在各自子类实现
      */
@@ -85,9 +91,19 @@ public abstract class BaseActivity extends AppCompatActivity implements DrawerLa
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onDefaultEventBus(DefaultEvent event) {
-
+    public void onErrorMsgEvent(ErrorMsgEvent event) {
+        SmartRefreshLayout refreshView = getRefreshView();
+        if (refreshView != null) {
+            refreshView.finishLoadMore();
+            refreshView.finishRefresh();
+        }
+        String message = event.getMessagge();
+        if (message == null) {
+            return;
+        }
+        ToastUtil.showShort(message);
     }
+
 
     /**
      * 从子类获取中间部分页面后，初始化整个界面
@@ -243,6 +259,7 @@ public abstract class BaseActivity extends AppCompatActivity implements DrawerLa
 
     /**
      * 设置右边图标按钮状态 ，默认隐藏
+     *
      * @param visibility
      */
     protected void setRightIconVisibility(int visibility) {
@@ -254,6 +271,7 @@ public abstract class BaseActivity extends AppCompatActivity implements DrawerLa
 
     /**
      * 设置右边图标按钮的图标
+     *
      * @param resId
      */
     protected void setRightIcon(int resId) {
@@ -261,8 +279,10 @@ public abstract class BaseActivity extends AppCompatActivity implements DrawerLa
             ivNext.setImageResource(resId);
         }
     }
+
     /**
      * 设置右边按钮文字
+     *
      * @param rightText
      */
     protected void setHeader_RightText(String rightText) {
@@ -274,6 +294,7 @@ public abstract class BaseActivity extends AppCompatActivity implements DrawerLa
 
     /**
      * 设置标题栏标题
+     *
      * @param title
      */
     protected void setHeaderTitle(String title) {
@@ -285,6 +306,7 @@ public abstract class BaseActivity extends AppCompatActivity implements DrawerLa
 
     /**
      * 设置右边图标按钮的监听事件
+     *
      * @param listener
      */
     protected void setHeader_rightIconListener(View.OnClickListener listener) {
@@ -296,6 +318,7 @@ public abstract class BaseActivity extends AppCompatActivity implements DrawerLa
     /**
      * 设置左边返回按钮的监听事件，默认是直接返回，如需要添加其他附带操作就可以
      * 调用这个事件
+     *
      * @param listener
      */
     protected void setHeader_LeftClickListener(View.OnClickListener listener) {
@@ -303,8 +326,10 @@ public abstract class BaseActivity extends AppCompatActivity implements DrawerLa
             ivGoBack.setOnClickListener(listener);
         }
     }
+
     /**
      * 设置右边文字按钮的点击事件监听
+     *
      * @param listener
      */
     protected void setHeader_RightTextClickListener(View.OnClickListener listener) {
@@ -313,7 +338,6 @@ public abstract class BaseActivity extends AppCompatActivity implements DrawerLa
         }
 
     }
-
 
 
     /**

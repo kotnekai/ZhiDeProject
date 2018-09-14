@@ -11,10 +11,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zhide.app.R;
+import com.zhide.app.common.CommonParams;
 import com.zhide.app.eventBus.ModifyPswEvent;
+import com.zhide.app.logic.UserManager;
 import com.zhide.app.model.ResponseModel;
 import com.zhide.app.utils.EmptyUtil;
+import com.zhide.app.utils.PreferencesUtils;
 import com.zhide.app.utils.ToastUtil;
 import com.zhide.app.utils.UIUtils;
 import com.zhide.app.view.base.BaseActivity;
@@ -46,6 +50,11 @@ public class ResetPswActivity extends BaseActivity {
     @Override
     protected int getCenterView() {
         return R.layout.activity_reset_psw;
+    }
+
+    @Override
+    protected SmartRefreshLayout getRefreshView() {
+        return null;
     }
 
     @Override
@@ -95,6 +104,7 @@ public class ResetPswActivity extends BaseActivity {
                 }
                 break;
             case R.id.rlReset:
+                long userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
                 break;
         }
     }

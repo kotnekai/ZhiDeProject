@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.alipay.sdk.app.PayTask;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.zhide.app.R;
 import com.zhide.app.common.ApplicationHolder;
@@ -60,6 +61,11 @@ public class RechargeActivity extends BaseActivity {
     @Override
     protected int getCenterView() {
         return R.layout.activity_recharge;
+    }
+
+    @Override
+    protected SmartRefreshLayout getRefreshView() {
+        return null;
     }
 
     @Override

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zhide.app.R;
 import com.zhide.app.view.base.BaseActivity;
 
@@ -19,6 +20,11 @@ public class OperateGuideActivity extends BaseActivity {
     @Override
     protected int getCenterView() {
         return R.layout.activity_operate_guide;
+    }
+
+    @Override
+    protected SmartRefreshLayout getRefreshView() {
+        return null;
     }
 
     @Override

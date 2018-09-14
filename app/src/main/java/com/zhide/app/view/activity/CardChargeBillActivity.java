@@ -40,6 +40,11 @@ public class CardChargeBillActivity extends BaseActivity {
         return R.layout.activity_card_charge_bill;
     }
 
+    @Override
+    protected SmartRefreshLayout getRefreshView() {
+        return null;
+    }
+
     public static Intent makeIntent(Context context) {
         return new Intent(context, CardChargeBillActivity.class);
     }
@@ -62,7 +67,7 @@ public class CardChargeBillActivity extends BaseActivity {
     }
 
     private void loadData() {
-        String userId = PreferencesUtils.getString(CommonParams.LOGIN_USER_ID);
+        long userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
         BillManager.getInstance().getCardBillData(userId);
 
     }
@@ -81,7 +86,7 @@ public class CardChargeBillActivity extends BaseActivity {
 
     private void updateUI(CardBillModel cardBillModel) {
         List<CardBillModel.DataModel> data = cardBillModel.getData();
-        if (dataList.size() == 0 || data == null || data.size() == 0) {
+        if (data == null) {
             return;
         }
         dataList.clear();

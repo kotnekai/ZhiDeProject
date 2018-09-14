@@ -1,18 +1,18 @@
 package com.zhide.app.eventBus;
 
-import com.zhide.app.model.UserInfoModel;
+import com.zhide.app.model.UserData;
 
 /**
  * Create by Admin on 2018/9/8
  */
 public class UserInfoEvent {
-    private UserInfoModel userInfoModel;
+    private UserData userData;
 
-    public UserInfoEvent(UserInfoModel userInfoModel) {
-        this.userInfoModel = userInfoModel;
+    public UserInfoEvent(UserData userData) {
+        this.userData = userData;
     }
 
-    public UserInfoModel getUserInfoModel() {
-        return userInfoModel;
+    public UserData getUserData() {
+        return userData;
     }
 }

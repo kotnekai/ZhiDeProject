@@ -20,11 +20,11 @@ import java.util.List;
 public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapter.MyViewHolder> {
 
     private View mHeaderView;
-    private List<NewsModel> mDatas;
+    private List<NewsModel.NewsData> mDatas;
     private Context mContext;
     private LayoutInflater inflater;
 
-    public NewsRecyclerAdapter(Context context, List<NewsModel> datas) {
+    public NewsRecyclerAdapter(Context context, List<NewsModel.NewsData> datas) {
         this.mContext = context;
         this.mDatas = datas;
         inflater = LayoutInflater.from(mContext);
@@ -44,10 +44,10 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
     //填充onCreateViewHolder方法返回的holder中的控件
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
-        NewsModel model = mDatas.get(getRealPosition(holder));
-        holder.tvNewsTitle.setText(model.getTitle());
-        holder.tvNewsDate.setText(model.getDate());
-        holder.tvNewsDesc.setText(model.getDesc());
+        NewsModel.NewsData newsData = mDatas.get(getRealPosition(holder));
+        holder.tvNewsTitle.setText(newsData.getNI_Name());
+        holder.tvNewsDate.setText(newsData.getNI_UpdateTime());
+        holder.tvNewsDesc.setText(newsData.getNI_Summary());
 
     }
 

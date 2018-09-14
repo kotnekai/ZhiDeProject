@@ -9,12 +9,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zhide.app.R;
+import com.zhide.app.eventBus.NewsModelEvent;
 import com.zhide.app.logic.MainManager;
 import com.zhide.app.logic.UserManager;
+import com.zhide.app.model.NewsModel;
 import com.zhide.app.view.activity.NewsListActivity;
 import com.zhide.app.view.activity.RechargeActivity;
 import com.zhide.app.view.activity.ShowerMainActivity;
 import com.zhide.app.view.base.BaseFragment;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -43,12 +50,37 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     @Override
     protected void initData() {
 
-        MainManager.getInstance().getMainPageNews();
-        for (int i = 0; i < 3; i++) {
-            View view = LayoutInflater.from(getContext()).inflate(R.layout.item_news, null, false);
-            llNews.addView(view);
-        }
+        MainManager.getInstance().getMainPageNews(1);
 
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onNewModelEvent(NewsModelEvent event) {
+        if (event.getFromPage() != 1) {
+            return;
+        }
+        NewsModel newsModel = event.getNewsModel();
+        if (newsModel == null) {
+            return;
+        }
+        List<NewsModel.NewsData> data = newsModel.getData();
+        if (data == null) {
+            return;
+        }
+        updateNews(data);
+    }
+
+    private void updateNews(List<NewsModel.NewsData> data) {
+        for (int i = 0; data.size() < 3; i++) {
+            View newsView = LayoutInflater.from(getContext()).inflate(R.layout.item_news, null, false);
+            TextView tvNewsTitle =  newsView.findViewById(R.id.tvNewsTitle);
+            TextView tvNewsDate =  newsView.findViewById(R.id.tvNewsDate);
+            TextView tvNewsDesc =  newsView.findViewById(R.id.tvNewsDesc);
+            tvNewsTitle.setText(data.get(i).getNI_Name());
+            tvNewsDate.setText(data.get(i).getNI_UpdateTime());
+            tvNewsDesc.setText(data.get(i).getNI_Summary());
+            llNews.addView(newsView);
+        }
     }
 
     @Override

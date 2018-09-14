@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zhide.app.R;
 import com.zhide.app.common.ComApplication;
 import com.zhide.app.common.CommonParams;
@@ -49,6 +50,11 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected int getCenterView() {
         return R.layout.activity_login;
+    }
+
+    @Override
+    protected SmartRefreshLayout getRefreshView() {
+        return null;
     }
 
     @Override
@@ -93,7 +99,7 @@ public class LoginActivity extends BaseActivity {
         }
         RegisterLoginModel.UserModel data = dataModel.getData();
         if(data!=null){
-            PreferencesUtils.putString(CommonParams.LOGIN_USER_ID,String.valueOf(data.getUSI_Id()));
+            PreferencesUtils.putLong(CommonParams.LOGIN_USER_ID,data.getUSI_Id());
         }
         ToastUtil.showShort(dataModel.getMessage());
         if (dataModel.getCode() == 1) {

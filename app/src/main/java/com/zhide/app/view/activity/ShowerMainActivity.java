@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zhide.app.R;
 import com.zhide.app.view.adapter.ScanBluetoothDeviceAdapter;
 import com.zhide.app.view.base.BaseActivity;
@@ -78,6 +79,11 @@ public class ShowerMainActivity extends BaseActivity implements View.OnClickList
     @Override
     protected int getCenterView() {
         return R.layout.activity_shower_main;
+    }
+
+    @Override
+    protected SmartRefreshLayout getRefreshView() {
+        return null;
     }
 
     @Override
