@@ -162,11 +162,9 @@ public class MineFragment extends BaseFragment implements TextWatcher {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tvRecharge:
-                tvSaveInfo.setSelected(true);
                 startActivity(RechargeActivity.makeIntent(getActivity()));
                 break;
             case R.id.tvWithdraw:
-                tvSaveInfo.setSelected(false);
                 startActivity(WithdrawActivity.makeIntent(getActivity(), totalMoney));
                 break;
             case R.id.tvMyBill:

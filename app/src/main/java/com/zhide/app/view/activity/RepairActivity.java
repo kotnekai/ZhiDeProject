@@ -54,6 +54,12 @@ public class RepairActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+          initData();
+    }
+
+    private void initData() {
+
+
 
     }
 

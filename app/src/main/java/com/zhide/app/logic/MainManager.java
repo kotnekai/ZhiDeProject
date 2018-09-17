@@ -2,10 +2,14 @@ package com.zhide.app.logic;
 
 import com.zhide.app.common.CommonUrl;
 import com.zhide.app.eventBus.ErrorMsgEvent;
+import com.zhide.app.eventBus.GuideModelEvent;
 import com.zhide.app.eventBus.NewsModelEvent;
 import com.zhide.app.eventBus.SaveInfoEvent;
+import com.zhide.app.eventBus.SystemInfoEvvent;
+import com.zhide.app.model.GuideModel;
 import com.zhide.app.model.NewsModel;
 import com.zhide.app.model.ResponseModel;
+import com.zhide.app.model.SystemInfoModel;
 import com.zhide.app.model.UserData;
 import com.zhide.app.okhttp.DataManager;
 import com.zhide.okhttputils.callback.GenericsCallback;
@@ -60,7 +64,7 @@ public class MainManager {
 
                     @Override
                     public void onResponse(NewsModel response, int id) {
-                        EventBus.getDefault().post(new NewsModelEvent(response,fromPage));
+                        EventBus.getDefault().post(new NewsModelEvent(response, fromPage));
                     }
                 });
 
@@ -94,6 +98,53 @@ public class MainManager {
                     @Override
                     public void onResponse(ResponseModel response, int id) {
                         EventBus.getDefault().post(new SaveInfoEvent(response));
+                    }
+                });
+    }
+
+    /**
+     * 操作指引接口
+     */
+    public void getGuideList() {
+        JSONObject params = new JSONObject();
+        try {
+            params.put("ActionMethod", "guide");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        dataInstance.sendPostRequestData(CommonUrl.getGuideList, params)
+                .execute(new GenericsCallback<GuideModel>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Response response, Call call, Exception e, int id) {
+                        String message = e.getMessage();
+                        EventBus.getDefault().post(new ErrorMsgEvent(message));
+                    }
+
+                    @Override
+                    public void onResponse(GuideModel response, int id) {
+                        EventBus.getDefault().post(new GuideModelEvent(response));
+                    }
+                });
+    }
+
+    public void getSystemInfo() {
+        JSONObject params = new JSONObject();
+        try {
+            params.put("ActionMethod", "systeminfo");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        dataInstance.sendPostRequestData(CommonUrl.getGuideList, params)
+                .execute(new GenericsCallback<SystemInfoModel>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Response response, Call call, Exception e, int id) {
+                        String message = e.getMessage();
+                        EventBus.getDefault().post(new ErrorMsgEvent(message));
+                    }
+
+                    @Override
+                    public void onResponse(SystemInfoModel response, int id) {
+                        EventBus.getDefault().post(new SystemInfoEvvent(response));
                     }
                 });
     }
