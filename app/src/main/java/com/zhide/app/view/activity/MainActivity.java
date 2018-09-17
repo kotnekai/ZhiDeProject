@@ -12,6 +12,9 @@ import android.widget.TextView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zhide.app.R;
+import com.zhide.app.common.CommonParams;
+import com.zhide.app.logic.UserManager;
+import com.zhide.app.utils.PreferencesUtils;
 import com.zhide.app.utils.ResourceUtils;
 import com.zhide.app.utils.UIUtils;
 import com.zhide.app.view.adapter.FragmentAdapter;
@@ -85,6 +88,12 @@ public class MainActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        long userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
+        UserManager.getInstance().getUserInfoById(userId);
+    }
 
     @OnClick({R.id.ivHomeTab, R.id.ivAboutTab, R.id.ivMineTab, R.id.tvFourthTab})
     public void onClick(View v) {

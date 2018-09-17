@@ -45,8 +45,6 @@ public class MineFragment extends BaseFragment implements TextWatcher {
     TextView tvRecharge;
     @BindView(R.id.tvWithdraw)
     TextView tvWithdraw;
-    @BindView(R.id.tvDetailMoney)
-    TextView tvDetailMoney;
 
     @BindView(R.id.tvTotalMoney)
     TextView tvTotalMoney;
@@ -63,6 +61,11 @@ public class MineFragment extends BaseFragment implements TextWatcher {
     EditText edtSchoolName;
     @BindView(R.id.edtGender)
     EditText edtGender;
+    @BindView(R.id.tvBindSchool)
+    TextView tvBindSchool;
+
+    @BindView(R.id.edtRoomAddress)
+    EditText edtRoomAddress;
     @BindView(R.id.edtStuId)
     EditText edtStuId;
     @BindView(R.id.edtIdCard)
@@ -71,6 +74,12 @@ public class MineFragment extends BaseFragment implements TextWatcher {
     TextView tvResetPsw;
     @BindView(R.id.tvLoginOut)
     TextView tvLoginOut;
+
+    @BindView(R.id.tvBaseBalance)
+    TextView tvBaseBalance;
+    @BindView(R.id.tvGiftBalance)
+    TextView tvGiftBalance;
+
     private float totalMoney;
     private long userId;
 
@@ -100,9 +109,6 @@ public class MineFragment extends BaseFragment implements TextWatcher {
         edtGender.addTextChangedListener(this);
         edtStuId.addTextChangedListener(this);
         edtIdCard.addTextChangedListener(this);
-
-        tvDetailMoney.setText(Html.fromHtml("（基本余额：" + "<font color='#4a86ba'>" + 89.98 + "</font>元," + "赠送余额：" + "<font color='#f06101'>"
-                + 189.98 + "</font>元）"));
     }
 
     /**
@@ -117,9 +123,15 @@ public class MineFragment extends BaseFragment implements TextWatcher {
             ToastUtil.showShort(getString(R.string.get_net_data_error));
             return;
         }
-        updateUI(infoModel);
+
     }
 
+
+    /**
+     * 用户信息
+     *
+     * @param event
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUserInfoEvent(UserInfoEvent event) {
         UserData userData = event.getUserData();
@@ -130,13 +142,30 @@ public class MineFragment extends BaseFragment implements TextWatcher {
     }
 
     private void updateInfoUI(UserData userData) {
+
+        tvTotalMoney.setText(String.valueOf(userData.getUSI_TotalBalance()));
+        tvBaseBalance.setText(String.valueOf(userData.getUSI_MainBalance()));
+        tvGiftBalance.setText(String.valueOf(userData.getUSI_GiftBalance()));
         edtUserName.setText(userData.getUSI_TrueName());
+        if (userData.getSI_Code() == null) {
+            llSchool.setVisibility(View.GONE);
+            tvBindSchool.setVisibility(View.VISIBLE);
+        } else {
+            llSchool.setVisibility(View.VISIBLE);
+            tvBindSchool.setVisibility(View.GONE);
+        }
         edtSchoolName.setText("");
+        edtRoomAddress.setText(userData.getUSI_SchoolRoomNo());
         edtGender.setText(userData.getUSI_Sex());
         edtStuId.setText(userData.getUSI_SchoolNo());
         edtIdCard.setText(userData.getUSI_IDCard());
     }
 
+    /**
+     * 保存用户修改资料信息回调
+     *
+     * @param event
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onSaveInfoEvent(SaveInfoEvent event) {
         ResponseModel responseModel = event.getResponseModel();
@@ -147,14 +176,6 @@ public class MineFragment extends BaseFragment implements TextWatcher {
             tvSaveInfo.setSelected(false);
         }
         ToastUtil.showShort(responseModel.getMsg());
-    }
-
-    private void updateUI(AccountInfoModel infoModel) {
-        totalMoney = infoModel.getTotalMoney();
-        tvTotalMoney.setText(String.valueOf(totalMoney));
-
-        tvDetailMoney.setText("（基本余额：" + "<font color='#4a86ba'>" + infoModel.getBaseMoney() + "</font>元," + "赠送余额：" + "<font color='#f06101'>"
-                + infoModel.getGiftMoney() + "</font>元）");
     }
 
 

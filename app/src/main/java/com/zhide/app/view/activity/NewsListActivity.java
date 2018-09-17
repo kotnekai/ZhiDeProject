@@ -94,6 +94,7 @@ public class NewsListActivity extends BaseActivity {
                 refreshLayout.finishRefresh();
             }
         });
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

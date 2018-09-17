@@ -122,9 +122,10 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/tvCanUserMoney"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="148.1"
+                    android:text=""
                     android:textColor="@color/normal_text_money_orange_color"
                     android:textSize="25sp"
                     android:textStyle="bold" />

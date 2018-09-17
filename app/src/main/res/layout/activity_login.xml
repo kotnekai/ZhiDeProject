@@ -11,6 +11,13 @@
         android:scaleType="centerCrop"
         android:src="@mipmap/bg" />
 
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_centerHorizontal="true"
+        android:src="@mipmap/logo" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="200dp"
@@ -79,8 +86,8 @@
 
             <RelativeLayout
                 android:layout_width="200dp"
-                android:layout_marginTop="5dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
                 <CheckBox
@@ -88,21 +95,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="记住密码"
-                    android:textSize="@dimen/com_text_size_12sp"
-                    android:textColor="@color/text_gray" />
+                    android:textColor="@color/text_gray"
+                    android:textSize="@dimen/com_text_size_12sp" />
 
                 <TextView
                     android:id="@+id/tvForgetPsw"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:text="忘记密码?"
-                    android:autoLink="all"
-                    android:textColorLink="@color/main_blue_color"
-                    android:textSize="@dimen/com_text_size_12sp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
-                    android:textColor="@color/main_blue_color" />
+                    android:autoLink="all"
+                    android:text="忘记密码?"
+                    android:textColor="@color/main_blue_color"
+                    android:textColorLink="@color/main_blue_color"
+                    android:textSize="@dimen/com_text_size_12sp" />
             </RelativeLayout>
         </LinearLayout>
 
