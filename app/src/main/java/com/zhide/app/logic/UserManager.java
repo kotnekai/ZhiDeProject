@@ -192,7 +192,7 @@ public class UserManager {
      *
      * @param userId
      */
-    public void getUserInfoById(long userId) {
+    public void getUserInfoById(long userId, final int fromPage) {
         JSONObject params = new JSONObject();
         //Long.parseLong(userId)
         try {
@@ -213,7 +213,7 @@ public class UserManager {
                         String data = response.getData();
                         Gson gson = new Gson();
                         UserData userData1 = gson.fromJson(data, UserData.class);
-                        EventBus.getDefault().post(new UserInfoEvent(userData1));
+                        EventBus.getDefault().post(new UserInfoEvent(userData1,fromPage));
                     }
                 });
     }

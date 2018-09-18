@@ -179,8 +179,9 @@
                     android:background="@color/white"
                     android:gravity="center|right"
                     android:hint="请输入姓名"
+                    android:paddingRight="10dp"
                     android:minWidth="100dp"
-                    android:paddingRight="15dp"
+                    android:layout_marginRight="15dp"
                     android:text=""
                     android:textColor="@color/text_color"
                     android:textSize="14sp" />
@@ -197,6 +198,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:gravity="right"
+                android:paddingRight="10dp"
+                android:layout_marginRight="15dp"
                 android:minWidth="100dp">
 
                 <TextView
@@ -212,7 +215,6 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="15dp"
                     android:text="点击绑定学校>"
                     android:textColor="@color/text_color" />
 
@@ -222,17 +224,16 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="15dp"
                     android:orientation="vertical"
                     android:visibility="gone">
 
-                    <EditText
-                        android:id="@+id/edtSchoolName"
+                    <TextView
+                        android:id="@+id/tvSchoolName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:background="@color/white"
-                        android:text="学校名称"
+                        android:text="暂无"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/com_text_size_14sp" />
 
@@ -272,6 +273,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="15dp"
+                    android:paddingRight="10dp"
                     android:background="@color/white"
                     android:gravity="center|right"
                     android:hint="请先绑定学校"
@@ -307,6 +309,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="15dp"
                     android:background="@color/white"
+                    android:paddingRight="10dp"
                     android:gravity="center|right"
                     android:hint="请输入性别"
                     android:minWidth="100dp"
@@ -343,8 +346,9 @@
                     android:layout_marginRight="15dp"
                     android:background="@color/white"
                     android:gravity="center|right"
-                    android:hint="请输入学号"
+                    android:hint="请绑定学校"
                     android:minWidth="100dp"
+                    android:paddingRight="10dp"
                     android:text=""
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/com_text_size_14sp" />
@@ -377,6 +381,8 @@
                     android:background="@color/white"
                     android:gravity="center|right"
                     android:hint="请输入身份证"
+                    android:paddingRight="10dp"
+
                     android:minWidth="100dp"
                     android:text=""
                     android:textColor="@color/text_color"
@@ -411,6 +417,8 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
                     android:gravity="center"
+                    android:paddingRight="10dp"
+
                     android:text="点击修改>>" />
 
 

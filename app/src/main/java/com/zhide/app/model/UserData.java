@@ -10,11 +10,11 @@ public class UserData {
     private String USI_TrueName;// 姓名
     private String USI_SchoolNo;// 学号
     private String USI_AlipayAcc;// 支付宝账号
-    private long SI_ID;//学校id
+    private Long SI_ID;//学校id
     private String USI_RegChannel;//注册渠道，苹果APP，安卓APP，PC后台网站
-    private float USI_MainCardBalance;//卡的主余额（卡面金额）
+    private Float USI_MainCardBalance;//卡的主余额（卡面金额）
     private String USI_State;//状态：注销，资料未完善，可用，冻结
-    private float USI_Frozen;//冻结金额
+    private Float USI_Frozen;//冻结金额
     private String USI_Pwd;//登录密码
     private String USI_Card_SN_PIN;//学生卡ID
     private String USI_ContactMobile;//学生联系手机号码
@@ -23,16 +23,16 @@ public class UserData {
     private String USI_IDCard;//身份证号码
     private String USI_RegTime;//注册时间
     private String USI_UpdateTime;//更新资料时间USI_UpdateTime
-    private float USI_MainBalance;//主钱包余额、、基本余额
+    private Float USI_MainBalance;//主钱包余额、、基本余额
     private String USI_AllowTurnCardBalance;//允许转款到卡的余额
     private String USI_Mobile;//手机号码，主键唯一（登录账号）
     private String USI_SMSCode;//短信验证码
     private String USI_PayPwd;// 支付密码
-   private long UCI_Id;//卡id
+    private Long UCI_Id;//卡id
     private String USI_AlipayName;//  支付宝姓名
     private String SI_Code;//  扫学校二维码得出的guid
-    private float USI_GiftBalance;//  赠送余额
-    private float USI_TotalBalance;//  总余额 （基本余额+赠送余额）
+    private Float USI_GiftBalance;//  赠送余额
+    private Float USI_TotalBalance;//  总余额 （基本余额+赠送余额）
 
 
     public String getSI_Code() {
@@ -75,13 +75,6 @@ public class UserData {
         this.USI_AlipayAcc = USI_AlipayAcc;
     }
 
-    public long getSI_ID() {
-        return SI_ID;
-    }
-
-    public void setSI_ID(long SI_ID) {
-        this.SI_ID = SI_ID;
-    }
 
     public String getUSI_RegChannel() {
         return USI_RegChannel;
@@ -91,13 +84,6 @@ public class UserData {
         this.USI_RegChannel = USI_RegChannel;
     }
 
-    public float getUSI_MainCardBalance() {
-        return USI_MainCardBalance;
-    }
-
-    public void setUSI_MainCardBalance(float USI_MainCardBalance) {
-        this.USI_MainCardBalance = USI_MainCardBalance;
-    }
 
     public String getUSI_State() {
         return USI_State;
@@ -107,13 +93,7 @@ public class UserData {
         this.USI_State = USI_State;
     }
 
-    public float getUSI_Frozen() {
-        return USI_Frozen;
-    }
 
-    public void setUSI_Frozen(float USI_Frozen) {
-        this.USI_Frozen = USI_Frozen;
-    }
 
     public String getUSI_Card_SN_PIN() {
         return USI_Card_SN_PIN;
@@ -171,13 +151,6 @@ public class UserData {
         this.USI_UpdateTime = USI_UpdateTime;
     }
 
-    public float getUSI_MainBalance() {
-        return USI_MainBalance;
-    }
-
-    public void setUSI_MainBalance(float USI_MainBalance) {
-        this.USI_MainBalance = USI_MainBalance;
-    }
 
     public String getUSI_AllowTurnCardBalance() {
         return USI_AllowTurnCardBalance;
@@ -227,27 +200,59 @@ public class UserData {
         this.USI_Pwd = USI_Pwd;
     }
 
-    public long getUCI_Id() {
+    public Long getSI_ID() {
+        return SI_ID;
+    }
+
+    public void setSI_ID(Long SI_ID) {
+        this.SI_ID = SI_ID;
+    }
+
+    public Float getUSI_MainCardBalance() {
+        return USI_MainCardBalance;
+    }
+
+    public void setUSI_MainCardBalance(Float USI_MainCardBalance) {
+        this.USI_MainCardBalance = USI_MainCardBalance;
+    }
+
+    public Float getUSI_Frozen() {
+        return USI_Frozen;
+    }
+
+    public void setUSI_Frozen(Float USI_Frozen) {
+        this.USI_Frozen = USI_Frozen;
+    }
+
+    public Float getUSI_MainBalance() {
+        return USI_MainBalance;
+    }
+
+    public void setUSI_MainBalance(Float USI_MainBalance) {
+        this.USI_MainBalance = USI_MainBalance;
+    }
+
+    public Long getUCI_Id() {
         return UCI_Id;
     }
 
-    public void setUCI_Id(long UCI_Id) {
+    public void setUCI_Id(Long UCI_Id) {
         this.UCI_Id = UCI_Id;
     }
 
-    public float getUSI_GiftBalance() {
+    public Float getUSI_GiftBalance() {
         return USI_GiftBalance;
     }
 
-    public void setUSI_GiftBalance(float USI_GiftBalance) {
+    public void setUSI_GiftBalance(Float USI_GiftBalance) {
         this.USI_GiftBalance = USI_GiftBalance;
     }
 
-    public float getUSI_TotalBalance() {
+    public Float getUSI_TotalBalance() {
         return USI_TotalBalance;
     }
 
-    public void setUSI_TotalBalance(float USI_TotalBalance) {
+    public void setUSI_TotalBalance(Float USI_TotalBalance) {
         this.USI_TotalBalance = USI_TotalBalance;
     }
 }

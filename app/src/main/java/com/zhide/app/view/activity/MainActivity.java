@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -86,13 +87,6 @@ public class MainActivity extends BaseActivity {
         viewPager.setAdapter(adapter);
         ivHomeTab.setSelected(true);
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        long userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
-        UserManager.getInstance().getUserInfoById(userId);
     }
 
     @OnClick({R.id.ivHomeTab, R.id.ivAboutTab, R.id.ivMineTab, R.id.tvFourthTab})

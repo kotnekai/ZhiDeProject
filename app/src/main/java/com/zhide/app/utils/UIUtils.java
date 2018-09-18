@@ -171,6 +171,7 @@ public class UIUtils {
         }
         return result;
     }
+
     /**
      * 密码显示或隐藏 （切换）
      */
@@ -183,5 +184,13 @@ public class UIUtils {
             etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
         }
         etPassword.setSelection(pos);
+    }
+
+    public static String getFloatData(Float data) {
+        if (data == null) {
+            return String.valueOf(0.00);
+        } else {
+            return String.valueOf(data);
+        }
     }
 }

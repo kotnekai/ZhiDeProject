@@ -4,33 +4,33 @@ package com.zhide.app.model;
  * Create by Admin on 2018/8/20
  */
 public class ReChargeModel {
-    private float totalBalance;//账户基本余额
-    private float cashBalance;//现金余额
-    private float giftBalance;//赠送余额
+    private Float totalBalance;//账户基本余额
+    private Float cashBalance;//现金余额
+    private Float giftBalance;//赠送余额
     private String chargeActTitle;//充值活动说明
     private String chargeTitle;//充值说明
 
-    public float getTotalBalance() {
+    public Float getTotalBalance() {
         return totalBalance;
     }
 
-    public void setTotalBalance(float totalBalance) {
+    public void setTotalBalance(Float totalBalance) {
         this.totalBalance = totalBalance;
     }
 
-    public float getCashBalance() {
+    public Float getCashBalance() {
         return cashBalance;
     }
 
-    public void setCashBalance(float cashBalance) {
+    public void setCashBalance(Float cashBalance) {
         this.cashBalance = cashBalance;
     }
 
-    public float getGiftBalance() {
+    public Float getGiftBalance() {
         return giftBalance;
     }
 
-    public void setGiftBalance(float giftBalance) {
+    public void setGiftBalance(Float giftBalance) {
         this.giftBalance = giftBalance;
     }
 

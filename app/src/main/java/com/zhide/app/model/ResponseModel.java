@@ -5,7 +5,7 @@ package com.zhide.app.model;
  */
 public class ResponseModel {
     private int code;
-    private String msg;
+    private String message;
 
     public int getCode() {
         return code;
@@ -16,10 +16,10 @@ public class ResponseModel {
     }
 
     public String getMsg() {
-        return msg;
+        return message;
     }
 
     public void setMsg(String msg) {
-        this.msg = msg;
+        this.message = msg;
     }
 }

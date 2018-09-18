@@ -1,33 +1,36 @@
 package com.zhide.app.view.fragment;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.text.Editable;
-import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.view.accessibility.AccessibilityEvent;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.uuzuche.lib_zxing.activity.CaptureActivity;
+import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.zhide.app.R;
 import com.zhide.app.common.CommonParams;
 import com.zhide.app.eventBus.MineAccountEvent;
 import com.zhide.app.eventBus.SaveInfoEvent;
+import com.zhide.app.eventBus.SchoolInfoEvent;
 import com.zhide.app.eventBus.UserInfoEvent;
 import com.zhide.app.logic.MainManager;
 import com.zhide.app.logic.UserManager;
 import com.zhide.app.model.AccountInfoModel;
 import com.zhide.app.model.ResponseModel;
+import com.zhide.app.model.SchoolInfoModel;
 import com.zhide.app.model.UserData;
-import com.zhide.app.model.UserInfoModel;
 import com.zhide.app.utils.DialogUtils;
 import com.zhide.app.utils.PreferencesUtils;
 import com.zhide.app.utils.ToastUtil;
+import com.zhide.app.utils.UIUtils;
 import com.zhide.app.view.activity.LoginActivity;
 import com.zhide.app.view.activity.MyBillActivity;
+import com.zhide.app.view.activity.QRCodeActivity;
 import com.zhide.app.view.activity.RechargeActivity;
 import com.zhide.app.view.activity.ResetPswActivity;
 import com.zhide.app.view.activity.WithdrawActivity;
@@ -57,8 +60,8 @@ public class MineFragment extends BaseFragment implements TextWatcher {
     TextView edtUserName;
     @BindView(R.id.llSchool)
     LinearLayout llSchool;
-    @BindView(R.id.edtSchoolName)
-    EditText edtSchoolName;
+    @BindView(R.id.tvSchoolName)
+    TextView tvSchoolName;
     @BindView(R.id.edtGender)
     EditText edtGender;
     @BindView(R.id.tvBindSchool)
@@ -85,9 +88,11 @@ public class MineFragment extends BaseFragment implements TextWatcher {
 
     @Override
     protected void initData() {
+        Log.d("admin", "initData: ");
         userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
 
-        UserManager.getInstance().getUserInfoById(userId);
+        UserManager.getInstance().getUserInfoById(userId, 3);
+        UserManager.getInstance().getUserSchoolInfo(userId);
     }
 
     @Override
@@ -104,8 +109,10 @@ public class MineFragment extends BaseFragment implements TextWatcher {
     @Override
     protected void initView() {
         tvSaveInfo.setSelected(false);
+        tvSaveInfo.setEnabled(false);
+
         edtUserName.addTextChangedListener(this);
-        edtSchoolName.addTextChangedListener(this);
+        tvSchoolName.addTextChangedListener(this);
         edtGender.addTextChangedListener(this);
         edtStuId.addTextChangedListener(this);
         edtIdCard.addTextChangedListener(this);
@@ -126,6 +133,36 @@ public class MineFragment extends BaseFragment implements TextWatcher {
 
     }
 
+    /**
+     * 学校信息
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onSchoolInfoEvent(SchoolInfoEvent event) {
+        SchoolInfoModel schoolInfoModel = event.getSchoolInfoModel();
+        if (schoolInfoModel.getCode() != 1) {
+            return;
+        }
+        SchoolInfoModel.SchoolModel data = schoolInfoModel.getData();
+        if (data == null) {
+            return;
+        }
+        updateSchoolInfo(data);
+
+    }
+
+    private void updateSchoolInfo(SchoolInfoModel.SchoolModel data) {
+        String si_name = data.getSI_Name();
+        if (si_name == null || si_name.isEmpty() || data.getSI_Code() == null) {
+            tvBindSchool.setVisibility(View.VISIBLE);
+            llSchool.setVisibility(View.GONE);
+        } else {
+            tvBindSchool.setVisibility(View.GONE);
+            llSchool.setVisibility(View.VISIBLE);
+            tvSchoolName.setText(data.getSI_Name());
+        }
+    }
 
     /**
      * 用户信息
@@ -134,6 +171,9 @@ public class MineFragment extends BaseFragment implements TextWatcher {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUserInfoEvent(UserInfoEvent event) {
+        if (event.getUpdatePage() != 3) {
+            return;
+        }
         UserData userData = event.getUserData();
         if (userData == null) {
             return;
@@ -143,18 +183,10 @@ public class MineFragment extends BaseFragment implements TextWatcher {
 
     private void updateInfoUI(UserData userData) {
 
-        tvTotalMoney.setText(String.valueOf(userData.getUSI_TotalBalance()));
-        tvBaseBalance.setText(String.valueOf(userData.getUSI_MainBalance()));
-        tvGiftBalance.setText(String.valueOf(userData.getUSI_GiftBalance()));
+        tvTotalMoney.setText(UIUtils.getFloatData(userData.getUSI_TotalBalance()));
+        tvBaseBalance.setText(UIUtils.getFloatData(userData.getUSI_MainBalance()));
+        tvGiftBalance.setText(UIUtils.getFloatData(userData.getUSI_GiftBalance()));
         edtUserName.setText(userData.getUSI_TrueName());
-        if (userData.getSI_Code() == null) {
-            llSchool.setVisibility(View.GONE);
-            tvBindSchool.setVisibility(View.VISIBLE);
-        } else {
-            llSchool.setVisibility(View.VISIBLE);
-            tvBindSchool.setVisibility(View.GONE);
-        }
-        edtSchoolName.setText("");
         edtRoomAddress.setText(userData.getUSI_SchoolRoomNo());
         edtGender.setText(userData.getUSI_Sex());
         edtStuId.setText(userData.getUSI_SchoolNo());
@@ -174,12 +206,13 @@ public class MineFragment extends BaseFragment implements TextWatcher {
         }
         if (responseModel.getCode() == 1) {
             tvSaveInfo.setSelected(false);
+            tvSaveInfo.setEnabled(false);
         }
         ToastUtil.showShort(responseModel.getMsg());
     }
 
 
-    @OnClick({R.id.tvSaveInfo, R.id.tvRecharge, R.id.tvWithdraw, R.id.tvMyBill, R.id.llSchool, R.id.tvResetPsw, R.id.tvLoginOut})
+    @OnClick({R.id.tvBindSchool, R.id.tvSaveInfo, R.id.tvRecharge, R.id.tvWithdraw, R.id.tvMyBill, R.id.llSchool, R.id.tvResetPsw, R.id.tvLoginOut})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tvRecharge:
@@ -192,6 +225,13 @@ public class MineFragment extends BaseFragment implements TextWatcher {
                 startActivity(MyBillActivity.makeIntent(getActivity()));
                 break;
             case R.id.llSchool:
+                if (guidStr == null) {
+                    ToastUtil.showShort("请先绑定学校");
+                    return;
+                }
+                String schoolName = tvSchoolName.getText().toString();
+
+                startActivity(QRCodeActivity.makeIntent(getActivity(), guidStr, schoolName));
                 break;
 
             case R.id.tvResetPsw:
@@ -209,11 +249,51 @@ public class MineFragment extends BaseFragment implements TextWatcher {
             case R.id.tvSaveInfo:
                 submitPersonInfo();
                 break;
+            case R.id.tvBindSchool:
+                Intent intent = new Intent(getActivity(), CaptureActivity.class);
+                startActivityForResult(intent, REQUEST_CODE);
+                break;
+        }
+    }
+
+    private String guidStr;
+    private final int REQUEST_CODE = 101;
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("admin", "onActivityResult: data=" + data);
+        /**
+         * 处理二维码扫描结果
+         */
+        if (requestCode == REQUEST_CODE) {
+            //处理扫描结果（在界面上显示）
+            if (null != data) {
+                Bundle bundle = data.getExtras();
+                if (bundle == null) {
+                    return;
+                }
+                if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
+                    String result = bundle.getString(CodeUtils.RESULT_STRING);
+                    ToastUtil.showShort(UIUtils.getValueString(R.string.scan_code));
+
+                    if (result != null) {
+                        guidStr = result;
+                        ToastUtil.showShort(result);
+                        tvBindSchool.setVisibility(View.GONE);
+                        llSchool.setVisibility(View.VISIBLE);
+                    } else {
+                        tvBindSchool.setVisibility(View.VISIBLE);
+                        llSchool.setVisibility(View.GONE);
+                    }
+                } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
+                    ToastUtil.showShort(UIUtils.getValueString(R.string.scan_code));
+                }
+            }
         }
     }
 
     private void submitPersonInfo() {
-        String gUid = "";
         long userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
 
         UserData userData = new UserData();
@@ -223,17 +303,17 @@ public class MineFragment extends BaseFragment implements TextWatcher {
         // 房间号
         userData.setUSI_Sex(edtGender.getText().toString());
         userData.setUSI_IDCard(edtIdCard.getText().toString());
-        userData.setSI_Code(gUid);
+        if (guidStr != null) {
+            userData.setSI_Code(guidStr);
+        }
         MainManager.getInstance().savePersonInfo(userData);
 
     }
-
 
     private String beforeText;
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        Log.d("admin", "beforeTextChanged: s1=" + s.toString());
         beforeText = s.toString();
     }
 
@@ -244,13 +324,14 @@ public class MineFragment extends BaseFragment implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable s) {
-        Log.d("admin", "beforeTextChanged: s2=" + s.toString());
 
-        if (beforeText.isEmpty() || beforeText.equals(s.toString())) {
+        if (beforeText.equals(s.toString())) {
             tvSaveInfo.setSelected(false);
+            tvSaveInfo.setEnabled(false);
             return;
         }
         tvSaveInfo.setSelected(true);
-        beforeText = "";
+        tvSaveInfo.setEnabled(true);
+
     }
 }
