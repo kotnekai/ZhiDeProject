@@ -1,11 +1,14 @@
 package com.zhide.app.logic;
 
 import com.zhide.app.common.CommonUrl;
+import com.zhide.app.eventBus.BreakdownEvent;
 import com.zhide.app.eventBus.ErrorMsgEvent;
 import com.zhide.app.eventBus.GuideModelEvent;
 import com.zhide.app.eventBus.NewsModelEvent;
+import com.zhide.app.eventBus.OkResponseEvent;
 import com.zhide.app.eventBus.SaveInfoEvent;
 import com.zhide.app.eventBus.SystemInfoEvvent;
+import com.zhide.app.model.BreakdownModel;
 import com.zhide.app.model.GuideModel;
 import com.zhide.app.model.NewsModel;
 import com.zhide.app.model.ResponseModel;
@@ -149,4 +152,53 @@ public class MainManager {
                 });
     }
 
+    /**
+     * 故障列表
+     */
+    public void getBreakdownType(){
+        JSONObject params = new JSONObject();
+        try {
+            params.put("ActionMethod", "getbreakdowntype");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        dataInstance.sendPostRequestData(CommonUrl.getBreakdownType, params)
+                .execute(new GenericsCallback<BreakdownModel>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Response response, Call call, Exception e, int id) {
+                        String message = e.getMessage();
+                        EventBus.getDefault().post(new ErrorMsgEvent(message));
+                    }
+
+                    @Override
+                    public void onResponse(BreakdownModel response, int id) {
+                        EventBus.getDefault().post(new BreakdownEvent(response));
+                    }
+                });
+    }
+
+    public void submitBreakInfo(String device,String reson,long userId,String content){
+        JSONObject params = new JSONObject();
+        try {
+            params.put("ZBI_DeviceType", device);
+            params.put("ZBI_Type", reson);
+            params.put("USI_Id", userId);
+            params.put("ZBI_Content", content);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        dataInstance.sendPostRequestData(CommonUrl.submitBreakInfo, params)
+                .execute(new GenericsCallback<ResponseModel>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Response response, Call call, Exception e, int id) {
+                        String message = e.getMessage();
+                        EventBus.getDefault().post(new ErrorMsgEvent(message));
+                    }
+
+                    @Override
+                    public void onResponse(ResponseModel response, int id) {
+                        EventBus.getDefault().post(new OkResponseEvent(response));
+                    }
+                });
+    }
 }

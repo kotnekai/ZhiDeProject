@@ -3,32 +3,39 @@ package com.zhide.app.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zhide.app.R;
 import com.zhide.app.eventBus.GuideModelEvent;
 import com.zhide.app.logic.MainManager;
 import com.zhide.app.model.GuideModel;
+import com.zhide.app.view.adapter.GuideAdapter;
 import com.zhide.app.view.base.BaseActivity;
-import com.zhide.app.view.base.WebViewActivity;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
-import butterknife.OnClick;
 
 public class OperateGuideActivity extends BaseActivity {
 
-    @BindView(R.id.llBatheGuide)
-    LinearLayout llBatheGuide;
+    @BindView(R.id.smartRefresh)
+    SmartRefreshLayout smartRefresh;
 
-    @BindView(R.id.tvGuideItem)
-    TextView tvGuideItem;
-    private GuideModel.GuideData data;
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
+    private LinearLayoutManager mLayoutManager;
+    private List<GuideModel.GuideData> dataList = new ArrayList<>();
+    private GuideAdapter adapter;
 
     @Override
     protected int getCenterView() {
@@ -37,7 +44,7 @@ public class OperateGuideActivity extends BaseActivity {
 
     @Override
     protected SmartRefreshLayout getRefreshView() {
-        return null;
+        return smartRefresh;
     }
 
     @Override
@@ -52,36 +59,36 @@ public class OperateGuideActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initView();
+        adapter = new GuideAdapter(this, dataList);
+        mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
+        mLayoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setAdapter(adapter);
         MainManager.getInstance().getGuideList();
+    }
+
+    private void initView(){
+        smartRefresh.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                MainManager.getInstance().getGuideList();
+            }
+        });
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onGuideModelEvent(GuideModelEvent event) {
         GuideModel guideModel = event.getGuideModel();
+        smartRefresh.finishRefresh();
         if (guideModel == null) {
             return;
         }
-        data = guideModel.getData();
-        updateUI();
+        List<GuideModel.GuideData> data = guideModel.getData();
+        dataList.clear();
+        dataList.addAll(data);
+        adapter.notifyDataSetChanged();
     }
 
-    private void updateUI() {
-        if (data == null) {
-            return;
-        }
-        llBatheGuide.setVisibility(View.VISIBLE);
-        tvGuideItem.setText(data.getNI_Name());
-    }
-
-    @OnClick({R.id.llBatheGuide})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.llBatheGuide:
-                if (data == null || data.getNI_Url() == null) {
-                return;
-            }
-            startActivity(WebViewActivity.makeIntent(this, data.getNI_Name(), data.getNI_Url()));
-            break;
-        }
-    }
 }

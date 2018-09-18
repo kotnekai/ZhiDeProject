@@ -11,6 +11,7 @@ public class UserData {
     private String USI_SchoolNo;// 学号
     private String USI_AlipayAcc;// 支付宝账号
     private Long SI_ID;//学校id
+    private String SI_Name;//学校名称
     private String USI_RegChannel;//注册渠道，苹果APP，安卓APP，PC后台网站
     private Float USI_MainCardBalance;//卡的主余额（卡面金额）
     private String USI_State;//状态：注销，资料未完善，可用，冻结
@@ -34,6 +35,13 @@ public class UserData {
     private Float USI_GiftBalance;//  赠送余额
     private Float USI_TotalBalance;//  总余额 （基本余额+赠送余额）
 
+    public String getSI_Name() {
+        return SI_Name;
+    }
+
+    public void setSI_Name(String SI_Name) {
+        this.SI_Name = SI_Name;
+    }
 
     public String getSI_Code() {
         return SI_Code;

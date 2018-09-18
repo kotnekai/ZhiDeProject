@@ -92,7 +92,6 @@ public class MineFragment extends BaseFragment implements TextWatcher {
         userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
 
         UserManager.getInstance().getUserInfoById(userId, 3);
-        UserManager.getInstance().getUserSchoolInfo(userId);
     }
 
     @Override
@@ -154,14 +153,7 @@ public class MineFragment extends BaseFragment implements TextWatcher {
 
     private void updateSchoolInfo(SchoolInfoModel.SchoolModel data) {
         String si_name = data.getSI_Name();
-        if (si_name == null || si_name.isEmpty() || data.getSI_Code() == null) {
-            tvBindSchool.setVisibility(View.VISIBLE);
-            llSchool.setVisibility(View.GONE);
-        } else {
-            tvBindSchool.setVisibility(View.GONE);
-            llSchool.setVisibility(View.VISIBLE);
-            tvSchoolName.setText(data.getSI_Name());
-        }
+        tvSchoolName.setText(si_name);
     }
 
     /**
@@ -178,10 +170,10 @@ public class MineFragment extends BaseFragment implements TextWatcher {
         if (userData == null) {
             return;
         }
-        updateInfoUI(userData);
+        updateUserInfoUI(userData);
     }
 
-    private void updateInfoUI(UserData userData) {
+    private void updateUserInfoUI(UserData userData) {
 
         tvTotalMoney.setText(UIUtils.getFloatData(userData.getUSI_TotalBalance()));
         tvBaseBalance.setText(UIUtils.getFloatData(userData.getUSI_MainBalance()));
@@ -191,6 +183,14 @@ public class MineFragment extends BaseFragment implements TextWatcher {
         edtGender.setText(userData.getUSI_Sex());
         edtStuId.setText(userData.getUSI_SchoolNo());
         edtIdCard.setText(userData.getUSI_IDCard());
+        if(userData.getSI_Code()==null){
+            llSchool.setVisibility(View.GONE);
+            tvBindSchool.setVisibility(View.VISIBLE);
+        }else {
+            llSchool.setVisibility(View.VISIBLE);
+            tvBindSchool.setVisibility(View.GONE);
+            tvSchoolName.setText(userData.getSI_Name());
+        }
     }
 
     /**
@@ -282,6 +282,8 @@ public class MineFragment extends BaseFragment implements TextWatcher {
                         ToastUtil.showShort(result);
                         tvBindSchool.setVisibility(View.GONE);
                         llSchool.setVisibility(View.VISIBLE);
+                        UserManager.getInstance().getUserSchoolInfo(guidStr);
+
                     } else {
                         tvBindSchool.setVisibility(View.VISIBLE);
                         llSchool.setVisibility(View.GONE);
