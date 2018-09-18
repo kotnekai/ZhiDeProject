@@ -36,7 +36,7 @@ public class NewsModel {
 
     public class NewsData {
         private long NI_Id;
-        private String NI_Name;//标题
+        private String NI_Title;//标题
         private String NI_Summary;//内容简介，若列表中需要显示部分文字，则使用该字段
         private String NI_Url;//H5的页面链接，APP端打开内容页时直接访问这个H5的页面链接
         private String NI_Index;//顺序号
@@ -50,12 +50,12 @@ public class NewsModel {
             this.NI_Id = NI_Id;
         }
 
-        public String getNI_Name() {
-            return NI_Name;
+        public String getNI_Title() {
+            return NI_Title;
         }
 
-        public void setNI_Name(String NI_Name) {
-            this.NI_Name = NI_Name;
+        public void setNI_Title(String NI_Title) {
+            this.NI_Title = NI_Title;
         }
 
         public String getNI_Summary() {

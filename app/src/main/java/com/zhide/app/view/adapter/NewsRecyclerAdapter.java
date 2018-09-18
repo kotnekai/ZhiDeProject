@@ -5,10 +5,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zhide.app.R;
 import com.zhide.app.model.NewsModel;
+import com.zhide.app.view.base.WebViewActivity;
 
 import java.util.List;
 
@@ -44,10 +46,20 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
     //填充onCreateViewHolder方法返回的holder中的控件
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
-        NewsModel.NewsData newsData = mDatas.get(getRealPosition(holder));
-        holder.tvNewsTitle.setText(newsData.getNI_Name());
+        final NewsModel.NewsData newsData = mDatas.get(getRealPosition(holder));
+        holder.tvNewsTitle.setText(newsData.getNI_Title());
         holder.tvNewsDate.setText(newsData.getNI_UpdateTime());
         holder.tvNewsDesc.setText(newsData.getNI_Summary());
+        holder.llItemLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String ni_url = newsData.getNI_Url();
+                if (ni_url == null) {
+                    return;
+                }
+                mContext.startActivity(WebViewActivity.makeIntent(mContext, "",ni_url ));
+            }
+        });
 
     }
 
@@ -62,16 +74,17 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvNewsTitle, tvNewsDate, tvNewsDesc;
+        LinearLayout llItemLayout;
 
         public MyViewHolder(View view) {
             super(view);
             if (itemView == mHeaderView) {
                 return;
             }
-
             tvNewsTitle = (TextView) view.findViewById(R.id.tvNewsTitle);
             tvNewsDate = (TextView) view.findViewById(R.id.tvNewsDate);
             tvNewsDesc = (TextView) view.findViewById(R.id.tvNewsDesc);
+            llItemLayout = (LinearLayout) view.findViewById(R.id.llItemLayout);
         }
 
     }
