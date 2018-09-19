@@ -40,10 +40,11 @@ public class MyBillActivity extends BaseActivity {
     SmartRefreshLayout smartRefresh;
     @BindView(R.id.recycleView)
     RecyclerView recycleView;
-    private int selectType = 1;//1,全部，2，支出，3，充值
+    private String selectType;
     private LinearLayoutManager mLayoutManager;
     private MyBillAdapter adapter;
     private List<MyBillModel.BillData> dataList = new ArrayList<>();
+    private long userId;
 
     @Override
     protected int getCenterView() {
@@ -71,26 +72,28 @@ public class MyBillActivity extends BaseActivity {
     }
 
     private void initData() {
-        long userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
+        userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
         adapter = new MyBillAdapter(this, dataList);
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
         mLayoutManager.setStackFromEnd(true);
         recycleView.setLayoutManager(mLayoutManager);
         recycleView.setAdapter(adapter);
-        BillManager.getInstance().getMyBillData(userId);
+        selectType = "全部";
+        BillManager.getInstance().getMyBillData(userId, selectType);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMyBillEvent(MyBillEvent event) {
         MyBillModel myBillModel = event.getMyBillModel();
-        if(myBillModel==null){
+        if (myBillModel == null) {
             return;
         }
         List<MyBillModel.BillData> data = myBillModel.getData();
-        if(data==null){
+        if (data == null) {
             return;
         }
+        dataList.clear();
         dataList.addAll(data);
         adapter.notifyDataSetChanged();
     }
@@ -100,14 +103,16 @@ public class MyBillActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tvAllTab:
-                selectType = 1;
+                selectType = "全部";
                 break;
             case R.id.tvPayTab:
-                selectType = 2;
+                selectType = "支出";
                 break;
             case R.id.tvChargeTab:
-                selectType = 3;
+                selectType = "充值";
                 break;
         }
+        BillManager.getInstance().getMyBillData(userId, selectType);
+
     }
 }
