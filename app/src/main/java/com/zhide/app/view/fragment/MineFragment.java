@@ -174,7 +174,7 @@ public class MineFragment extends BaseFragment implements TextWatcher {
     }
 
     private void updateUserInfoUI(UserData userData) {
-
+        totalMoney = userData.getUSI_TotalBalance();
         tvTotalMoney.setText(UIUtils.getFloatData(userData.getUSI_TotalBalance()));
         tvBaseBalance.setText(UIUtils.getFloatData(userData.getUSI_MainBalance()));
         tvGiftBalance.setText(UIUtils.getFloatData(userData.getUSI_GiftBalance()));
