@@ -1,10 +1,13 @@
 package com.zhide.app.logic;
 
-import android.util.Log;
-
 import com.zhide.app.common.CommonUrl;
+import com.zhide.app.eventBus.ErrorMsgEvent;
 import com.zhide.app.eventBus.PayOrderEvent;
+import com.zhide.app.eventBus.WaterPreBillEvent;
+import com.zhide.app.eventBus.WaterSettleEvent;
 import com.zhide.app.model.WXPayParamModel;
+import com.zhide.app.model.WaterPreBillModel;
+import com.zhide.app.model.WaterSettleModel;
 import com.zhide.app.okhttp.DataManager;
 import com.zhide.okhttputils.callback.GenericsCallback;
 import com.zhide.okhttputils.request.JsonGenericsSerializator;
@@ -49,14 +52,11 @@ public class ChargeManager {
                     @Override
                     public void onError(Response response, Call call, Exception e, int id) {
                         String message = e.getMessage();
-                      /*  String errorMsg = JsonUtils.getErrorMsg(response);
-                        EventBus.getDefault().post(new ErrorResponseEvent(errorMsg, CommonPageState.login_page));*/
-                        Log.d("xyc", "onError: message=" + message);
+                        EventBus.getDefault().post(new ErrorMsgEvent(message));
                     }
 
                     @Override
                     public void onResponse(WXPayParamModel response, int id) {
-                        Log.d("xyc", "onResponse: response=" + response);
                         EventBus.getDefault().post(new PayOrderEvent(response, true));
                     }
                 });
@@ -74,16 +74,69 @@ public class ChargeManager {
                     @Override
                     public void onError(Response response, Call call, Exception e, int id) {
                         String message = e.getMessage();
-                      /*  String errorMsg = JsonUtils.getErrorMsg(response);
-                        EventBus.getDefault().post(new ErrorResponseEvent(errorMsg, CommonPageState.login_page));*/
-                        Log.d("xyc", "onError: message=" + message);
+                        EventBus.getDefault().post(new ErrorMsgEvent(message));
                     }
 
                     @Override
                     public void onResponse(WXPayParamModel response, int id) {
-                        Log.d("xyc", "onResponse: response=" + response);
                         EventBus.getDefault().post(new PayOrderEvent(response, false));
                     }
                 });
     }
+
+    /**
+     * 学生用水预扣费接口
+     */
+    public void useWaterPreBill(long userId) {
+        JSONObject params = new JSONObject();
+        try {
+            params.put("USI_Id", userId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        dataManager.sendPostRequestData(CommonUrl.useWaterPreBill, params)
+                .execute(new GenericsCallback<WaterPreBillModel>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Response response, Call call, Exception e, int id) {
+                        String message = e.getMessage();
+                        EventBus.getDefault().post(new ErrorMsgEvent(message));
+                    }
+
+                    @Override
+                    public void onResponse(WaterPreBillModel response, int id) {
+                        EventBus.getDefault().post(new WaterPreBillEvent(response));
+                    }
+                });
+    }
+
+    /**
+     * 学生用水结算接口
+     *
+     * @param realBill 产生的实际费用
+     * @param orderId  后台返回的订单id
+     */
+    public void useWaterSettlement(float realBill, String orderId) {
+
+        JSONObject params = new JSONObject();
+        try {
+            params.put("USBP_Money", realBill);
+            params.put("USB_OrderNo", orderId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        dataManager.sendPostRequestData(CommonUrl.useWaterSettlement, params)
+                .execute(new GenericsCallback<WaterSettleModel>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Response response, Call call, Exception e, int id) {
+                        String message = e.getMessage();
+                        EventBus.getDefault().post(new ErrorMsgEvent(message));
+                    }
+
+                    @Override
+                    public void onResponse(WaterSettleModel response, int id) {
+                        EventBus.getDefault().post(new WaterSettleEvent(response));
+                    }
+                });
+    }
+
 }
