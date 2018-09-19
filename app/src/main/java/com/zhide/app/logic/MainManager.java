@@ -86,7 +86,7 @@ public class MainManager {
             params.put("USI_SchoolRoomNo", userData.getUSI_SchoolRoomNo());
             params.put("USI_Sex", userData.getUSI_Sex());
             params.put("USI_IDCard", userData.getUSI_IDCard());
-            params.put("SI_Code", userData.getSI_ID());
+            params.put("SI_Code", userData.getSI_Code());
         } catch (JSONException e) {
             e.printStackTrace();
         }
