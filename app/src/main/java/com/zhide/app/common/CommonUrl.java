@@ -18,6 +18,7 @@ public class CommonUrl {
     public static final String getSystemInfo = BASE_URL + "/News/Get_SystemInfoList";
     public static final String getBreakdownType = BASE_URL + "/Student/GetBreakdownType";
     public static final String submitBreakInfo = BASE_URL + "/Student/Breakdown_Info_Submit";
+    public static final String doWithdraw = BASE_URL + "/Student/User_Student_Withdraw_Submit";
 
     public static final String GET_APK_VERSION_INFO = BASE_URL + "/apk/che"  + "ck";
     public static final String GET_WECHAT_PARAMS = BASE_URL + "/apk/wx";

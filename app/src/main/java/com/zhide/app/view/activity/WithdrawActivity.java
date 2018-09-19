@@ -9,9 +9,18 @@ import android.widget.TextView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zhide.app.R;
+import com.zhide.app.common.CommonParams;
+import com.zhide.app.eventBus.OkResponseEvent;
+import com.zhide.app.logic.UserManager;
+import com.zhide.app.model.ResponseModel;
+import com.zhide.app.model.WithdrawModel;
 import com.zhide.app.utils.EmptyUtil;
+import com.zhide.app.utils.PreferencesUtils;
 import com.zhide.app.utils.ToastUtil;
 import com.zhide.app.view.base.BaseActivity;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -79,15 +88,41 @@ public class WithdrawActivity extends BaseActivity {
         }
     }
 
+
     private void submitOrder() {
+        long userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
         String payeeName = edtPayeeName.getText().toString();
         String acceptAccount = edtAcceptCount.getText().toString();
         String phoneNumber = edtPhoneNumber.getText().toString();
         String surplusMoney = tvSurplusMoney.getText().toString();
-        if (EmptyUtil.isEmpty(payeeName)||EmptyUtil.isEmpty(acceptAccount)||EmptyUtil.isEmpty(phoneNumber)) {
+        if (EmptyUtil.isEmpty(payeeName) || EmptyUtil.isEmpty(acceptAccount) || EmptyUtil.isEmpty(phoneNumber)) {
             ToastUtil.showShort(getString(R.string.with_draw_empty_tip));
             return;
         }
+        float withdrawMoney = Float.parseFloat(surplusMoney);
+        if (withdrawMoney == 0) {
+            ToastUtil.showShort("可提现金额为0");
+            return;
+        }
+        WithdrawModel params = new WithdrawModel();
+        params.setUSW_Money(withdrawMoney);
+        params.setUSI_Id(userId);
+        params.setUSW_AccountName(payeeName);
+        params.setUSW_Account(acceptAccount);
+        params.setUSW_ContactMobile(phoneNumber);
+        UserManager.getInstance().doWithdraw(params);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onOkResponseEvent(OkResponseEvent event) {
+        ResponseModel responseModel = event.getResponseModel();
+        if (responseModel == null) {
+            return;
+        }
+        int code = responseModel.getCode();
+        ToastUtil.showShort(responseModel.getMsg());
+        if (code == 1) {
+            finish();
+        }
+    }
 }

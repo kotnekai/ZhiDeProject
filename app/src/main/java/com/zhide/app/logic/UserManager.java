@@ -7,6 +7,7 @@ import com.zhide.app.common.CommonUrl;
 import com.zhide.app.eventBus.ErrorMsgEvent;
 import com.zhide.app.eventBus.LoginEvent;
 import com.zhide.app.eventBus.ModifyPswEvent;
+import com.zhide.app.eventBus.OkResponseEvent;
 import com.zhide.app.eventBus.RegisterEvent;
 import com.zhide.app.eventBus.SchoolInfoEvent;
 import com.zhide.app.eventBus.UserInfoEvent;
@@ -15,6 +16,7 @@ import com.zhide.app.model.ResponseModel;
 import com.zhide.app.model.SchoolInfoModel;
 import com.zhide.app.model.UserData;
 import com.zhide.app.model.UserInfoModel;
+import com.zhide.app.model.WithdrawModel;
 import com.zhide.app.okhttp.DataManager;
 import com.zhide.okhttputils.callback.GenericsCallback;
 import com.zhide.okhttputils.request.JsonGenericsSerializator;
@@ -159,7 +161,6 @@ public class UserManager {
     }
 
 
-
     /**
      * 请求用户学校信息
      *
@@ -174,6 +175,7 @@ public class UserManager {
         }
         getSchoolData(params);
     }
+
     /**
      * 请求用户学校信息
      *
@@ -189,7 +191,7 @@ public class UserManager {
         getSchoolData(params);
     }
 
-    private void getSchoolData( JSONObject params){
+    private void getSchoolData(JSONObject params) {
         dataInstance.sendPostRequestData(CommonUrl.getUserSchoolInfo, params)
                 .execute(new GenericsCallback<SchoolInfoModel>(new JsonGenericsSerializator()) {
                     @Override
@@ -205,6 +207,7 @@ public class UserManager {
                     }
                 });
     }
+
     /**
      * 请求学生个人信息
      *
@@ -214,7 +217,7 @@ public class UserManager {
         JSONObject params = new JSONObject();
         //Long.parseLong(userId)
         try {
-            params.put("USI_Id",userId );
+            params.put("USI_Id", userId);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -231,7 +234,33 @@ public class UserManager {
                         String data = response.getData();
                         Gson gson = new Gson();
                         UserData userData1 = gson.fromJson(data, UserData.class);
-                        EventBus.getDefault().post(new UserInfoEvent(userData1,fromPage));
+                        EventBus.getDefault().post(new UserInfoEvent(userData1, fromPage));
+                    }
+                });
+    }
+
+    public void doWithdraw(WithdrawModel withdrawModel) {
+        JSONObject params = new JSONObject();
+        try {
+            params.put("USI_Id", withdrawModel.getUSI_Id());
+            params.put("USW_Money", withdrawModel.getUSW_Money());
+            params.put("USW_Account", withdrawModel.getUSW_Account());
+            params.put("USW_AccountName", withdrawModel.getUSW_AccountName());
+            params.put("USW_ContactMobile", withdrawModel.getUSW_ContactMobile());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        dataInstance.sendPostRequestData(CommonUrl.doWithdraw, params)
+                .execute(new GenericsCallback<ResponseModel>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Response response, Call call, Exception e, int id) {
+                        String message = e.getMessage();
+                        EventBus.getDefault().post(new ErrorMsgEvent(message));
+                    }
+
+                    @Override
+                    public void onResponse(ResponseModel response, int id) {
+                        EventBus.getDefault().post(new OkResponseEvent(response));
                     }
                 });
     }
