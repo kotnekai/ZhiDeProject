@@ -1,6 +1,8 @@
 package com.zhide.app.view.fragment;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,10 +14,12 @@ import com.zhide.app.R;
 import com.zhide.app.common.CommonParams;
 import com.zhide.app.eventBus.NewsModelEvent;
 import com.zhide.app.eventBus.UserInfoEvent;
+import com.zhide.app.eventBus.UserInfoSchoolInfoEvent;
 import com.zhide.app.logic.MainManager;
 import com.zhide.app.logic.UserManager;
 import com.zhide.app.model.NewsModel;
 import com.zhide.app.model.UserData;
+import com.zhide.app.model.UserSchoolDataModel;
 import com.zhide.app.utils.PreferencesUtils;
 import com.zhide.app.utils.UIUtils;
 import com.zhide.app.view.activity.NewsListActivity;
@@ -50,7 +54,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     @BindView(R.id.tvCanUserMoney)
     TextView tvCanUserMoney;
-
+    long userId;
     @Override
     protected int setFrgContainView() {
         return R.layout.fragment_home;
@@ -79,6 +83,31 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         updateNews(data);
     }
 
+
+    /**
+     * 用户,学校信息，更新账户可用余额用的
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(UserInfoSchoolInfoEvent event) {
+        UserSchoolDataModel userData = event.getUserSchoolDataModel();
+        if (userData == null) {
+            return;
+        }
+
+        //判断余额是否大于预扣费，大于可以洗澡，小于要跳到充值界面
+        if (userData.getUSI_MainBalance()>userData.getSI_Deducting())
+        {
+            ShowerMainActivity.start(getActivity());
+        }
+        else
+        {
+            //弹出框，余额不足请充值
+        }
+    }
+
+
     /**
      * 用户信息，更新账户可用余额用的
      *
@@ -99,7 +128,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        long userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
+         userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
         UserManager.getInstance().getUserInfoById(userId,1);
     }
 
@@ -155,11 +184,29 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 startActivity(RechargeActivity.makeIntent(getActivity()));
                 break;
             case R.id.llShower:
-                ShowerMainActivity.start(getActivity());
+                UserManager.getInstance().getUserSchoolInfoById(userId,1);
                 break;
             case R.id.tvNewsMore:
                 NewsListActivity.start(getActivity());
                 break;
         }
+    }
+
+    private void showChargeDialog(Context context)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("请输入");     //设置对话框标题
+        builder.setIcon(android.R.drawable.btn_star);      //设置对话框标题前的图
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+
+        builder.setCancelable(true);   //设置按钮是否可以按返回键取消,false则不可以取消
+        AlertDialog dialog = builder.create();  //创建对话框
+        dialog.setCanceledOnTouchOutside(true);      //设置弹出框失去焦点是否隐藏,即点击屏蔽其它地方是否隐藏
+        dialog.show();
     }
 }

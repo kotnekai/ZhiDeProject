@@ -435,4 +435,20 @@ public class DateUtils {
         times[1] = minute;
         return times;
     }
+
+    /**
+     * 将时间戳转化为时间串
+     */
+    public static String getTimeID() {
+        long mill = System.currentTimeMillis();
+        Date date = new Date(mill);
+        String strs = "";
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+            strs = sdf.format(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return strs;
+    }
 }

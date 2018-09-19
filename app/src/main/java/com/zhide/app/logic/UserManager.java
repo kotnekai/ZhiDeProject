@@ -11,11 +11,13 @@ import com.zhide.app.eventBus.OkResponseEvent;
 import com.zhide.app.eventBus.RegisterEvent;
 import com.zhide.app.eventBus.SchoolInfoEvent;
 import com.zhide.app.eventBus.UserInfoEvent;
+import com.zhide.app.eventBus.UserInfoSchoolInfoEvent;
 import com.zhide.app.model.RegisterLoginModel;
 import com.zhide.app.model.ResponseModel;
 import com.zhide.app.model.SchoolInfoModel;
 import com.zhide.app.model.UserData;
 import com.zhide.app.model.UserInfoModel;
+import com.zhide.app.model.UserSchoolDataModel;
 import com.zhide.app.model.WithdrawModel;
 import com.zhide.app.okhttp.DataManager;
 import com.zhide.okhttputils.callback.GenericsCallback;
@@ -238,6 +240,40 @@ public class UserManager {
                     }
                 });
     }
+
+    /**
+     * 请求学生和学校个人信息
+     *
+     * @param userId
+     */
+    public void getUserSchoolInfoById(long userId,final int fromPage) {
+        JSONObject params = new JSONObject();
+        //Long.parseLong(userId)
+        try {
+            params.put("USI_Id", userId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        dataInstance.sendPostRequestData(CommonUrl.getUserInfoSchoolInfo, params)
+                .execute(new GenericsCallback<UserInfoModel>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Response response, Call call, Exception e, int id) {
+                        String message = e.getMessage();
+                        EventBus.getDefault().post(new ErrorMsgEvent(message));
+                    }
+
+                    @Override
+                    public void onResponse(UserInfoModel response, int id) {
+                        String data = response.getData();
+                        Gson gson = new Gson();
+                        UserSchoolDataModel userSchoolDataModel = gson.fromJson(data, UserSchoolDataModel.class);
+                        EventBus.getDefault().post(new UserInfoSchoolInfoEvent(userSchoolDataModel, fromPage));
+                    }
+                });
+    }
+
+
+
 
     public void doWithdraw(WithdrawModel withdrawModel) {
         JSONObject params = new JSONObject();
