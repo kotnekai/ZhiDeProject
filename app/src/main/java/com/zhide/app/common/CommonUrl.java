@@ -25,5 +25,6 @@ public class CommonUrl {
     public static final String GET_ALIPAY_PARAMS = BASE_URL + "/apk/ali";
     public static final String useWaterPreBill = BASE_URL + "/Student/User_Water_Deducting";
     public static final String useWaterSettlement = BASE_URL + "/Student/User_Water_Settlemen";
+    public static final String getUserInfoSchoolInfo = BASE_URL + "/Student/Get_UserInfo_Detail";
 
 }
