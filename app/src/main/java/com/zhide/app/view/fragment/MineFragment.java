@@ -283,7 +283,7 @@ public class MineFragment extends BaseFragment implements TextWatcher {
                         tvBindSchool.setVisibility(View.GONE);
                         llSchool.setVisibility(View.VISIBLE);
                         UserManager.getInstance().getUserSchoolInfo(guidStr);
-
+                        submitPersonInfo();
                     } else {
                         tvBindSchool.setVisibility(View.VISIBLE);
                         llSchool.setVisibility(View.GONE);
