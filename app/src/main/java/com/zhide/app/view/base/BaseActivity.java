@@ -2,9 +2,9 @@ package com.zhide.app.view.base;
 
 import android.app.Activity;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +16,8 @@ import android.widget.TextView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zhide.app.R;
-import com.zhide.app.eventBus.DefaultEvent;
 import com.zhide.app.eventBus.ErrorMsgEvent;
-import com.zhide.app.eventBus.OkResponseEvent;
-import com.zhide.app.model.ResponseModel;
+import com.zhide.app.utils.ProgressUtils;
 import com.zhide.app.utils.ToastUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -28,7 +26,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public abstract class BaseActivity extends AppCompatActivity implements DrawerLayout.DrawerListener {
 
@@ -97,6 +94,7 @@ public abstract class BaseActivity extends AppCompatActivity implements DrawerLa
             refreshView.finishLoadMore();
             refreshView.finishRefresh();
         }
+        ProgressUtils.getIntance().dismissProgress();
         String message = event.getMessagge();
         if (message == null) {
             return;

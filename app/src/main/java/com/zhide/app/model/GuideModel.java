@@ -1,12 +1,14 @@
 package com.zhide.app.model;
 
+import java.util.List;
+
 /**
  * Create by Admin on 2018/9/14
  */
 public class GuideModel {
     private int code;
     private String message;
-    private GuideData data;
+    private List<GuideData> data;
 
     public int getCode() {
         return code;
@@ -24,17 +26,17 @@ public class GuideModel {
         this.message = message;
     }
 
-    public GuideData getData() {
+    public List<GuideData> getData() {
         return data;
     }
 
-    public void setData(GuideData data) {
+    public void setData(List<GuideData> data) {
         this.data = data;
     }
 
     public class GuideData {
         private long NI_Id;
-        private String NI_Name;//标题
+        private String NI_Title;//标题
         private String NI_Summary;//内容简介，若列表中需要显示部分文字，则使用该字段
         private String NI_Url;//H5的页面链接，APP端打开内容页时直接访问这个H5的页面链接
         private int NI_Index;//顺序号
@@ -48,12 +50,12 @@ public class GuideModel {
             this.NI_Id = NI_Id;
         }
 
-        public String getNI_Name() {
-            return NI_Name;
+        public String getNI_Title() {
+            return NI_Title;
         }
 
-        public void setNI_Name(String NI_Name) {
-            this.NI_Name = NI_Name;
+        public void setNI_Title(String NI_Title) {
+            this.NI_Title = NI_Title;
         }
 
         public String getNI_Summary() {

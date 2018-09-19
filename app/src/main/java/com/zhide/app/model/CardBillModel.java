@@ -7,7 +7,7 @@ import java.util.List;
  */
 public class CardBillModel {
     private int code;
-    private String msg;
+    private String message;
     private List<DataModel> data;
 
     public int getCode() {
@@ -19,11 +19,11 @@ public class CardBillModel {
     }
 
     public String getMsg() {
-        return msg;
+        return message;
     }
 
     public void setMsg(String msg) {
-        this.msg = msg;
+        this.message = msg;
     }
 
     public List<DataModel> getData() {
@@ -35,22 +35,22 @@ public class CardBillModel {
     }
 
     public class DataModel {
-        private float USCP_Money;
+        private Float USCP_Money;
         private String USCP_CreateTime;
         private String USCP_Type;//转账类型：转入卡内，转入卡片
         private String USCP_Channel;//转账渠道：转款机，PC，APP
         private String USCP_DeviceID;//设备ID
-        private long USCP_Id;//表Id
-        private long USI_Id;//学生Id
-        private long SI_Id;//学校Id
+        private Long USCP_Id;//表Id
+        private Long USI_Id;//学生Id
+        private Long SI_Id;//学校Id
         private String UCI_Id;//卡Id
-        private float USCP_NextMoney;//变动后余额（即操作后余额）
+        private Float USCP_NextMoney;//变动后余额（即操作后余额）
 
-        public float getUSCP_Money() {
+        public Float getUSCP_Money() {
             return USCP_Money;
         }
 
-        public void setUSCP_Money(float USCP_Money) {
+        public void setUSCP_Money(Float USCP_Money) {
             this.USCP_Money = USCP_Money;
         }
 
@@ -86,29 +86,6 @@ public class CardBillModel {
             this.USCP_DeviceID = USCP_DeviceID;
         }
 
-        public long getUSCP_Id() {
-            return USCP_Id;
-        }
-
-        public void setUSCP_Id(long USCP_Id) {
-            this.USCP_Id = USCP_Id;
-        }
-
-        public long getUSI_Id() {
-            return USI_Id;
-        }
-
-        public void setUSI_Id(long USI_Id) {
-            this.USI_Id = USI_Id;
-        }
-
-        public long getSI_Id() {
-            return SI_Id;
-        }
-
-        public void setSI_Id(long SI_Id) {
-            this.SI_Id = SI_Id;
-        }
 
         public String getUCI_Id() {
             return UCI_Id;
@@ -118,11 +95,35 @@ public class CardBillModel {
             this.UCI_Id = UCI_Id;
         }
 
-        public float getUSCP_NextMoney() {
+        public Long getUSCP_Id() {
+            return USCP_Id;
+        }
+
+        public void setUSCP_Id(Long USCP_Id) {
+            this.USCP_Id = USCP_Id;
+        }
+
+        public Long getUSI_Id() {
+            return USI_Id;
+        }
+
+        public void setUSI_Id(Long USI_Id) {
+            this.USI_Id = USI_Id;
+        }
+
+        public Long getSI_Id() {
+            return SI_Id;
+        }
+
+        public void setSI_Id(Long SI_Id) {
+            this.SI_Id = SI_Id;
+        }
+
+        public Float getUSCP_NextMoney() {
             return USCP_NextMoney;
         }
 
-        public void setUSCP_NextMoney(float USCP_NextMoney) {
+        public void setUSCP_NextMoney(Float USCP_NextMoney) {
             this.USCP_NextMoney = USCP_NextMoney;
         }
     }

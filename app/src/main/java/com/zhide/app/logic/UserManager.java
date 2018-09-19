@@ -16,7 +16,6 @@ import com.zhide.app.model.SchoolInfoModel;
 import com.zhide.app.model.UserData;
 import com.zhide.app.model.UserInfoModel;
 import com.zhide.app.okhttp.DataManager;
-import com.zhide.app.utils.GsonUtils;
 import com.zhide.okhttputils.callback.GenericsCallback;
 import com.zhide.okhttputils.request.JsonGenericsSerializator;
 
@@ -159,6 +158,8 @@ public class UserManager {
                 });
     }
 
+
+
     /**
      * 请求用户学校信息
      *
@@ -171,6 +172,24 @@ public class UserManager {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        getSchoolData(params);
+    }
+    /**
+     * 请求用户学校信息
+     *
+     * @param guideStr
+     */
+    public void getUserSchoolInfo(String guideStr) {
+        JSONObject params = new JSONObject();
+        try {
+            params.put("SI_Code", guideStr);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        getSchoolData(params);
+    }
+
+    private void getSchoolData( JSONObject params){
         dataInstance.sendPostRequestData(CommonUrl.getUserSchoolInfo, params)
                 .execute(new GenericsCallback<SchoolInfoModel>(new JsonGenericsSerializator()) {
                     @Override
@@ -186,13 +205,12 @@ public class UserManager {
                     }
                 });
     }
-
     /**
      * 请求学生个人信息
      *
      * @param userId
      */
-    public void getUserInfoById(long userId) {
+    public void getUserInfoById(long userId, final int fromPage) {
         JSONObject params = new JSONObject();
         //Long.parseLong(userId)
         try {
@@ -213,7 +231,7 @@ public class UserManager {
                         String data = response.getData();
                         Gson gson = new Gson();
                         UserData userData1 = gson.fromJson(data, UserData.class);
-                        EventBus.getDefault().post(new UserInfoEvent(userData1));
+                        EventBus.getDefault().post(new UserInfoEvent(userData1,fromPage));
                     }
                 });
     }

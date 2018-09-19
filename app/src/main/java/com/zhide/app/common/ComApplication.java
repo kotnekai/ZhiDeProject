@@ -6,8 +6,6 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
-import com.alipay.sdk.auth.APAuthInfo;
-import com.alipay.sdk.auth.AlipaySDK;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreator;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreator;
@@ -18,6 +16,7 @@ import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 import com.zhide.app.R;
 import com.zhide.app.okhttp.MyOkhttpUtils;
 import com.zhide.app.utils.PickViewUtil;
@@ -74,6 +73,8 @@ public class ComApplication extends Application {
         Log.d("xyc", "getMsgApi: msgApi1="+msgApi);
         ApplicationHolder.getInstance().setMsgApi(msgApi);
         PickViewUtil.initTimePickOptions(this);
+        ZXingLibrary.initDisplayOpinion(this);
+
         mzjApplication = this;
     }
 
@@ -97,6 +98,7 @@ public class ComApplication extends Application {
         permissionItems.add(new PermissionItem(Manifest.permission.WRITE_EXTERNAL_STORAGE, "存储权限", R.drawable.permission_ic_storage));
         permissionItems.add(new PermissionItem(Manifest.permission.ACCESS_FINE_LOCATION, "蓝牙扫描", R.drawable.permission_ic_storage));
         permissionItems.add(new PermissionItem(Manifest.permission.ACCESS_COARSE_LOCATION, "蓝牙定位", R.drawable.permission_ic_storage));
+        permissionItems.add(new PermissionItem(Manifest.permission.CAMERA, "相机拍照", R.drawable.permission_ic_camera));
 
         return permissionItems;
     }

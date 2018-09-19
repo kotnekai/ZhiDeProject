@@ -6,7 +6,7 @@ package com.zhide.app.model;
 public class UserInfoModel {
 
     private int code;
-    private String msg;
+    private String message;
     private String data;
 
     public int getCode() {
@@ -18,11 +18,11 @@ public class UserInfoModel {
     }
 
     public String getMsg() {
-        return msg;
+        return message;
     }
 
     public void setMsg(String msg) {
-        this.msg = msg;
+        this.message = msg;
     }
 
     public String getData() {

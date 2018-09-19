@@ -9,12 +9,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zhide.app.R;
+import com.zhide.app.common.CommonParams;
 import com.zhide.app.eventBus.NewsModelEvent;
 import com.zhide.app.eventBus.UserInfoEvent;
 import com.zhide.app.logic.MainManager;
 import com.zhide.app.logic.UserManager;
 import com.zhide.app.model.NewsModel;
 import com.zhide.app.model.UserData;
+import com.zhide.app.utils.PreferencesUtils;
+import com.zhide.app.utils.UIUtils;
 import com.zhide.app.view.activity.NewsListActivity;
 import com.zhide.app.view.activity.RechargeActivity;
 import com.zhide.app.view.activity.ShowerMainActivity;
@@ -44,6 +47,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     @BindView(R.id.tvNewsMore)
     TextView tvNewsMore;
+
     @BindView(R.id.tvCanUserMoney)
     TextView tvCanUserMoney;
 
@@ -82,6 +86,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUserInfoEvent(UserInfoEvent event) {
+        if (event.getUpdatePage() != 1) {
+            return;
+        }
         UserData userData = event.getUserData();
         if (userData == null) {
             return;
@@ -89,12 +96,26 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         updateInfoUI(userData);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        long userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
+        UserManager.getInstance().getUserInfoById(userId,1);
+    }
+
     private void updateInfoUI(UserData userData) {
-        tvCanUserMoney.setText(String.valueOf(userData.getUSI_TotalBalance()));
+        Float usi_totalBalance = userData.getUSI_TotalBalance();
+        tvCanUserMoney.setText(UIUtils.getFloatData(usi_totalBalance));
     }
 
     private void updateNews(List<NewsModel.NewsData> data) {
-        for (int i = 0; data.size() < 3; i++) {
+        int size;
+        if (data.size() <= 5) {
+            size = data.size();
+        } else {
+            size = 5;
+        }
+        for (int i = 0; i < size; i++) {
             View newsView = LayoutInflater.from(getContext()).inflate(R.layout.item_news, null, false);
             LinearLayout llItemLayout = newsView.findViewById(R.id.llItemLayout);
             TextView tvNewsTitle = newsView.findViewById(R.id.tvNewsTitle);

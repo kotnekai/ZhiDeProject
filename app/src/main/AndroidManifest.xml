@@ -14,6 +14,7 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:name=".common.ComApplication"
@@ -46,7 +47,7 @@
         <activity
             android:name=".view.activity.LoginActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.RechargeActivity"
             android:launchMode="singleTask"
@@ -123,7 +124,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.activity.CardChargeBillActivity"
+        <activity
+            android:name=".view.activity.CardChargeBillActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.activity.QRCodeActivity"
             android:screenOrientation="portrait" />
     </application>
 
