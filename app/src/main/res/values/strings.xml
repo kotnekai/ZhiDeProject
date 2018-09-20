@@ -57,8 +57,8 @@
     <string name="driver_bluetooth_connect_fail">配对失败</string>
     <string name="driver_bluetooth_connect_cancel">取消配对</string>
 
-    <string name="driver_start_using">开始使用</string>
-    <string name="driver_stop_use">线束使用</string>
+    <string name="driver_start_using">点击开始使用</string>
+    <string name="driver_stop_use">点击结束使用</string>
 
     <string name="driver_wash_clothes">洗衣中</string>
     <string name="driver_click_restart">点击重试</string>

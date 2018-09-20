@@ -113,14 +113,14 @@ public class ChargeManager {
      * 学生用水结算接口
      *
      * @param realBill 产生的实际费用
-     * @param orderId  后台返回的订单id
+     * @param USB_Id  后台返回的订单id
      */
-    public void useWaterSettlement(float realBill, String orderId) {
+    public void useWaterSettlement(float realBill, int USB_Id) {
 
         JSONObject params = new JSONObject();
         try {
             params.put("USBP_Money", realBill);
-            params.put("USB_OrderNo", orderId);
+            params.put("USB_Id", USB_Id);
         } catch (JSONException e) {
             e.printStackTrace();
         }

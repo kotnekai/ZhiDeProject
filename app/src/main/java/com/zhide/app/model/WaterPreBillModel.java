@@ -34,14 +34,14 @@ public class WaterPreBillModel {
     }
 
     public class PreBillData {
-        private String USB_OrderNo;
+        private int USB_Id;
 
-        public String getUSB_OrderNo() {
-            return USB_OrderNo;
+        public int getUSB_Id() {
+            return USB_Id;
         }
 
-        public void setUSB_OrderNo(String USB_OrderNo) {
-            this.USB_OrderNo = USB_OrderNo;
+        public void setUSB_Id(int USB_Id) {
+            this.USB_Id = USB_Id;
         }
     }
 }

@@ -31,6 +31,7 @@ import com.zhide.app.R;
 import com.zhide.app.common.CommonParams;
 import com.zhide.app.eventBus.LoginEvent;
 import com.zhide.app.eventBus.WaterPreBillEvent;
+import com.zhide.app.eventBus.WaterSettleEvent;
 import com.zhide.app.logic.ChargeManager;
 import com.zhide.app.utils.DateUtils;
 import com.zhide.app.utils.DialogUtils;
@@ -590,12 +591,26 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
         //服务端返回学生用水预扣费接口，可以执行下发费率
         if (event.getWaterPreBillModel()!=null)
         {
-            String USB_OrderNo = event.getWaterPreBillModel().getData().getUSB_OrderNo();
-            long userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
+            int USB_Id = event.getWaterPreBillModel().getData().getUSB_Id();
             float mainBalance =  PreferencesUtils.getFloat(CommonParams.USI_MAINBALANCE);
             float waterRate =  PreferencesUtils.getFloat(CommonParams.SCHOOL_WATERRATE);
 
-            startdDownfate(mprid, USB_OrderNo, (int) userId, (int) mainBalance, (int) waterRate, mBuffer, tac_Buffer);
+            startdDownfate(mprid, USB_Id,  (int) mainBalance, (int) waterRate, mBuffer, tac_Buffer);
+        }
+        else
+        {
+
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(WaterSettleEvent event) {
+        if (event.getSettleModel()!=null)
+        {
+            //弹出框展示
+            if (xiaofeiDialog != null) {
+                xiaofeiDialog.show();
+            }
         }
         else
         {
@@ -646,6 +661,9 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
                         usercount + "", ykmoneyString,
                         consumeMoneString, rateString,
                         macString);
+
+                float consumeMone = Float.valueOf(consumeMoneString).floatValue() / 1000;
+                ChargeManager.getInstance().useWaterSettlement(consumeMone,maccountid);
                 CMDUtils.fanhuicunchu(mbtService, true, timeid,
                         mproductid, mdeviceid, maccountid, usercount);
             } catch (IOException e) {
@@ -682,9 +700,9 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     @Override
     public void fanhuicunchuOnback(boolean b) {
         if (b) {
-            if (xiaofeiDialog != null) {
-                xiaofeiDialog.show();
-            }
+//            if (xiaofeiDialog != null) {
+//                xiaofeiDialog.show();
+//            }
             ToastUtil.showShort(getString(R.string.clean_cache_success));
             CMDUtils.chaxueshebei(mbtService, true);
         }
@@ -840,11 +858,10 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     /**
      * 下发费率
      */
-    private void startdDownfate(int mproductid, String orderNo, int accountId, int PerMoney, int rate, byte[] macBuffer, byte[] tac_timeBuffer) {
+    private void startdDownfate(int mproductid, int accountId, int PerMoney, int rate, byte[] macBuffer, byte[] tac_timeBuffer) {
         DownRateInfo downRateInfo = new DownRateInfo();
         //时间
         downRateInfo.ConsumeDT = DateUtils.getTimeID();
-//        downRateInfo.ConsumeDT = orderNo;
 
         //个人账号使用次数
         downRateInfo.UseCount = 100;
