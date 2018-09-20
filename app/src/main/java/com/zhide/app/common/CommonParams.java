@@ -12,4 +12,11 @@ public class CommonParams {
     public static final String PRF_NAME = "username";
     public static final String PRF_PSW_CHECK_STATE = "checkState";
     public static final String LOGIN_USER_ID = "userId";
+    //学校对应水表费率
+    public static final String SCHOOL_WATERRATE = "school_waterRate";
+    //学生余额
+    public static final String USI_MAINBALANCE = "USI_MainBalance";
+
+    public static long currentUserId;
+
 }

@@ -74,6 +74,27 @@ public class PreferencesUtils {
         return settings.getLong(key, defaultValue);
     }
 
+
+    public static boolean putFloat(String key, float value) {
+        SharedPreferences settings = context.getSharedPreferences(PREFERENCE_NAME, 0);
+        Editor editor = settings.edit();
+        editor.putFloat(key, value);
+        return editor.commit();
+    }
+
+    public static float getFloat(String key) {
+        return getFloat(key, -1f);
+    }
+
+    public static float getFloat(String key, float defaultValue) {
+        SharedPreferences settings = context.getSharedPreferences(PREFERENCE_NAME, 0);
+        return settings.getFloat(key, defaultValue);
+    }
+
+
+
+
+
     public static boolean putBoolean(String key, boolean value) {
         SharedPreferences settings = context.getSharedPreferences(PREFERENCE_NAME, 0);
         Editor editor = settings.edit();

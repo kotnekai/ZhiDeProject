@@ -28,8 +28,13 @@ import com.example.jooronjar.utils.DigitalTrans;
 import com.example.jooronjar.utils.WaterCodeListener;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zhide.app.R;
+import com.zhide.app.common.CommonParams;
+import com.zhide.app.eventBus.LoginEvent;
+import com.zhide.app.eventBus.WaterPreBillEvent;
+import com.zhide.app.logic.ChargeManager;
 import com.zhide.app.utils.DateUtils;
 import com.zhide.app.utils.DialogUtils;
+import com.zhide.app.utils.PreferencesUtils;
 import com.zhide.app.utils.ToastUtil;
 import com.zhide.app.view.base.BaseActivity;
 import com.zhide.app.view.views.CircleProgressBar;
@@ -37,6 +42,7 @@ import com.zhide.app.view.widget.TimeView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -48,7 +54,7 @@ import butterknife.BindView;
  *
  * @author Admin
  */
-public class ShowerConnectActivity extends BaseActivity implements WaterCodeListener, View.OnClickListener, View.OnTouchListener {
+public class ShowerConnectActivity extends BaseActivity implements WaterCodeListener, View.OnClickListener {
 
     public static final String DEVICE_MAC = "deviceMac";
     public static final int MSG_AUTO_CONNECT_COMPLETED = 0x09;
@@ -426,99 +432,99 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     }
 
 
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                if (v.getId() == R.id.ivDeviceState) {
-                    if (isStart) {
-                        curTime = System.currentTimeMillis();
-                        circleProgressBar.setVisibility(View.VISIBLE);
-                        circleProgressBar.setSweepAngle(360);
-                        circleProgressBar.setText("360");
-                        circleProgressBar.startCustomAnimation(new Animation.AnimationListener() {
-                            @Override
-                            public void onAnimationStart(Animation animation) {
-
-                            }
-
-                            @Override
-                            public void onAnimationEnd(Animation animation) {
-                                if (System.currentTimeMillis() - curTime > 1500) {
-
-                                    ToastUtil.showLong("停止了");
-                                    animationDrawable.stop();
-                                } else {
-                                    ivDeviceState.setImageResource(R.mipmap.stop);
-                                }
-                            }
-
-                            @Override
-                            public void onAnimationRepeat(Animation animation) {
-                            }
-                        });
-                    }
-                    break;
-                }
-            case MotionEvent.ACTION_UP:
-                if (v.getId() == R.id.ivDeviceState) {
-                    if (isStart) {
-                        circleProgressBar.setVisibility(View.INVISIBLE);
-                        circleProgressBar.clearCustomAnimation();
-                    }
-                    else
-                    {
-                        ivDeviceState.setImageResource(R.mipmap.stop);
-                        isStart = true;
-                        animationDrawable.start();
-                    }
-                }
-
-                switch (mStatus) {
-                    case 31:
-                        //连接成功
-                        showProgress();
-                        startdDownfate(mprid, mBuffer, tac_Buffer);
-                        break;
-                    case 32:
-                        //结束费率
-                        showProgress();
-                        CMDUtils.jieshufeilv(mbtService, true);
-                        break;
-                    case 33:
-                        startDeal(mprid, mdecived, mBuffer, tac_Buffer);
-                        showProgress();
-                        break;
-                    case 35:
-                        skipUI();
-                        break;
-                    case 41:
-                        //配对失败
-                        showProgress();
-                        //连接设备
-                        connDevice();
-                        break;
-                    case 42:
-                        //连接失败
-                        showProgress();
-                        //连接设备
-                        connDevice();
-                        break;
-                    case 43:
-                        //断开连接
-                        showProgress();
-                        //连接设备
-                        connDevice();
-                        break;
-                    default:
-                        break;
-                }
-
-                break;
-        }
-        return true;
-
-    }
+//    @Override
+//    public boolean onTouch(View v, MotionEvent event) {
+//        switch (event.getAction()) {
+//            case MotionEvent.ACTION_DOWN:
+//                if (v.getId() == R.id.ivDeviceState) {
+//                    if (isStart) {
+//                        curTime = System.currentTimeMillis();
+//                        circleProgressBar.setVisibility(View.VISIBLE);
+//                        circleProgressBar.setSweepAngle(360);
+//                        circleProgressBar.setText("360");
+//                        circleProgressBar.startCustomAnimation(new Animation.AnimationListener() {
+//                            @Override
+//                            public void onAnimationStart(Animation animation) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onAnimationEnd(Animation animation) {
+//                                if (System.currentTimeMillis() - curTime > 1500) {
+//
+//                                    ToastUtil.showLong("停止了");
+//                                    animationDrawable.stop();
+//                                } else {
+//                                    ivDeviceState.setImageResource(R.mipmap.stop);
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onAnimationRepeat(Animation animation) {
+//                            }
+//                        });
+//                    }
+//                    break;
+//                }
+//            case MotionEvent.ACTION_UP:
+//                if (v.getId() == R.id.ivDeviceState) {
+//                    if (isStart) {
+//                        circleProgressBar.setVisibility(View.INVISIBLE);
+//                        circleProgressBar.clearCustomAnimation();
+//                    }
+//                    else
+//                    {
+//                        ivDeviceState.setImageResource(R.mipmap.stop);
+//                        isStart = true;
+//                        animationDrawable.start();
+//                    }
+//                }
+//
+//                switch (mStatus) {
+//                    case 31:
+//                        //连接成功
+//                        showProgress();
+//                        startdDownfate(mprid, mBuffer, tac_Buffer);
+//                        break;
+//                    case 32:
+//                        //结束费率
+//                        showProgress();
+//                        CMDUtils.jieshufeilv(mbtService, true);
+//                        break;
+//                    case 33:
+//                        startDeal(mprid, mdecived, mBuffer, tac_Buffer);
+//                        showProgress();
+//                        break;
+//                    case 35:
+//                        skipUI();
+//                        break;
+//                    case 41:
+//                        //配对失败
+//                        showProgress();
+//                        //连接设备
+//                        connDevice();
+//                        break;
+//                    case 42:
+//                        //连接失败
+//                        showProgress();
+//                        //连接设备
+//                        connDevice();
+//                        break;
+//                    case 43:
+//                        //断开连接
+//                        showProgress();
+//                        //连接设备
+//                        connDevice();
+//                        break;
+//                    default:
+//                        break;
+//                }
+//
+//                break;
+//        }
+//        return true;
+//
+//    }
 
 
     @Override
@@ -533,7 +539,9 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
                     case 31:
                         //连接成功
                         showProgress();
-                        startdDownfate( mprid,mBuffer,tac_Buffer);
+                        //执行服务端接口，先预扣费
+                        long currentUserId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
+                        ChargeManager.getInstance().useWaterPreBill(currentUserId);
                         break;
                     case 32:
                         //结束费率
@@ -577,6 +585,23 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(WaterPreBillEvent event) {
+        //服务端返回学生用水预扣费接口，可以执行下发费率
+        if (event.getWaterPreBillModel()!=null)
+        {
+            String USB_OrderNo = event.getWaterPreBillModel().getData().getUSB_OrderNo();
+            long userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
+            float mainBalance =  PreferencesUtils.getFloat(CommonParams.USI_MAINBALANCE);
+            float waterRate =  PreferencesUtils.getFloat(CommonParams.SCHOOL_WATERRATE);
+
+            startdDownfate(mprid, USB_OrderNo, (int) userId, (int) mainBalance, (int) waterRate, mBuffer, tac_Buffer);
+        }
+        else
+        {
+
+        }
+    }
 
     @Override
     protected void onDestroy() {
@@ -815,18 +840,20 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     /**
      * 下发费率
      */
-    private void startdDownfate(int mproductid, byte[] macBuffer, byte[] tac_timeBuffer) {
+    private void startdDownfate(int mproductid, String orderNo, int accountId, int PerMoney, int rate, byte[] macBuffer, byte[] tac_timeBuffer) {
         DownRateInfo downRateInfo = new DownRateInfo();
         //时间
         downRateInfo.ConsumeDT = DateUtils.getTimeID();
+//        downRateInfo.ConsumeDT = orderNo;
+
         //个人账号使用次数
         downRateInfo.UseCount = 100;
         //预扣金额
-        downRateInfo.PerMoney = 5000;
+        downRateInfo.PerMoney = PerMoney;
         //1标准水表2阶梯收费
         downRateInfo.ParaTypeID = 1;
         //费率1
-        downRateInfo.Rate1 = 10;
+        downRateInfo.Rate1 = rate;
         downRateInfo.Rate2 = 500;
         downRateInfo.Rate3 = 500;
         //保底消费时间
@@ -842,7 +869,7 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
 
         try {
             CMDUtils.xiafafeilv(mbtService, true, downRateInfo,
-                    mproductid, 10001, 2, macBuffer, tac_timeBuffer);
+                    mproductid, accountId, 2, macBuffer, tac_timeBuffer);
 
         } catch (IOException e1) {
             e1.printStackTrace();

@@ -98,8 +98,8 @@ public class LoginActivity extends BaseActivity {
             return;
         }
         RegisterLoginModel.UserModel data = dataModel.getData();
-        if(data!=null){
-            PreferencesUtils.putLong(CommonParams.LOGIN_USER_ID,data.getUSI_Id());
+        if (data != null) {
+            PreferencesUtils.putLong(CommonParams.LOGIN_USER_ID, data.getUSI_Id());
         }
         ToastUtil.showShort(dataModel.getMessage());
         if (dataModel.getCode() == 1) {
@@ -135,7 +135,7 @@ public class LoginActivity extends BaseActivity {
                     PreferencesUtils.putBoolean(CommonParams.PRF_PSW_CHECK_STATE, false);
                 }
                 LogicManager.getInstance().login(userName, password);
-               // startActivity(MainActivity.makeIntent(this));
+                // startActivity(MainActivity.makeIntent(this));
                 break;
 
         }
