@@ -1,14 +1,11 @@
 package com.zhide.app.logic;
 
-import android.util.Log;
-
 import com.zhide.app.common.CommonUrl;
 import com.zhide.app.eventBus.CardBillEvent;
 import com.zhide.app.eventBus.ErrorMsgEvent;
 import com.zhide.app.eventBus.MyBillEvent;
 import com.zhide.app.model.CardBillModel;
 import com.zhide.app.model.MyBillModel;
-import com.zhide.app.model.ResponseModel;
 import com.zhide.app.okhttp.DataManager;
 import com.zhide.okhttputils.callback.GenericsCallback;
 import com.zhide.okhttputils.request.JsonGenericsSerializator;
@@ -67,10 +64,11 @@ public class BillManager {
                 });
     }
 
-    public void getMyBillData(long userId) {
+    public void getMyBillData(long userId,String selectType) {
         JSONObject params = new JSONObject();
         try {
             params.put("USI_Id", userId);
+            params.put("USB_ChangeType", selectType);
         } catch (JSONException e) {
             e.printStackTrace();
         }
