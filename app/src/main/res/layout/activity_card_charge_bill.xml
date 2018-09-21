@@ -17,7 +17,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="充值时间"
+            android:text="@string/charge_time"
             android:textColor="@color/main_blue_color" />
 
         <TextView
@@ -25,7 +25,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="类型"
+            android:text="@string/type"
             android:textColor="@color/main_blue_color" />
 
         <TextView
@@ -33,7 +33,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="发生金额"
+            android:text="@string/trans_money"
             android:textColor="@color/main_blue_color" />
 
         <TextView
@@ -41,7 +41,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="卡片余额"
+            android:text="@string/card_money"
             android:textColor="@color/main_blue_color" />
 
     </LinearLayout>

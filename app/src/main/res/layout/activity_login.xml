@@ -135,7 +135,7 @@
                 android:layout_below="@id/ivEnter"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="5dp"
-                android:text="登录"
+                android:text="@string/login"
                 android:textColor="@color/main_blue_color"
                 android:textSize="15sp" />
 

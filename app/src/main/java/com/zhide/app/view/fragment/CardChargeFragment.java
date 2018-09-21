@@ -4,9 +4,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.alipay.sdk.app.PayTask;
-import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.zhide.app.R;
+import com.zhide.app.common.CommonParams;
 import com.zhide.app.delegate.IConfirmClickListener;
 import com.zhide.app.delegate.IGetAliPayResult;
 import com.zhide.app.delegate.SpinerOnItemClickListener;
@@ -18,6 +17,8 @@ import com.zhide.app.model.ReChargeModel;
 import com.zhide.app.model.WXPayParamModel;
 import com.zhide.app.utils.DialogUtils;
 import com.zhide.app.utils.EmptyUtil;
+import com.zhide.app.utils.PreferencesUtils;
+import com.zhide.app.utils.ResourceUtils;
 import com.zhide.app.utils.ToastUtil;
 import com.zhide.app.view.activity.CardChargeBillActivity;
 import com.zhide.app.view.base.BaseFragment;
@@ -64,6 +65,7 @@ public class CardChargeFragment extends BaseFragment {
 
     private IGetAliPayResult alipayResult;
     private List<TextView> selectTvList;
+    private long userId;
 
     @Override
     protected void initView() {
@@ -90,6 +92,8 @@ public class CardChargeFragment extends BaseFragment {
         selectTvList.add(tvCharge100);
         selectTvList.add(tvChargeOther);
         updateTvState(tvCharge30);
+        userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
+
         alipayResult = new IGetAliPayResult() {
             @Override
             public void getResult(Map<String, String> result) {
@@ -227,7 +231,11 @@ public class CardChargeFragment extends BaseFragment {
             PayManager.getInstance().getAliPayParams(selectAmount);
 
         } else if (type == wxPayType) {
-            PayManager.getInstance().getWxPayParams(selectAmount);
+            if (userId == 0 || selectAmount == 0) {
+                ToastUtil.showShort(ResourceUtils.getInstance().getString(R.string.charge_error));
+                return;
+            }
+            PayManager.getInstance().getWxPayParams(selectAmount, userId);
         }
     }
 

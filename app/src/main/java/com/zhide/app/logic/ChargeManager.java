@@ -1,5 +1,7 @@
 package com.zhide.app.logic;
 
+import android.util.Log;
+
 import com.zhide.app.common.CommonUrl;
 import com.zhide.app.eventBus.ErrorMsgEvent;
 import com.zhide.app.eventBus.PayOrderEvent;
@@ -40,10 +42,13 @@ public class ChargeManager {
         return instance;
     }
 
-    public void getWeChatPayParams(float amount) {
+    public void getWeChatPayParams(float amount,long userId) {
+        Log.d("admin", "getWeChatPayParams: amount="+amount);
+        amount = 0.1f;
         JSONObject params = new JSONObject();
         try {
-            params.put("amount", amount);
+            params.put("USR_Money", amount);
+            params.put("USI_Id", userId);
         } catch (JSONException e) {
             e.printStackTrace();
         }

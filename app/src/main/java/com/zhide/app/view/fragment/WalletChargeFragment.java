@@ -4,28 +4,23 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.alipay.sdk.app.PayTask;
-import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.zhide.app.R;
-import com.zhide.app.common.ApplicationHolder;
+import com.zhide.app.common.CommonParams;
 import com.zhide.app.delegate.IConfirmClickListener;
 import com.zhide.app.delegate.IGetAliPayResult;
-import com.zhide.app.delegate.SpinerOnItemClickListener;
 import com.zhide.app.eventBus.PayOrderEvent;
 import com.zhide.app.eventBus.RechargeInfoEvent;
-import com.zhide.app.logic.ChargeManager;
 import com.zhide.app.logic.PayManager;
 import com.zhide.app.model.AliPayParamModel;
 import com.zhide.app.model.ReChargeModel;
 import com.zhide.app.model.WXPayParamModel;
 import com.zhide.app.utils.DialogUtils;
 import com.zhide.app.utils.EmptyUtil;
+import com.zhide.app.utils.PreferencesUtils;
 import com.zhide.app.utils.ResourceUtils;
 import com.zhide.app.utils.ToastUtil;
-import com.zhide.app.view.activity.RechargeActivity;
 import com.zhide.app.view.base.BaseFragment;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -74,6 +69,7 @@ public class WalletChargeFragment extends BaseFragment {
 
     private IGetAliPayResult alipayResult;
     private List<TextView> selectTvList;
+    private long userId;
 
     @Override
     protected void initView() {
@@ -118,6 +114,8 @@ public class WalletChargeFragment extends BaseFragment {
         selectTvList.add(tvCharge100);
         selectTvList.add(tvChargeOther);
         updateTvState(tvCharge30);
+        userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
+
         alipayResult = new IGetAliPayResult() {
             @Override
             public void getResult(Map<String, String> result) {
@@ -214,7 +212,7 @@ public class WalletChargeFragment extends BaseFragment {
                     return;
                 }
                 if (cbSelectWxPay.isChecked()) {
-                    PayManager.getInstance().getWxPayParams(selectAmount);
+                    PayManager.getInstance().getWxPayParams(selectAmount,userId);
                 } else if (cbSelectAliPay.isChecked()) {
                     PayManager.getInstance().getAliPayParams(selectAmount);
                 }

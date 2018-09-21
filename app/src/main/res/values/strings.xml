@@ -121,6 +121,12 @@
     <string name="register_no_code">验证码不能为空</string>
     <string name="register_no_psw">密码不能为空</string>
     <string name="scan_code">扫码失败，请重试</string>
+    <string name="charge_time">充值时间</string>
+    <string name="type">类型</string>
+    <string name="trans_money">发生金额</string>
+    <string name="card_money">卡片余额</string>
+    <string name="login">登录</string>
+    <string name="charge_error">充值参数异常</string>
 
     <string name="shower_balance">￥%s</string>
     <string name="shower_deducting">￥%s</string>
