@@ -1,7 +1,6 @@
 package com.zhide.app.logic;
 
 import android.app.Activity;
-import android.content.Context;
 
 import com.alipay.sdk.app.PayTask;
 import com.tencent.mm.opensdk.modelpay.PayReq;
@@ -33,8 +32,8 @@ public class PayManager {
         ChargeManager.getInstance().getAliPayParams(selectAmount);
     }
 
-    public void getWxPayParams(float selectAmount) {
-        ChargeManager.getInstance().getWeChatPayParams(selectAmount);
+    public void getWxPayParams(float selectAmount,long userId) {
+        ChargeManager.getInstance().getWeChatPayParams(selectAmount,userId);
 
     }
     /**
