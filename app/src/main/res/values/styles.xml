@@ -105,4 +105,8 @@
         <item name="android:windowExitAnimation">@anim/dropdown_out</item>
         <!-- 指定消失的动画xml -->
     </style>
+    <style name="popupwindow_anim">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
 </resources>

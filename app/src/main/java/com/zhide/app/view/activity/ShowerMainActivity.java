@@ -223,7 +223,6 @@ public class ShowerMainActivity extends BaseActivity implements View.OnClickList
         BluetoothAdapter blueadapter = BluetoothAdapter.getDefaultAdapter();
         if (!blueadapter.isEnabled()) {
             showEnableBlueToothDialog();
-            tvSearchCount.setText("0");
             tvSearchTitle.setVisibility(View.INVISIBLE);
         } else {
             tvSearchTitle.setVisibility(View.VISIBLE);
@@ -235,7 +234,7 @@ public class ShowerMainActivity extends BaseActivity implements View.OnClickList
             mCountDownTimer.start();
             doDiscovery();
         }
-
+        tvSearchCount.setText("0");
 
     }
 

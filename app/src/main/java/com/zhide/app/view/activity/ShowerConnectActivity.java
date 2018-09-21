@@ -1,5 +1,6 @@
 package com.zhide.app.view.activity;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -8,15 +9,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -84,7 +91,8 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     float mainBalance;
     float waterRate;
     float deducting;
-
+    private PopupWindow mPopupWindow = null;
+    private View parentView;
     @BindView(R.id.washing_time)
     TimeView timeView;
     @BindView(R.id.ivShower)
@@ -105,12 +113,12 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     TextView tvBalance;
     @BindView(R.id.llDetail)
     LinearLayout llDetail;
-    @BindView(R.id.tvConnectState)
+
     TextView tvConnectState;
-    @BindView(R.id.ivConnect)
     ImageView ivConnect;
-    @BindView(R.id.rlConnectLayout)
-    RelativeLayout rlConnectLayout;
+
+//    @BindView(R.id.rlConnectLayout)
+//    RelativeLayout rlConnectLayout;
     //属性动画对象
     TranslateAnimation mHiddenAction;
 
@@ -151,7 +159,6 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
         Log.d(mContext.getClass().getSimpleName(), "设备的mac地址：=" + MAC);
 
         ivDeviceState.setOnClickListener(this);
-        tvConnectState.setOnClickListener(this);
         myHandler = new MyHandler(ShowerConnectActivity.this);
 
         //隐藏动画
@@ -273,7 +280,7 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
                 //连接成功
                 hideProgressDialog();
                 ivDeviceState.setImageResource(R.mipmap.start);
-                rlConnectLayout.setVisibility(View.GONE);
+//                rlConnectLayout.setVisibility(View.GONE);
                 tvState.setText(getString(R.string.driver_start_using));
                 break;
             case 32:
@@ -333,7 +340,59 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
      * 显示进度
      */
     private void showProgressDialog(String stateText, boolean isStop) {
-        rlConnectLayout.setVisibility(View.VISIBLE);
+
+        if (mPopupWindow==null)
+        {
+            View view = LayoutInflater.from(mContext).inflate(R.layout.dialog_shower_connecting, null);
+            mPopupWindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, false);
+            mPopupWindow.setAnimationStyle(R.style.popupwindow_anim);
+            Window window = ((Activity) mContext).getWindow();
+            if (window == null) {
+                return;
+            }
+            parentView = window.findViewById(Window.ID_ANDROID_CONTENT);
+
+            tvConnectState =(TextView) view.findViewById(R.id.tvConnectState);
+            ivConnect= (ImageView) view.findViewById(R.id.ivConnect);
+            tvConnectState.setOnClickListener(this);
+
+            mPopupWindow.setOutsideTouchable(true);
+//        mPopupWindow.setFocusable(true);
+            mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+            mPopupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            if (mPopupWindow!=null) {
+                if (!((Activity) mContext).hasWindowFocus()) {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mPopupWindow.showAtLocation(parentView, Gravity.CENTER, 0, 0);
+                        }
+                    },500);
+                }
+                else
+                {
+                    mPopupWindow.showAtLocation(parentView, Gravity.CENTER, 0, 0);
+                }
+            }
+        }
+        else
+        {
+            if (!((Activity) mContext).hasWindowFocus()) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mPopupWindow.showAtLocation(parentView, Gravity.CENTER, 0, 0);
+                    }
+                },500);
+            }
+            else
+            {
+                mPopupWindow.showAtLocation(parentView, Gravity.CENTER, 0, 0);
+            }
+
+        }
+
+//        rlConnectLayout.setVisibility(View.VISIBLE);
         AnimationDrawable animationDrawable = (AnimationDrawable) ivConnect.getDrawable();
 
         if (isStop) {
@@ -349,7 +408,8 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
      * 隐藏进度
      */
     private void hideProgressDialog() {
-        rlConnectLayout.setVisibility(View.GONE);
+//        rlConnectLayout.setVisibility(View.GONE);
+        mPopupWindow.dismiss();
         ivDeviceState.setEnabled(true);
     }
 

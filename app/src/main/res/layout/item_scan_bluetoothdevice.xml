@@ -1,53 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="35dp"
+    android:layout_height="40dp"
     android:paddingLeft="23dp"
     android:paddingRight="27dp">
 
-    <ImageView
-        android:id="@+id/ivBluetooth"
-        android:layout_width="15dp"
-        android:layout_height="20dp"
-        android:layout_centerVertical="true"
-        android:src="@mipmap/ic_bluetooth" />
-
-    <LinearLayout
-        android:layout_marginTop="5dp"
+    <RelativeLayout
+        android:id="@+id/rlLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/btnBinding"
-        android:layout_toRightOf="@+id/ivBluetooth"
-        android:orientation="vertical"
-        android:paddingLeft="13dp"
-        android:paddingRight="5dp">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tvAddress"
-            android:layout_width="wrap_content"
+        <ImageView
+            android:id="@+id/ivBluetooth"
+            android:layout_width="15dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/ic_bluetooth" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="A栋1单元"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="5dp"
+            android:layout_toLeftOf="@+id/btnBinding"
+            android:layout_toRightOf="@+id/ivBluetooth"
+            android:orientation="vertical"
+            android:paddingLeft="13dp"
+            android:paddingRight="5dp">
+
+            <TextView
+                android:id="@+id/tvAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="A栋1单元"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnBinding"
+            android:layout_width="46dp"
+            android:layout_height="24dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/dialog_btn2_selecter"
+            android:text="绑定"
             android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:visibility="gone" />
 
-    </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="5dp"
+            android:background="@color/white" />
+    </RelativeLayout>
 
-    <Button
-        android:id="@+id/btnBinding"
-        android:layout_width="46dp"
-        android:layout_height="24dp"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:background="@drawable/dialog_btn2_selecter"
-        android:text="绑定"
-        android:textColor="@color/white"
-        android:textSize="14sp"></Button>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginTop="5dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/white" />
 </RelativeLayout>

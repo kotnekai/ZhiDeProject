@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rlConnectLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#66000000">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/com_white_10r_shape"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvConnectState"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/connecting_device"
+            android:textColor="@color/main_blue_color"
+            android:textSize="18sp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="88dp"
+                android:layout_height="141dp"
+                android:layout_marginLeft="35dp"
+                android:src="@mipmap/phone" />
+
+            <ImageView
+                android:id="@+id/ivConnect"
+                android:layout_width="75dp"
+                android:layout_height="120dp"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="10dp"
+                android:src="@drawable/animation_connect" />
+
+            <ImageView
+                android:layout_width="88dp"
+                android:layout_height="141dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="35dp"
+                android:src="@mipmap/meter" />
+        </RelativeLayout>
+
+    </LinearLayout>
+</RelativeLayout>

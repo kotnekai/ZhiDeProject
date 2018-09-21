@@ -10,6 +10,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
@@ -69,6 +70,8 @@ public class ScanBluetoothDeviceAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             viewHolder.tvAddress = (TextView) view.findViewById(R.id.tvAddress);
             viewHolder.btnBinding = (Button) view.findViewById(R.id.btnBinding);
+            viewHolder.rlLayout = (RelativeLayout) view.findViewById(R.id.rlLayout);
+
             view.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) view.getTag();
@@ -76,8 +79,8 @@ public class ScanBluetoothDeviceAdapter extends BaseAdapter {
         BluetoothDevice bluetoothDevice = devices.get(i);
 
         viewHolder.tvAddress.setText(TextUtils.isEmpty(bluetoothDevice.getName()) ? bluetoothDevice.getAddress() : bluetoothDevice.getName());
-        viewHolder.btnBinding.setTag(bluetoothDevice);
-        viewHolder.btnBinding.setOnClickListener(new OnClickListener() {
+        viewHolder.rlLayout.setTag(bluetoothDevice);
+        viewHolder.rlLayout.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -118,6 +121,7 @@ public class ScanBluetoothDeviceAdapter extends BaseAdapter {
     static class ViewHolder {
         TextView tvAddress;
         Button btnBinding;
+        RelativeLayout rlLayout;
     }
 
     public void changeData(ArrayList<BluetoothDevice> lists) {
