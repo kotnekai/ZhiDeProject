@@ -101,7 +101,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             //先去绑定学校
             showBindSchoolDialog(getContext());
         }
-
+        //保存学校水表预扣金额
+        if (userData.getSI_Deducting() != null) {
+            PreferencesUtils.putFloat(CommonParams.SI_DEDUCTING, userData.getSI_Deducting());
+        }
         //保存学校用水费率
         if (userData.getSI_WaterRate() != null) {
             PreferencesUtils.putFloat(CommonParams.SCHOOL_WATERRATE, userData.getSI_WaterRate());
@@ -110,7 +113,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         float balance = userData.getUSI_MainBalance() * 1000;
         //保存预存金额，等下写入到水表中
         PreferencesUtils.putFloat(CommonParams.USI_MAINBALANCE, balance);
-
 
         //判断余额是否大于预扣费，大于可以洗澡，小于要跳到充值界面
         if (balance >= userData.getSI_Deducting()) {

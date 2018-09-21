@@ -3,6 +3,7 @@ package com.zhide.app.view.adapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -74,7 +75,7 @@ public class ScanBluetoothDeviceAdapter extends BaseAdapter {
         }
         BluetoothDevice bluetoothDevice = devices.get(i);
 
-        viewHolder.tvAddress.setText(bluetoothDevice.getAddress());
+        viewHolder.tvAddress.setText(TextUtils.isEmpty(bluetoothDevice.getName()) ? bluetoothDevice.getAddress() : bluetoothDevice.getName());
         viewHolder.btnBinding.setTag(bluetoothDevice);
         viewHolder.btnBinding.setOnClickListener(new OnClickListener() {
 
@@ -103,7 +104,9 @@ public class ScanBluetoothDeviceAdapter extends BaseAdapter {
 
                                 Intent intent = new Intent();
                                 intent.setClass(mContext, ShowerConnectActivity.class);
-                                intent.putExtra("deviceMac", bDevice.getAddress());
+                                intent.putExtra(ShowerConnectActivity.DEVICE_MAC, bDevice.getAddress());
+                                intent.putExtra(ShowerConnectActivity.DEVICE_NAME, bDevice.getName());
+
                                 mContext.startActivity(intent);
                             }
                         }).show();

@@ -16,6 +16,10 @@ public class CommonParams {
     public static final String SCHOOL_WATERRATE = "school_waterRate";
     //学生余额
     public static final String USI_MAINBALANCE = "USI_MainBalance";
+    //预扣金额
+    public static final String SI_DEDUCTING = "SI_Deducting";
+
+
 
     public static long currentUserId;
 

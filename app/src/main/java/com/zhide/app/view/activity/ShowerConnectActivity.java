@@ -1,5 +1,6 @@
 package com.zhide.app.view.activity;
 
+import android.animation.ValueAnimator;
 import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -12,10 +13,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -29,7 +31,6 @@ import com.example.jooronjar.utils.WaterCodeListener;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zhide.app.R;
 import com.zhide.app.common.CommonParams;
-import com.zhide.app.eventBus.LoginEvent;
 import com.zhide.app.eventBus.WaterPreBillEvent;
 import com.zhide.app.eventBus.WaterSettleEvent;
 import com.zhide.app.logic.ChargeManager;
@@ -37,8 +38,8 @@ import com.zhide.app.utils.DateUtils;
 import com.zhide.app.utils.DialogUtils;
 import com.zhide.app.utils.PreferencesUtils;
 import com.zhide.app.utils.ToastUtil;
+import com.zhide.app.utils.UIUtils;
 import com.zhide.app.view.base.BaseActivity;
-import com.zhide.app.view.views.CircleProgressBar;
 import com.zhide.app.view.widget.TimeView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -58,12 +59,16 @@ import butterknife.BindView;
 public class ShowerConnectActivity extends BaseActivity implements WaterCodeListener, View.OnClickListener {
 
     public static final String DEVICE_MAC = "deviceMac";
+    public static final String DEVICE_NAME = "deviceName";
+
     public static final int MSG_AUTO_CONNECT_COMPLETED = 0x09;
+
 
     private BluetoothService mbtService = null;
     private BluetoothAdapter bluetoothAdapter;
 
     String MAC = "";
+    String deviceName = "";
     private int mStatus = 0;
     private int num = 1;
     private Context mContext;
@@ -80,7 +85,9 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     private long curTime;
     private boolean isStart = false;
     AnimationDrawable animationDrawable;
-
+    float mainBalance;
+    float waterRate;
+    float deducting;
 
     @BindView(R.id.washing_time)
     TimeView timeView;
@@ -92,9 +99,19 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     ProgressBar progressBar;
     @BindView(R.id.tvState)
     TextView device_connect_state_txt;
-    @BindView(R.id.circleProgressBar)
-    CircleProgressBar circleProgressBar;
+    @BindView(R.id.llControl)
+    LinearLayout llControl;
+    @BindView(R.id.tvMeterName)
+    TextView tvMeterName;
+    @BindView(R.id.tvPerSave)
+    TextView tvPerSave;
+    @BindView(R.id.tvBalance)
+    TextView tvBalance;
+    @BindView(R.id.llDetail)
+    LinearLayout llDetail;
 
+    //属性动画对象
+    TranslateAnimation mHiddenAction;
 
     @Override
     protected int getCenterView() {
@@ -109,9 +126,6 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     @Override
     protected void initHeader() {
         setHeaderTitle(getString(R.string.shower_title));
-//        setRightTextVisibility(View.VISIBLE);
-//        setHeader_RightText(getString(R.string.shower_driver_reg));
-//        setHeader_RightTextClickListener(this);
     }
 
     @Override
@@ -132,18 +146,28 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     private void initData() {
         Intent intent = getIntent();
         MAC = intent.getStringExtra(DEVICE_MAC);
+        deviceName = intent.getStringExtra(DEVICE_NAME);
         Log.d(mContext.getClass().getSimpleName(), "设备的mac地址：=" + MAC);
 
         ivDeviceState.setOnClickListener(this);
-
-//        ivDeviceState.setOnTouchListener(this);
         myHandler = new MyHandler(ShowerConnectActivity.this);
 
-        circleProgressBar.setSweepAngle(0);
-        circleProgressBar.setText("0");
-        circleProgressBar.setVisibility(View.INVISIBLE);
-        animationDrawable = (AnimationDrawable) ivShower.getDrawable();
+        //隐藏动画
+        mHiddenAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF,
+                0.0f, Animation.RELATIVE_TO_SELF, 0.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
+                1.0f);
+        mHiddenAction.setDuration(200);
+        //余额
+        mainBalance = PreferencesUtils.getFloat(CommonParams.USI_MAINBALANCE);
+        //费率
+        waterRate = PreferencesUtils.getFloat(CommonParams.SCHOOL_WATERRATE);
+        //预扣金额
+        deducting = PreferencesUtils.getFloat(CommonParams.SI_DEDUCTING);
 
+        tvMeterName.setText(deviceName);
+        tvBalance.setText(String.format(getString(R.string.shower_balance), (mainBalance / 1000) + ""));
+        tvPerSave.setText(String.format(getString(R.string.shower_deducting), (deducting / 1000) + ""));
     }
 
     /**
@@ -433,101 +457,6 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     }
 
 
-//    @Override
-//    public boolean onTouch(View v, MotionEvent event) {
-//        switch (event.getAction()) {
-//            case MotionEvent.ACTION_DOWN:
-//                if (v.getId() == R.id.ivDeviceState) {
-//                    if (isStart) {
-//                        curTime = System.currentTimeMillis();
-//                        circleProgressBar.setVisibility(View.VISIBLE);
-//                        circleProgressBar.setSweepAngle(360);
-//                        circleProgressBar.setText("360");
-//                        circleProgressBar.startCustomAnimation(new Animation.AnimationListener() {
-//                            @Override
-//                            public void onAnimationStart(Animation animation) {
-//
-//                            }
-//
-//                            @Override
-//                            public void onAnimationEnd(Animation animation) {
-//                                if (System.currentTimeMillis() - curTime > 1500) {
-//
-//                                    ToastUtil.showLong("停止了");
-//                                    animationDrawable.stop();
-//                                } else {
-//                                    ivDeviceState.setImageResource(R.mipmap.stop);
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void onAnimationRepeat(Animation animation) {
-//                            }
-//                        });
-//                    }
-//                    break;
-//                }
-//            case MotionEvent.ACTION_UP:
-//                if (v.getId() == R.id.ivDeviceState) {
-//                    if (isStart) {
-//                        circleProgressBar.setVisibility(View.INVISIBLE);
-//                        circleProgressBar.clearCustomAnimation();
-//                    }
-//                    else
-//                    {
-//                        ivDeviceState.setImageResource(R.mipmap.stop);
-//                        isStart = true;
-//                        animationDrawable.start();
-//                    }
-//                }
-//
-//                switch (mStatus) {
-//                    case 31:
-//                        //连接成功
-//                        showProgress();
-//                        startdDownfate(mprid, mBuffer, tac_Buffer);
-//                        break;
-//                    case 32:
-//                        //结束费率
-//                        showProgress();
-//                        CMDUtils.jieshufeilv(mbtService, true);
-//                        break;
-//                    case 33:
-//                        startDeal(mprid, mdecived, mBuffer, tac_Buffer);
-//                        showProgress();
-//                        break;
-//                    case 35:
-//                        skipUI();
-//                        break;
-//                    case 41:
-//                        //配对失败
-//                        showProgress();
-//                        //连接设备
-//                        connDevice();
-//                        break;
-//                    case 42:
-//                        //连接失败
-//                        showProgress();
-//                        //连接设备
-//                        connDevice();
-//                        break;
-//                    case 43:
-//                        //断开连接
-//                        showProgress();
-//                        //连接设备
-//                        connDevice();
-//                        break;
-//                    default:
-//                        break;
-//                }
-//
-//                break;
-//        }
-//        return true;
-//
-//    }
-
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -542,6 +471,17 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
                         showProgress();
                         //执行服务端接口，先预扣费
                         long currentUserId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
+                        //隐藏水表名，余额等
+                        llDetail.startAnimation(mHiddenAction);
+                        llDetail.setVisibility(View.GONE);
+                        //按钮变大
+                        ivDeviceState.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                ivDeviceState.setLayoutParams(new LinearLayout.LayoutParams(UIUtils.dipToPx(mContext, 110),
+                                        UIUtils.dipToPx(mContext, 110)));
+                            }
+                        }, 250);
                         ChargeManager.getInstance().useWaterPreBill(currentUserId);
                         break;
                     case 32:
@@ -589,31 +529,22 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(WaterPreBillEvent event) {
         //服务端返回学生用水预扣费接口，可以执行下发费率
-        if (event.getWaterPreBillModel()!=null)
-        {
+        if (event.getWaterPreBillModel() != null) {
             int USB_Id = event.getWaterPreBillModel().getData().getUSB_Id();
-            float mainBalance =  PreferencesUtils.getFloat(CommonParams.USI_MAINBALANCE);
-            float waterRate =  PreferencesUtils.getFloat(CommonParams.SCHOOL_WATERRATE);
-
-            startdDownfate(mprid, USB_Id,  (int) mainBalance, (int) waterRate, mBuffer, tac_Buffer);
-        }
-        else
-        {
+            startdDownfate(mprid, USB_Id, (int) mainBalance, (int) waterRate, mBuffer, tac_Buffer);
+        } else {
 
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(WaterSettleEvent event) {
-        if (event.getSettleModel()!=null)
-        {
+        if (event.getSettleModel() != null) {
             //弹出框展示
             if (xiaofeiDialog != null) {
                 xiaofeiDialog.show();
             }
-        }
-        else
-        {
+        } else {
 
         }
     }
@@ -663,7 +594,7 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
                         macString);
 
                 float consumeMone = Float.valueOf(consumeMoneString).floatValue() / 1000;
-                ChargeManager.getInstance().useWaterSettlement(consumeMone,maccountid);
+                ChargeManager.getInstance().useWaterSettlement(consumeMone, maccountid);
                 CMDUtils.fanhuicunchu(mbtService, true, timeid,
                         mproductid, mdeviceid, maccountid, usercount);
             } catch (IOException e) {
@@ -726,13 +657,13 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
         Log.d(mContext.getClass().getSimpleName(), "macType:" + macType);
         Log.d(mContext.getClass().getSimpleName(), "lType:" + lType);
         Log.d(mContext.getClass().getSimpleName(), "charge:" + charge);
-        mprid=mproductid;
-        times =macTime;
-        mdecived =mdeviceid;
-        mBuffer =macBuffer;
-        tac_Buffer =tac_timeBuffer;
-        dType =constype;
-        wtype =macType+"&"+lType;
+        mprid = mproductid;
+        times = macTime;
+        mdecived = mdeviceid;
+        mBuffer = macBuffer;
+        tac_Buffer = tac_timeBuffer;
+        dType = constype;
+        wtype = macType + "&" + lType;
         ToastUtil.showShort("查询成功");
         if (mproductid == 0) {
             ToastUtil.showShort(getString(R.string.device_no_login));
