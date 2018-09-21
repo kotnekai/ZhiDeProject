@@ -1,6 +1,5 @@
 package com.zhide.app.view.activity;
 
-import android.animation.ValueAnimator;
 import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -19,6 +18,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.jooronjar.BluetoothService;
@@ -61,9 +61,6 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     public static final String DEVICE_MAC = "deviceMac";
     public static final String DEVICE_NAME = "deviceName";
 
-    public static final int MSG_AUTO_CONNECT_COMPLETED = 0x09;
-
-
     private BluetoothService mbtService = null;
     private BluetoothAdapter bluetoothAdapter;
 
@@ -84,7 +81,6 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     private int seconds;
     private long curTime;
     private boolean isStart = false;
-    AnimationDrawable animationDrawable;
     float mainBalance;
     float waterRate;
     float deducting;
@@ -98,7 +94,7 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     @BindView(R.id.progressbar)
     ProgressBar progressBar;
     @BindView(R.id.tvState)
-    TextView device_connect_state_txt;
+    TextView tvState;
     @BindView(R.id.llControl)
     LinearLayout llControl;
     @BindView(R.id.tvMeterName)
@@ -109,7 +105,12 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     TextView tvBalance;
     @BindView(R.id.llDetail)
     LinearLayout llDetail;
-
+    @BindView(R.id.tvConnectState)
+    TextView tvConnectState;
+    @BindView(R.id.ivConnect)
+    ImageView ivConnect;
+    @BindView(R.id.rlConnectLayout)
+    RelativeLayout rlConnectLayout;
     //属性动画对象
     TranslateAnimation mHiddenAction;
 
@@ -150,6 +151,7 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
         Log.d(mContext.getClass().getSimpleName(), "设备的mac地址：=" + MAC);
 
         ivDeviceState.setOnClickListener(this);
+        tvConnectState.setOnClickListener(this);
         myHandler = new MyHandler(ShowerConnectActivity.this);
 
         //隐藏动画
@@ -166,8 +168,8 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
         deducting = PreferencesUtils.getFloat(CommonParams.SI_DEDUCTING);
 
         tvMeterName.setText(deviceName);
-        tvBalance.setText(String.format(getString(R.string.shower_balance), (mainBalance / 1000) + ""));
-        tvPerSave.setText(String.format(getString(R.string.shower_deducting), (deducting / 1000) + ""));
+        tvBalance.setText(String.format(getString(R.string.shower_balance_value), (mainBalance / 1000) + ""));
+        tvPerSave.setText(String.format(getString(R.string.shower_deducting_value), (deducting / 1000) + ""));
     }
 
     /**
@@ -215,7 +217,8 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
                         case BluetoothDevice.BOND_NONE:
                             // 取消配对/未配对
                             Log.d(mContext.getClass().getSimpleName(), getString(R.string.driver_bluetooth_connect_cancel));
-                            ToastUtil.showShort(getString(R.string.driver_bluetooth_connect_fail));
+                            tvState.setText(getString(R.string.driver_bluetooth_connect_fail));
+                            showProgressDialog(getString(R.string.driver_bluetooth_connect_fail), true);
                             mStatus = 41;
                             //配对失败
                             break;
@@ -264,28 +267,28 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
         switch (mStatus) {
             case 0:
                 //正在连接
-                showProgress();
+                showProgressDialog(getString(R.string.connecting_device), false);
                 break;
             case 31:
                 //连接成功
-                hideProgress();
+                hideProgressDialog();
                 ivDeviceState.setImageResource(R.mipmap.start);
-                device_connect_state_txt.setText(getString(R.string.driver_start_using));
+                rlConnectLayout.setVisibility(View.GONE);
+                tvState.setText(getString(R.string.driver_start_using));
                 break;
             case 32:
                 //下发费率成功
-                hideProgress();
                 ivShower.setImageResource(R.drawable.animation_shower);
                 animationDrawable = (AnimationDrawable) ivShower.getDrawable();
                 animationDrawable.start();
                 ivDeviceState.setImageResource(R.mipmap.stop);
-                device_connect_state_txt.setText(getString(R.string.driver_stop_use));
+                tvState.setText(getString(R.string.driver_stop_use));
                 break;
             case 33:
                 //洗衣机的连接成功
-                hideProgress();
+                hideProgressDialog();
                 ivDeviceState.setImageResource(R.mipmap.dryer_connected);
-                device_connect_state_txt.setText(getString(R.string.driver_start_using));
+                tvState.setText(getString(R.string.driver_start_using));
                 break;
             case 34:
                 break;
@@ -298,25 +301,27 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
                 ivDeviceState.setImageResource(R.drawable.animation_washing);
                 animationDrawable = (AnimationDrawable) ivDeviceState.getDrawable();
                 animationDrawable.start();
-                device_connect_state_txt.setText(getString(R.string.driver_wash_clothes));
-                hideProgress();
+                tvState.setText(getString(R.string.driver_wash_clothes));
                 timeView.setVisibility(View.VISIBLE);
                 timeView.setTime(times);
                 break;
             case 41:
                 //配对失败
-                hideProgress();
-                device_connect_state_txt.setText(getString(R.string.driver_click_restart));
+                tvState.setText(getString(R.string.driver_connect_fail));
+                showProgressDialog(getString(R.string.driver_connect_fail), true);
+
                 break;
             case 42:
                 //连接失败
-                hideProgress();
-                device_connect_state_txt.setText(getString(R.string.driver_click_restart));
+                tvState.setText(getString(R.string.driver_connect_fail));
+                showProgressDialog(getString(R.string.driver_connect_fail), true);
+
                 break;
             case 43:
                 //断开连接
                 ivDeviceState.setImageResource(R.mipmap.dryer_unconnected);
-                device_connect_state_txt.setText(getString(R.string.driver_click_reconnect));
+                showProgressDialog(getString(R.string.driver_connect_fail), true);
+                tvState.setText(getString(R.string.driver_connect_fail));
                 timeView.setVisibility(View.GONE);
                 break;
             default:
@@ -327,18 +332,24 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     /**
      * 显示进度
      */
-    private void showProgress() {
-//        progressBar.setVisibility(View.VISIBLE);
-//        ivDeviceState.setEnabled(false);
-        progressBar.setVisibility(View.GONE);
-        ivDeviceState.setEnabled(true);
+    private void showProgressDialog(String stateText, boolean isStop) {
+        rlConnectLayout.setVisibility(View.VISIBLE);
+        AnimationDrawable animationDrawable = (AnimationDrawable) ivConnect.getDrawable();
+
+        if (isStop) {
+            animationDrawable.stop();
+        } else {
+            animationDrawable.start();
+        }
+        tvConnectState.setText(stateText);
+        ivDeviceState.setEnabled(false);
     }
 
     /**
      * 隐藏进度
      */
-    private void hideProgress() {
-        progressBar.setVisibility(View.GONE);
+    private void hideProgressDialog() {
+        rlConnectLayout.setVisibility(View.GONE);
         ivDeviceState.setEnabled(true);
     }
 
@@ -463,12 +474,18 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
             case R.id.tvNext:
                 skipUI();
                 break;
+            case R.id.tvConnectState:
+                if (mStatus == 41 || mStatus == 42) {
+//                    connDevice();
+//                    showProgressDialog(getString(R.string.connecting_device),false);
+                }
+                break;
             case R.id.ivDeviceState:
 
                 switch (mStatus) {
                     case 31:
                         //连接成功
-                        showProgress();
+                        showProgressDialog(getString(R.string.connecting_device), false);
                         //执行服务端接口，先预扣费
                         long currentUserId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
                         //隐藏水表名，余额等
@@ -486,34 +503,32 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
                         break;
                     case 32:
                         //结束费率
-                        showProgress();
 //                        ivShower.setImageResource(R.drawable.animation_shower);
-                        animationDrawable = (AnimationDrawable) ivShower.getDrawable();
+                        AnimationDrawable animationDrawable = (AnimationDrawable) ivShower.getDrawable();
                         animationDrawable.stop();
                         CMDUtils.jieshufeilv(mbtService, true);
                         break;
                     case 33:
                         startDeal(mprid, mdecived, mBuffer, tac_Buffer);
-                        showProgress();
                         break;
                     case 35:
                         skipUI();
                         break;
                     case 41:
                         //配对失败
-                        showProgress();
+                        showProgressDialog(getString(R.string.driver_bluetooth_connect_fail), true);
                         //连接设备
                         connDevice();
                         break;
                     case 42:
                         //连接失败
-                        showProgress();
+                        showProgressDialog(getString(R.string.driver_connect_fail), true);
                         //连接设备
                         connDevice();
                         break;
                     case 43:
                         //断开连接
-                        showProgress();
+                        showProgressDialog(getString(R.string.driver_connect_fail), true);
                         //连接设备
                         connDevice();
                         break;
@@ -617,12 +632,12 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     @Override
     public void xiafafeilvOnback(boolean b) {
         if (b) {
-            ToastUtil.showShort(getString(R.string.download_tate_success));
+//            ToastUtil.showShort(getString(R.string.download_tate_success));
             //下发费率后
             mStatus = 32;
             updateUI();
         } else {
-            ToastUtil.showShort(getString(R.string.download_tate_fail));
+//            ToastUtil.showShort(getString(R.string.download_tate_fail));
             mStatus = 42;
             updateUI();
         }
@@ -634,7 +649,7 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
 //            if (xiaofeiDialog != null) {
 //                xiaofeiDialog.show();
 //            }
-            ToastUtil.showShort(getString(R.string.clean_cache_success));
+//            ToastUtil.showShort(getString(R.string.clean_cache_success));
             CMDUtils.chaxueshebei(mbtService, true);
         }
     }
@@ -664,7 +679,7 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
         tac_Buffer = tac_timeBuffer;
         dType = constype;
         wtype = macType + "&" + lType;
-        ToastUtil.showShort("查询成功");
+//        ToastUtil.showShort("查询成功");
         if (mproductid == 0) {
             ToastUtil.showShort(getString(R.string.device_no_login));
             mStatus = 35;
