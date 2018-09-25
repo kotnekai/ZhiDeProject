@@ -84,13 +84,13 @@
                 <data android:scheme="wxac87d65c49952574" />
             </intent-filter>
         </activity>
-        <receiver
+<!--        <receiver
             android:name=".common.AppRegister"
             android:permission="com.tencent.mm.plugin.permission.SEND" >
             <intent-filter>
                 <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
             </intent-filter>
-        </receiver>
+        </receiver>-->
 
         <activity
             android:name=".view.activity.MyBillActivity"

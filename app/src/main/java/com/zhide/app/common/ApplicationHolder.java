@@ -39,9 +39,6 @@ public class ApplicationHolder {
         }
         mContext = context;
     }
-    public IWXAPI getMsgApi() {
-        return msgApi;
-    }
 
     public void setMsgApi(IWXAPI msgApi) {
         this.msgApi = msgApi;

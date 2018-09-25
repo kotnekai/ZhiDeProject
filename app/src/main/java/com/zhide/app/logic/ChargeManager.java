@@ -42,6 +42,8 @@ public class ChargeManager {
         return instance;
     }
 
+
+
     public void getWeChatPayParams(float amount,long userId) {
         Log.d("admin", "getWeChatPayParams: amount="+amount);
         amount = 0.1f;
@@ -52,7 +54,10 @@ public class ChargeManager {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        dataManager.sendPostRequestData(CommonUrl.GET_WECHAT_PARAMS, params)
+        //CommonUrl.GET_WECHAT_PARAMS
+        //String url = "https://wxpay.wxutil.com/pub_v2/app/app_pay.php";
+
+             dataManager.sendPostRequestData(CommonUrl.GET_WECHAT_PARAMS, params)
                 .execute(new GenericsCallback<WXPayParamModel>(new JsonGenericsSerializator()) {
                     @Override
                     public void onError(Response response, Call call, Exception e, int id) {

@@ -11,8 +11,9 @@ import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.zhide.app.R;
-import com.zhide.app.common.ApplicationHolder;
+import com.zhide.app.common.CommonParams;
 import com.zhide.app.view.base.BaseActivity;
 
 import butterknife.BindView;
@@ -43,7 +44,8 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        api = ApplicationHolder.getInstance().getMsgApi();
+        api = WXAPIFactory.createWXAPI(this, CommonParams.WECHAT_APPID);
+      //  api = ApplicationHolder.getInstance().getMsgApi();
         api.handleIntent(getIntent(), this);
         Log.d("admin", "onCreate: api="+api);
     }

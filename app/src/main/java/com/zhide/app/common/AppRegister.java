@@ -3,6 +3,7 @@ package com.zhide.app.common;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -17,5 +18,6 @@ public class AppRegister extends BroadcastReceiver {
 
         // 将该app注册到微信
         api.registerApp(CommonParams.WECHAT_APPID);
+        Log.d("admin", "onReceive: 注册");
     }
 }
