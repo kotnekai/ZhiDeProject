@@ -19,6 +19,12 @@ public class CommonParams {
     //预扣金额
     public static final String SI_DEDUCTING = "SI_Deducting";
 
+    //消费金额
+    public static final String PAY_MONEY = "pay_money";
+    //完成时间
+    public static final String COMPLETED_TIME = "completed_time";
+    //返回金额
+    public static final String RETURN_MONEY = "return_money";
 
 
     public static long currentUserId;

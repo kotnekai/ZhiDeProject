@@ -89,8 +89,14 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     private long curTime;
     private boolean isStart = false;
     float mainBalance;
+    //费率
     float waterRate;
+    //预存
     float deducting;
+    //消费金额
+    float consumeMoney;
+    //完成时间
+    long completeTime;
     private PopupWindow mPopupWindow = null;
     private View parentView;
     @BindView(R.id.washing_time)
@@ -616,11 +622,9 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     public void onEvent(WaterSettleEvent event) {
         if (event.getSettleModel() != null) {
             //弹出框展示
-            if (xiaofeiDialog != null) {
-                xiaofeiDialog.show();
-            }
-        } else {
 
+
+            ShowerCompletedActivity.makeIntent(mContext,completeTime,deducting,consumeMoney,0,0);
         }
     }
 
@@ -668,8 +672,8 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
                         consumeMoneString, rateString,
                         macString);
 
-                float consumeMone = Float.valueOf(consumeMoneString).floatValue() / 1000;
-                ChargeManager.getInstance().useWaterSettlement(consumeMone, maccountid);
+                consumeMoney = Float.valueOf(consumeMoneString).floatValue() / 1000;
+                ChargeManager.getInstance().useWaterSettlement(consumeMoney, maccountid);
                 CMDUtils.fanhuicunchu(mbtService, true, timeid,
                         mproductid, mdeviceid, maccountid, usercount);
             } catch (IOException e) {
