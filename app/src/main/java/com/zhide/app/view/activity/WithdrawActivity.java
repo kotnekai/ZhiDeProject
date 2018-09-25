@@ -101,7 +101,7 @@ public class WithdrawActivity extends BaseActivity {
         }
         float withdrawMoney = Float.parseFloat(surplusMoney);
         if (withdrawMoney == 0) {
-            ToastUtil.showShort("可提现金额为0");
+            ToastUtil.showShort(getString(R.string.can_withdraw_money));
             return;
         }
         WithdrawModel params = new WithdrawModel();

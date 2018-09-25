@@ -3,15 +3,15 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "27.0.2"
+    buildToolsVersion "27.0.3"
     // 签名配置
     signingConfigs {
         release {
             try {
-                storeFile file("./keystore/zhideKey.jks")
-                storePassword "zhide123456"
+                storeFile file("./keystore/keyStore.jks")
+                storePassword "1234567890"
                 keyAlias "zhide"
-                keyPassword "zhide123456"
+                keyPassword "1234567890"
             } catch (ex) {
                 throw new InvalidUserDataException(ex.toString())
             }
@@ -31,16 +31,16 @@ android {
 //            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 //        }
         release {
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     implementation 'com.android.support:appcompat-v7:26.+'

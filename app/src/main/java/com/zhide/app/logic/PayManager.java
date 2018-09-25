@@ -1,9 +1,11 @@
 package com.zhide.app.logic;
 
 import android.app.Activity;
+import android.util.Log;
 
 import com.alipay.sdk.app.PayTask;
 import com.tencent.mm.opensdk.modelpay.PayReq;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.zhide.app.common.ApplicationHolder;
 import com.zhide.app.delegate.IGetAliPayResult;
 import com.zhide.app.model.AliPayParamModel;
@@ -66,16 +68,18 @@ public class PayManager {
     /**
      * 微信支付
      */
-    public void sendWxPayRequest(WXPayParamModel paramModel) {
-
+    public void sendWxPayRequest( WXPayParamModel.WxpayParamsData  paramModel) {
+        Log.d("admin", "sendWxPayRequest: paramModel="+paramModel);
         PayReq request = new PayReq();
-        request.appId = paramModel.getAppId();
-        request.partnerId = paramModel.getPartnerId();
-        request.prepayId = paramModel.getPrepayId();
+        request.appId = paramModel.getAppid();
+        request.partnerId = paramModel.getMch_id();
+        request.prepayId = paramModel.getPrepay_id();
         request.packageValue = paramModel.getPackageValue();
-        request.nonceStr = paramModel.getNoncestr();
+        request.nonceStr = paramModel.getNonce_str();
         request.timeStamp = paramModel.getTimestamp();
         request.sign = paramModel.getSign();
-        ApplicationHolder.getInstance().getMsgApi().sendReq(request);
+        IWXAPI msgApi = ApplicationHolder.getInstance().getMsgApi();
+        Log.d("admin", "sendWxPayRequest: msgApi="+msgApi);
+        msgApi.sendReq(request);
     }
 }

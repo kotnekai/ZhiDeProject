@@ -40,7 +40,6 @@ public class ApplicationHolder {
         mContext = context;
     }
     public IWXAPI getMsgApi() {
-        Log.d("xyc", "getMsgApi: msgApi2="+msgApi);
         return msgApi;
     }
 

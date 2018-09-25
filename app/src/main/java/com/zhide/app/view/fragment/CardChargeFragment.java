@@ -8,13 +8,9 @@ import com.zhide.app.R;
 import com.zhide.app.common.CommonParams;
 import com.zhide.app.delegate.IConfirmClickListener;
 import com.zhide.app.delegate.IGetAliPayResult;
-import com.zhide.app.delegate.SpinerOnItemClickListener;
-import com.zhide.app.eventBus.PayOrderEvent;
 import com.zhide.app.eventBus.RechargeInfoEvent;
 import com.zhide.app.logic.PayManager;
-import com.zhide.app.model.AliPayParamModel;
 import com.zhide.app.model.ReChargeModel;
-import com.zhide.app.model.WXPayParamModel;
 import com.zhide.app.utils.DialogUtils;
 import com.zhide.app.utils.EmptyUtil;
 import com.zhide.app.utils.PreferencesUtils;
@@ -184,12 +180,12 @@ public class CardChargeFragment extends BaseFragment {
                 });
                 break;
             case R.id.tvReCharge:
-                DialogUtils.showBottomSelectTypePop(getActivity(), new SpinerOnItemClickListener() {
+            /*    DialogUtils.showBottomSelectTypePop(getActivity(), new SpinerOnItemClickListener() {
                     @Override
                     public void onItemClick(int position, int id) {
                         getPayParams(id);
                     }
-                });
+                });*/
                 break;
             case R.id.tvCardBill:
                 startActivity(CardChargeBillActivity.makeIntent(getActivity()));
@@ -202,7 +198,7 @@ public class CardChargeFragment extends BaseFragment {
      *
      * @param event
      */
-    @Subscribe(threadMode = ThreadMode.MAIN)
+/*    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onWxChatEvent(PayOrderEvent event) {
         if (event.isWeChatPay()) {
             WXPayParamModel wxPayParamModel = event.getWxPayParamModel();
@@ -210,7 +206,11 @@ public class CardChargeFragment extends BaseFragment {
                 ToastUtil.showShort(getString(R.string.get_net_data_error));
                 return;
             }
-            PayManager.getInstance().sendWxPayRequest(wxPayParamModel);
+            WXPayParamModel.WxpayParamsData paramData = wxPayParamModel.getData();
+            if (paramData == null) {
+                return;
+            }
+            PayManager.getInstance().sendWxPayRequest(paramData);
         } else {
             AliPayParamModel aliPayParamModel = event.getAliPayParamModel();
             if (aliPayParamModel == null) {
@@ -219,7 +219,7 @@ public class CardChargeFragment extends BaseFragment {
             }
             PayManager.getInstance().sendAliPayRequest(getActivity(), aliPayParamModel, alipayResult);
         }
-    }
+    }*/
 
     /**
      * 请求服务端进行支付

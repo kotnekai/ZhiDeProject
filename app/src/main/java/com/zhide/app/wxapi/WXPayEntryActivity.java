@@ -45,6 +45,7 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
         super.onCreate(savedInstanceState);
         api = ApplicationHolder.getInstance().getMsgApi();
         api.handleIntent(getIntent(), this);
+        Log.d("admin", "onCreate: api="+api);
     }
 
     @Override
@@ -61,6 +62,9 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
     @Override
     public void onResp(BaseResp resp) {
         Log.d("xyc", "onPayFinish, errCode = " + resp.errCode);
+        Log.d("xyc", "onPayFinish, errStr = " + resp.errStr);
+        Log.d("xyc", "onPayFinish, openId = " + resp.openId);
+        Log.d("xyc", "onPayFinish, transaction = " + resp.transaction);
 
         if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
             switch (resp.errCode) {

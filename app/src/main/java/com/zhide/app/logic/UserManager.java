@@ -2,7 +2,6 @@ package com.zhide.app.logic;
 
 import android.util.Log;
 
-import com.google.gson.Gson;
 import com.zhide.app.common.CommonUrl;
 import com.zhide.app.eventBus.ErrorMsgEvent;
 import com.zhide.app.eventBus.LoginEvent;
@@ -233,9 +232,10 @@ public class UserManager {
 
                     @Override
                     public void onResponse(UserInfoModel response, int id) {
-                        String data = response.getData();
-                        Gson gson = new Gson();
-                        UserData userData1 = gson.fromJson(data, UserData.class);
+                        UserData userData1 = response.getData();
+                        if (userData1 == null) {
+                            return;
+                        }
                         EventBus.getDefault().post(new UserInfoEvent(userData1, fromPage));
                     }
                 });
@@ -246,7 +246,7 @@ public class UserManager {
      *
      * @param userId
      */
-    public void getUserSchoolInfoById(long userId,final int fromPage) {
+    public void getUserSchoolInfoById(long userId, final int fromPage) {
         JSONObject params = new JSONObject();
         //Long.parseLong(userId)
         try {
@@ -255,7 +255,7 @@ public class UserManager {
             e.printStackTrace();
         }
         dataInstance.sendPostRequestData(CommonUrl.getUserInfoSchoolInfo, params)
-                .execute(new GenericsCallback<UserInfoModel>(new JsonGenericsSerializator()) {
+                .execute(new GenericsCallback<UserSchoolDataModel>(new JsonGenericsSerializator()) {
                     @Override
                     public void onError(Response response, Call call, Exception e, int id) {
                         String message = e.getMessage();
@@ -263,16 +263,11 @@ public class UserManager {
                     }
 
                     @Override
-                    public void onResponse(UserInfoModel response, int id) {
-                        String data = response.getData();
-                        Gson gson = new Gson();
-                        UserSchoolDataModel userSchoolDataModel = gson.fromJson(data, UserSchoolDataModel.class);
-                        EventBus.getDefault().post(new UserInfoSchoolInfoEvent(userSchoolDataModel, fromPage));
+                    public void onResponse(UserSchoolDataModel response, int id) {
+                        EventBus.getDefault().post(new UserInfoSchoolInfoEvent(response, fromPage));
                     }
                 });
     }
-
-
 
 
     public void doWithdraw(WithdrawModel withdrawModel) {

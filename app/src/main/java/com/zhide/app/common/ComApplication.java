@@ -69,8 +69,8 @@ public class ComApplication extends Application {
         MyOkhttpUtils.initOkhttp(this);
         msgApi = WXAPIFactory.createWXAPI(this, null);
         // 将该app注册到微信
-        msgApi.registerApp(CommonParams.WECHAT_APPID);
-        Log.d("xyc", "getMsgApi: msgApi1="+msgApi);
+      //  msgApi.registerApp(CommonParams.WECHAT_APPID);
+        Log.d("admin", "getMsgApi: msgApi1="+msgApi);
         ApplicationHolder.getInstance().setMsgApi(msgApi);
         PickViewUtil.initTimePickOptions(this);
         ZXingLibrary.initDisplayOpinion(this);

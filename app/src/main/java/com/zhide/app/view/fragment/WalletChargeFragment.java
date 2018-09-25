@@ -198,7 +198,7 @@ public class WalletChargeFragment extends BaseFragment {
                     @Override
                     public void confirmClick(String remarks) {
                         if (EmptyUtil.isEmpty(remarks)) {
-                            tvChargeOther.setText("其他");
+                            tvChargeOther.setText(getString(R.string.charge_other_tip));
                         } else {
                             selectAmount = Float.parseFloat(remarks);
                             tvChargeOther.setText(remarks + "元");
@@ -233,7 +233,12 @@ public class WalletChargeFragment extends BaseFragment {
                 ToastUtil.showShort(getString(R.string.get_net_data_error));
                 return;
             }
-            PayManager.getInstance().sendWxPayRequest(wxPayParamModel);
+            WXPayParamModel.WxpayParamsData paramData = wxPayParamModel.getData();
+             if(paramData==null){
+                 return;
+             }
+            PayManager.getInstance().sendWxPayRequest(paramData);
+
         } else {
             AliPayParamModel aliPayParamModel = event.getAliPayParamModel();
             if (aliPayParamModel == null) {

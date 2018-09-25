@@ -137,7 +137,7 @@ public class RepairActivity extends BaseActivity {
                 break;
             case R.id.rlSelectType:
                 if (repairReasonList == null || repairReasonList.size() == 0) {
-                    ToastUtil.showShort("请先选择故障设备");
+                    ToastUtil.showShort(getString(R.string.select_fault_device_tip));
                     return;
                 }
                 PickViewUtil.showSelectPickDialog(this, repairReasonList, 1, new OptionPicker.OnOptionSelectListener() {
@@ -161,7 +161,7 @@ public class RepairActivity extends BaseActivity {
     private void submitInfo() {
         long userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
         String content = edtContent.getText().toString();
-        ProgressUtils.getIntance().setProgressDialog("提交中...", this);
+        ProgressUtils.getIntance().setProgressDialog(getString(R.string.submit_ing), this);
         MainManager.getInstance().submitBreakInfo(selectDevice, reasonType, userId, content);
     }
 }
