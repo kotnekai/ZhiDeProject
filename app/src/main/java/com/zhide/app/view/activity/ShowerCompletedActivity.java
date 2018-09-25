@@ -11,6 +11,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zhide.app.R;
 import com.zhide.app.common.CommonParams;
 import com.zhide.app.eventBus.WaterPreBillEvent;
+import com.zhide.app.utils.DateUtils;
 import com.zhide.app.view.base.BaseActivity;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -41,6 +42,12 @@ public class ShowerCompletedActivity extends BaseActivity implements View.OnClic
     @BindView(R.id.tvReturnBack)
     TextView tvReturnBack;
 
+    long completeTime;
+    float deducting,
+            consumeMoney,
+            returnMoney,
+            balance;
+
     @Override
     protected int getCenterView() {
         return R.layout.activity_shower_completed;
@@ -58,7 +65,7 @@ public class ShowerCompletedActivity extends BaseActivity implements View.OnClic
 
 
     public static Intent makeIntent(Context context, long time, float deducting, float payMoney, float returnMoney, float mainBalance) {
-        Intent intent = new Intent(context, QRCodeActivity.class);
+        Intent intent = new Intent(context, ShowerCompletedActivity.class);
         intent.putExtra(CommonParams.COMPLETED_TIME, time);
         intent.putExtra(CommonParams.SI_DEDUCTING, deducting);
         intent.putExtra(CommonParams.PAY_MONEY, payMoney);
@@ -79,26 +86,31 @@ public class ShowerCompletedActivity extends BaseActivity implements View.OnClic
      */
     private void initData() {
         Intent intent = getIntent();
+        completeTime = intent.getLongExtra(CommonParams.COMPLETED_TIME, 0);
+        deducting = intent.getFloatExtra(CommonParams.SI_DEDUCTING, 0);
+        consumeMoney = intent.getFloatExtra(CommonParams.PAY_MONEY, 0);
+        returnMoney = intent.getFloatExtra(CommonParams.RETURN_MONEY, 0);
+        balance = intent.getFloatExtra(CommonParams.USI_MAINBALANCE, 0);
+
+
+        tvCompletedTime.setText(DateUtils.dateToStamp(completeTime));
+        tvPerSave.setText(String.format(getString(R.string.shower_money_unit), deducting + ""));
+        tvPayMoney.setText(String.format(getString(R.string.shower_money_unit), consumeMoney + ""));
+        tvReturnMoney.setText(String.format(getString(R.string.shower_money_unit), returnMoney + ""));
+        tvBalance.setText(String.format(getString(R.string.shower_money_unit), balance + ""));
+
+        tvReturnBack.setOnClickListener(this);
+
     }
 
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-
-        }
-
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(WaterPreBillEvent event) {
-        //服务端返回学生用水预扣费接口，可以执行下发费率
-        if (event.getWaterPreBillModel() != null) {
-        } else {
-
+            case R.id.tvReturnBack:
+                finish();
         }
     }
-
 
     @Override
     protected void onDestroy() {

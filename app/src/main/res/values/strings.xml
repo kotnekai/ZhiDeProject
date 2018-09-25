@@ -128,8 +128,7 @@
     <string name="login">登录</string>
     <string name="charge_error">充值参数异常</string>
 
-    <string name="shower_balance_value">￥%s</string>
-    <string name="shower_deducting_value">￥%s</string>
+    <string name="shower_money_unit">￥%s</string>
     <string name="shower_balance_title">当前余额</string>
     <string name="shower_deducting_title">预扣金额</string>
     <string name="shower_device_title">设备名称</string>

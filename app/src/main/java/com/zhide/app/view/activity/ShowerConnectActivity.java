@@ -25,7 +25,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.jooronjar.BluetoothService;
@@ -123,7 +122,7 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     TextView tvConnectState;
     ImageView ivConnect;
 
-//    @BindView(R.id.rlConnectLayout)
+    //    @BindView(R.id.rlConnectLayout)
 //    RelativeLayout rlConnectLayout;
     //属性动画对象
     TranslateAnimation mHiddenAction;
@@ -181,8 +180,8 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
         deducting = PreferencesUtils.getFloat(CommonParams.SI_DEDUCTING);
 
         tvMeterName.setText(deviceName);
-        tvBalance.setText(String.format(getString(R.string.shower_balance_value), (mainBalance / 1000) + ""));
-        tvPerSave.setText(String.format(getString(R.string.shower_deducting_value), (deducting / 1000) + ""));
+        tvBalance.setText(String.format(getString(R.string.shower_money_unit), (mainBalance / 1000) + ""));
+        tvPerSave.setText(String.format(getString(R.string.shower_money_unit), (deducting / 1000) + ""));
     }
 
     /**
@@ -327,8 +326,7 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
             case 42:
                 //连接失败
                 tvState.setText(getString(R.string.driver_connect_fail));
-                showProgressDialog(getString(R.string.driver_connect_fail), true);
-
+//                showProgressDialog(getString(R.string.driver_connect_fail), true);
                 break;
             case 43:
                 //断开连接
@@ -347,8 +345,7 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
      */
     private void showProgressDialog(String stateText, boolean isStop) {
 
-        if (mPopupWindow==null)
-        {
+        if (mPopupWindow == null) {
             View view = LayoutInflater.from(mContext).inflate(R.layout.dialog_shower_connecting, null);
             mPopupWindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, false);
             mPopupWindow.setAnimationStyle(R.style.popupwindow_anim);
@@ -358,41 +355,35 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
             }
             parentView = window.findViewById(Window.ID_ANDROID_CONTENT);
 
-            tvConnectState =(TextView) view.findViewById(R.id.tvConnectState);
-            ivConnect= (ImageView) view.findViewById(R.id.ivConnect);
+            tvConnectState = (TextView) view.findViewById(R.id.tvConnectState);
+            ivConnect = (ImageView) view.findViewById(R.id.ivConnect);
             tvConnectState.setOnClickListener(this);
 
             mPopupWindow.setOutsideTouchable(true);
 //        mPopupWindow.setFocusable(true);
             mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
             mPopupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-            if (mPopupWindow!=null) {
+            if (mPopupWindow != null) {
                 if (!((Activity) mContext).hasWindowFocus()) {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             mPopupWindow.showAtLocation(parentView, Gravity.CENTER, 0, 0);
                         }
-                    },500);
-                }
-                else
-                {
+                    }, 500);
+                } else {
                     mPopupWindow.showAtLocation(parentView, Gravity.CENTER, 0, 0);
                 }
             }
-        }
-        else
-        {
+        } else {
             if (!((Activity) mContext).hasWindowFocus()) {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         mPopupWindow.showAtLocation(parentView, Gravity.CENTER, 0, 0);
                     }
-                },500);
-            }
-            else
-            {
+                }, 500);
+            } else {
                 mPopupWindow.showAtLocation(parentView, Gravity.CENTER, 0, 0);
             }
 
@@ -415,7 +406,9 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
      */
     private void hideProgressDialog() {
 //        rlConnectLayout.setVisibility(View.GONE);
-        mPopupWindow.dismiss();
+        if (mPopupWindow!=null) {
+            mPopupWindow.dismiss();
+        }
         ivDeviceState.setEnabled(true);
     }
 
@@ -551,20 +544,21 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
                 switch (mStatus) {
                     case 31:
                         //连接成功
-                        showProgressDialog(getString(R.string.connecting_device), false);
                         //执行服务端接口，先预扣费
                         long currentUserId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
-                        //隐藏水表名，余额等
-                        llDetail.startAnimation(mHiddenAction);
-                        llDetail.setVisibility(View.GONE);
-                        //按钮变大
-                        ivDeviceState.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                ivDeviceState.setLayoutParams(new LinearLayout.LayoutParams(UIUtils.dipToPx(mContext, 110),
-                                        UIUtils.dipToPx(mContext, 110)));
-                            }
-                        }, 250);
+                        if (llDetail.getVisibility() == View.VISIBLE) {
+                            //隐藏水表名，余额等
+                            llDetail.startAnimation(mHiddenAction);
+                            llDetail.setVisibility(View.GONE);
+                            //按钮变大
+                            ivDeviceState.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ivDeviceState.setLayoutParams(new LinearLayout.LayoutParams(UIUtils.dipToPx(mContext, 110),
+                                            UIUtils.dipToPx(mContext, 110)));
+                                }
+                            }, 250);
+                        }
                         ChargeManager.getInstance().useWaterPreBill(currentUserId);
                         break;
                     case 32:
@@ -623,8 +617,8 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
         if (event.getSettleModel() != null) {
             //弹出框展示
 
-
-            ShowerCompletedActivity.makeIntent(mContext,completeTime,deducting,consumeMoney,0,0);
+            float balance = (mainBalance / 1000) - consumeMoney;
+         startActivity(ShowerCompletedActivity.makeIntent(mContext, completeTime, deducting / 1000, consumeMoney, 0, balance));
         }
     }
 
@@ -637,6 +631,13 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
                 mbtService.stop();
             }
         }
+
+        if (mPopupWindow!=null)
+        {
+            mPopupWindow.dismiss();
+            mPopupWindow=null;
+        }
+
         Log.d(mContext.getClass().getSimpleName(), "onDestroy");
         unregisterReceiver(mStatusReceive);
         EventBus.getDefault().unregister(this);
@@ -671,7 +672,7 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
                         usercount + "", ykmoneyString,
                         consumeMoneString, rateString,
                         macString);
-
+                completeTime = Long.valueOf(timeid);
                 consumeMoney = Float.valueOf(consumeMoneString).floatValue() / 1000;
                 ChargeManager.getInstance().useWaterSettlement(consumeMoney, maccountid);
                 CMDUtils.fanhuicunchu(mbtService, true, timeid,
@@ -876,7 +877,7 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
         //个人账号使用次数
         downRateInfo.UseCount = 100;
         //预扣金额
-        downRateInfo.PerMoney = PerMoney;
+        downRateInfo.PerMoney = 5000;
         //1标准水表2阶梯收费
         downRateInfo.ParaTypeID = 1;
         //费率1
