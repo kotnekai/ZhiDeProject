@@ -21,6 +21,19 @@ public class DateUtils {
     public static final String DATE_FORMAT_MONTH = "yyyy/MM";
     public static final String DATE_FORMAT_MONTH2 = "yyyy-MM";
 
+
+
+    public static String dateToStamp(long time)
+    {
+        String res;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT_YEAR2);
+        Date date = new Date(time);
+        res = simpleDateFormat.format(date);
+        return res;
+
+    }
+
+
     public static String getFormatSystemTime(long time) {
         if (time == 0) {
             return "";

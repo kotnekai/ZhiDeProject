@@ -35,7 +35,7 @@
         android:background="@drawable/com_white_10r_shape"
         android:orientation="vertical">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="36dp"
             android:layout_marginLeft="20dp"
@@ -43,6 +43,7 @@
             android:gravity="center_vertical">
 
             <TextView
+                android:id="@+id/tvCompletedTimeTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -50,18 +51,22 @@
                 android:text="@string/shower_completed_time" />
 
             <ImageView
+                android:id="@+id/ivTime"
                 android:layout_width="12dp"
                 android:layout_height="12dp"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
+
+                android:layout_toRightOf="@id/tvCompletedTimeTitle"
                 android:src="@mipmap/ic_time" />
 
             <TextView
                 android:id="@+id/tvCompletedTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@id/ivTime"
                 android:textColor="@color/main_blue_color" />
 
             <View
@@ -69,10 +74,10 @@
                 android:layout_height="1px"
                 android:layout_alignParentBottom="true"
                 android:background="@color/divider_color" />
-        </LinearLayout>
+        </RelativeLayout>
 
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="36dp"
             android:layout_marginLeft="20dp"
@@ -80,6 +85,7 @@
             android:gravity="center_vertical">
 
             <TextView
+                android:id="@+id/tvPerSaveTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -89,9 +95,9 @@
                 android:id="@+id/tvPerSave"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/tvPerSaveTitle"
                 android:text="22"
                 android:textColor="@color/normal_text_money_red_color" />
 
@@ -100,10 +106,10 @@
                 android:layout_height="1px"
                 android:layout_alignParentBottom="true"
                 android:background="@color/divider_color" />
-        </LinearLayout>
+        </RelativeLayout>
 
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="36dp"
             android:layout_marginLeft="20dp"
@@ -111,6 +117,7 @@
             android:gravity="center_vertical">
 
             <TextView
+                android:id="@+id/tvPayMoneyTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -120,14 +127,20 @@
                 android:id="@+id/tvPayMoney"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/tvPayMoneyTitle"
                 android:text="55"
                 android:textColor="@color/normal_text_money_red_color" />
-        </LinearLayout>
 
-        <LinearLayout
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_alignParentBottom="true"
+                android:background="@color/divider_color" />
+        </RelativeLayout>
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="36dp"
             android:layout_marginLeft="20dp"
@@ -135,18 +148,30 @@
             android:gravity="center_vertical">
 
             <TextView
+                android:id="@+id/tvReturnMoneyTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+
                 android:text="@string/shower_return_money" />
 
             <TextView
                 android:id="@+id/tvReturnMoney"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/tvReturnMoneyTitle"
                 android:text="55"
+
                 android:textColor="@color/normal_text_money_green_color" />
-        </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_alignParentBottom="true"
+                android:background="@color/divider_color" />
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -168,6 +193,7 @@
                 android:layout_marginLeft="10dp"
                 android:text="55"
                 android:textColor="@color/normal_text_money_orange_color" />
+
         </LinearLayout>
     </LinearLayout>
 
