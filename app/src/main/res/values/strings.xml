@@ -133,6 +133,17 @@
     <string name="shower_balance_title">当前余额</string>
     <string name="shower_deducting_title">预扣金额</string>
     <string name="shower_device_title">设备名称</string>
+    <string name="all_str">全部</string>
+    <string name="pay_str">支出</string>
+    <string name="select_fault_device_tip">请先选择故障设备</string>
+    <string name="submit_ing">提交中...</string>
+    <string name="can_withdraw_money">可提现金额为0</string>
+    <string name="please_bind_school_tip">请先绑定学校</string>
+    <string name="login_out">退出登录</string>
+    <string name="tel_phone_hint">电话号码/Tel：</string>
+    <string name="password">密码/Password：</string>
+    <string name="remember_psw">记住密码</string>
+    <string name="forget_psw">忘记密码?</string>
     <string name="shower_completed_time">结束时间</string>
     <string name="shower_return_money">返回金额</string>
     <string name="shower_pay_money">消费金额</string>

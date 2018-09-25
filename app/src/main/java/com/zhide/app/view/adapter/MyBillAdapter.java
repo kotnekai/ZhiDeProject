@@ -2,7 +2,6 @@ package com.zhide.app.view.adapter;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 import com.zhide.app.R;
 import com.zhide.app.model.MyBillModel;
 import com.zhide.app.utils.ResourceUtils;
-import com.zhide.app.utils.UIUtils;
 
 import java.util.List;
 
@@ -45,7 +43,7 @@ public class MyBillAdapter extends RecyclerView.Adapter<MyBillAdapter.MyViewHold
         }
         holder.tvTypeContent.setText(myBillModel.getUSB_ChangeThing());
         holder.tvTimeData.setText(myBillModel.getUSB_CreateTime());
-        if (myBillModel.getUSB_ChangeType().equals("支出")) {
+        if (myBillModel.getUSB_ChangeType().equals(context.getString(R.string.pay_str))) {
             holder.tvTypeContent.setTextColor(ResourceUtils.getInstance().getColor(R.color.light_text_blue_color));
             holder.tvTransMoney.setTextColor(ResourceUtils.getInstance().getColor(R.color.normal_text_money_red_color));
             holder.tvTransMoney.setText("-" + myBillModel.getUSB_Money());

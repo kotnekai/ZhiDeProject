@@ -4,7 +4,12 @@ public class CommonParams {
     public static boolean IS_WRITE_LOG = true;//是否写日志
     public static final String USER_TOKEN = "token";
     public static final String WECHAT_APPID = "wxac87d65c49952574";//微信支付appId
-    public static final String WECHAT_partnerid = "1514789911";// 微信支付分配的商户号
+    public static final String WECHAT_PARTNERID = "1514789911";// 微信支付分配的商户号
+    public static final String WECHAT_PAY_PACKAGEVALUE = "Sign=WXPay";// 微信支付分配的商户号
+/*----开放平台 微信支付---
+    APPID：wxac87d65c49952574
+    API: KF4XGcstjkpo788dS2ttnljorfbcvgdr
+            微信支付商户号1514789911*/
     //apk的路径
     public static final String  APK_PATH = "/apk";
 

@@ -13,7 +13,7 @@ public class LauncherActivity extends BaseActivity {
 
     @Override
     protected int getCenterView() {
-        return 0;
+        return R.layout.activity_launcher;
     }
 
     @Override
@@ -29,12 +29,16 @@ public class LauncherActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_launcher);
         initData();
     }
 
     private void initData() {
-        startActivity(MainActivity.makeIntent(this));
+        long userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID, 0);
+        if (userId == 0) {
+            startActivity(LoginActivity.makeIntent(this));
+        } else {
+            startActivity(MainActivity.makeIntent(this));
+        }
 
   /*      String token = PreferencesUtils.getString(CommonParams.USER_TOKEN);
         if (token == null) {
@@ -46,4 +50,5 @@ public class LauncherActivity extends BaseActivity {
         finish();
 
     }
+
 }

@@ -3,9 +3,7 @@ package com.zhide.app.view.fragment;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -93,10 +91,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(UserInfoSchoolInfoEvent event) {
-        UserSchoolDataModel userData = event.getUserSchoolDataModel();
-        if (userData == null) {
+        UserSchoolDataModel userInfoData = event.getUserSchoolDataModel();
+        if (userInfoData == null) {
             return;
         }
+        UserSchoolDataModel.SchoolInfoData userData = userInfoData.getData();
+
         if (TextUtils.isEmpty(userData.getSI_Name())) {
             //先去绑定学校
             showBindSchoolDialog(getContext());

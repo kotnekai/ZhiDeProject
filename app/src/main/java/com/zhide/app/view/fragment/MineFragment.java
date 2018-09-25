@@ -226,7 +226,7 @@ public class MineFragment extends BaseFragment implements TextWatcher {
                 break;
             case R.id.llSchool:
                 if (guidStr == null) {
-                    ToastUtil.showShort("请先绑定学校");
+                    ToastUtil.showShort(getString(R.string.please_bind_school_tip));
                     return;
                 }
                 String schoolName = tvSchoolName.getText().toString();
@@ -238,9 +238,11 @@ public class MineFragment extends BaseFragment implements TextWatcher {
                 startActivity(ResetPswActivity.makeIntent(getActivity()));
                 break;
             case R.id.tvLoginOut:
-                DialogUtils.showConfirmDialog(getActivity(), "退出登录", new View.OnClickListener() {
+
+                DialogUtils.showConfirmDialog(getActivity(), getString(R.string.login_out), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                       PreferencesUtils.putLong(CommonParams.LOGIN_USER_ID, 0);
                         startActivity(LoginActivity.makeIntent(getActivity()));
                         getActivity().finish();
                     }

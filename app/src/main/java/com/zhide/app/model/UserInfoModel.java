@@ -7,7 +7,7 @@ public class UserInfoModel {
 
     private int code;
     private String message;
-    private String data;
+    private UserData data;
 
     public int getCode() {
         return code;
@@ -25,15 +25,19 @@ public class UserInfoModel {
         this.message = msg;
     }
 
-    public String getData() {
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public UserData getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(UserData data) {
         this.data = data;
     }
-
-
-
-
 }

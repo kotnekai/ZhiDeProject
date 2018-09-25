@@ -79,7 +79,7 @@ public class MyBillActivity extends BaseActivity {
         mLayoutManager.setStackFromEnd(true);
         recycleView.setLayoutManager(mLayoutManager);
         recycleView.setAdapter(adapter);
-        selectType = "全部";
+        selectType = getString(R.string.all_str);
         BillManager.getInstance().getMyBillData(userId, selectType);
     }
 
@@ -103,13 +103,13 @@ public class MyBillActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tvAllTab:
-                selectType = "全部";
+                selectType = getString(R.string.all_str);
                 break;
             case R.id.tvPayTab:
-                selectType = "支出";
+                selectType = getString(R.string.pay_str);
                 break;
             case R.id.tvChargeTab:
-                selectType = "充值";
+                selectType = getString(R.string.recharge_title);
                 break;
         }
         BillManager.getInstance().getMyBillData(userId, selectType);
