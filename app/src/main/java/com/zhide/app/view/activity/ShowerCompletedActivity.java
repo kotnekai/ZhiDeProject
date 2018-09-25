@@ -32,7 +32,7 @@ public class ShowerCompletedActivity extends BaseActivity implements  View.OnCli
 
     @Override
     protected int getCenterView() {
-        return R.layout.activity_shower_connect;
+        return R.layout.activity_shower_completed;
     }
 
     @Override
@@ -42,7 +42,7 @@ public class ShowerCompletedActivity extends BaseActivity implements  View.OnCli
 
     @Override
     protected void initHeader() {
-        setHeaderTitle(getString(R.string.shower_title));
+        setHeaderTitle(getString(R.string.consume_title));
     }
 
     @Override
