@@ -133,5 +133,13 @@
     <string name="shower_balance_title">当前余额</string>
     <string name="shower_deducting_title">预扣金额</string>
     <string name="shower_device_title">设备名称</string>
+    <string name="shower_completed_time">结束时间</string>
+    <string name="shower_return_money">返回金额</string>
+    <string name="shower_pay_money">消费金额</string>
+
+
+    <string name="consume_title">消费详情</string>
+    <string name="shower_completed">洗澡完成</string>
+    <string name="shower_back">返回</string>
 
 </resources>
