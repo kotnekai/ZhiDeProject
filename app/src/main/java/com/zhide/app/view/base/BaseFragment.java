@@ -71,6 +71,14 @@ public abstract class BaseFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         if (bindObj != null) {

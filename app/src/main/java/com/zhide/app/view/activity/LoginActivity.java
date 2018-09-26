@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -19,8 +18,8 @@ import com.zhide.app.common.CommonParams;
 import com.zhide.app.eventBus.LoginEvent;
 import com.zhide.app.logic.LogicManager;
 import com.zhide.app.model.RegisterLoginModel;
-import com.zhide.app.utils.DesUtil;
 import com.zhide.app.utils.PreferencesUtils;
+import com.zhide.app.utils.ProgressUtils;
 import com.zhide.app.utils.ToastUtil;
 import com.zhide.app.utils.UIUtils;
 import com.zhide.app.view.base.BaseActivity;
@@ -93,6 +92,7 @@ public class LoginActivity extends BaseActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onLoginEvent(LoginEvent event) {
+        ProgressUtils.getIntance().dismissProgress();
         RegisterLoginModel dataModel = event.getDataModel();
         if (dataModel == null) {
             return;
@@ -134,8 +134,8 @@ public class LoginActivity extends BaseActivity {
                     PreferencesUtils.putString(CommonParams.PRF_PSW, null);
                     PreferencesUtils.putBoolean(CommonParams.PRF_PSW_CHECK_STATE, false);
                 }
+                ProgressUtils.getIntance().setProgressDialog(getString(R.string.login_loading),this);
                 LogicManager.getInstance().login(userName, password);
-                // startActivity(MainActivity.makeIntent(this));
                 break;
 
         }

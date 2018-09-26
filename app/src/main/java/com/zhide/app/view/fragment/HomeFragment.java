@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -62,7 +63,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     protected void initData() {
-
+        Log.d("admin", "initData: home");
         MainManager.getInstance().getMainPageNews(1);
 
     }
@@ -72,7 +73,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         if (event.getFromPage() != 1) {
             return;
         }
+
         NewsModel newsModel = event.getNewsModel();
+        Log.d("admin", "onNewModelEvent: newsModel="+newsModel);
+
         if (newsModel == null) {
             return;
         }
@@ -80,6 +84,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         if (data == null) {
             return;
         }
+        Log.d("admin", "onNewModelEvent: updateNews");
         updateNews(data);
     }
 
@@ -154,6 +159,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void updateNews(List<NewsModel.NewsData> data) {
+        llNews.removeAllViews();
         int size;
         if (data.size() <= 5) {
             size = data.size();

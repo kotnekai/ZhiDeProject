@@ -156,4 +156,6 @@
    <string name="pay_failed">支付失败</string>
    <string name="pay_cancel">支付取消</string>
 
+   <string name="login_loading">登录中...</string>
+
 </resources>

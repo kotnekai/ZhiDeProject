@@ -89,5 +89,26 @@ public class NewsModel {
         public void setNI_UpdateTime(String NI_UpdateTime) {
             this.NI_UpdateTime = NI_UpdateTime;
         }
+
+        @Override
+        public String toString() {
+            return "NewsData{" +
+                    "NI_Id=" + NI_Id +
+                    ", NI_Title='" + NI_Title + '\'' +
+                    ", NI_Summary='" + NI_Summary + '\'' +
+                    ", NI_Url='" + NI_Url + '\'' +
+                    ", NI_Index='" + NI_Index + '\'' +
+                    ", NI_UpdateTime='" + NI_UpdateTime + '\'' +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "NewsModel{" +
+                "code=" + code +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                '}';
     }
 }

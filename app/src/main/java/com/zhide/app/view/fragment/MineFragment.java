@@ -88,7 +88,6 @@ public class MineFragment extends BaseFragment implements TextWatcher {
 
     @Override
     protected void initData() {
-        Log.d("admin", "initData: ");
         userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
 
         UserManager.getInstance().getUserInfoById(userId, 3);
@@ -187,6 +186,7 @@ public class MineFragment extends BaseFragment implements TextWatcher {
             llSchool.setVisibility(View.GONE);
             tvBindSchool.setVisibility(View.VISIBLE);
         }else {
+            guidStr = userData.getSI_Code();
             llSchool.setVisibility(View.VISIBLE);
             tvBindSchool.setVisibility(View.GONE);
             tvSchoolName.setText(userData.getSI_Name());

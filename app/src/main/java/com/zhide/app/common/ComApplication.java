@@ -96,8 +96,8 @@ public class ComApplication extends Application {
     private List<PermissionItem> initPermissionList() {
         List<PermissionItem> permissionItems = new ArrayList<>();
         permissionItems.add(new PermissionItem(Manifest.permission.WRITE_EXTERNAL_STORAGE, "存储权限", R.drawable.permission_ic_storage));
-        permissionItems.add(new PermissionItem(Manifest.permission.ACCESS_FINE_LOCATION, "蓝牙扫描", R.drawable.permission_ic_storage));
-        permissionItems.add(new PermissionItem(Manifest.permission.ACCESS_COARSE_LOCATION, "蓝牙定位", R.drawable.permission_ic_storage));
+        permissionItems.add(new PermissionItem(Manifest.permission.ACCESS_FINE_LOCATION, "蓝牙扫描", R.drawable.permission_ic_sensors));
+        permissionItems.add(new PermissionItem(Manifest.permission.ACCESS_COARSE_LOCATION, "蓝牙定位", R.drawable.permission_ic_location));
         permissionItems.add(new PermissionItem(Manifest.permission.CAMERA, "相机拍照", R.drawable.permission_ic_camera));
 
         return permissionItems;
