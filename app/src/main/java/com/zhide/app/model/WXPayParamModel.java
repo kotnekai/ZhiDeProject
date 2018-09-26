@@ -37,10 +37,10 @@ public class WXPayParamModel {
 
     public class WxpayParamsData {
         private String appid;
-        private String mch_id;//微信支付分配的商户号,partnerId
-        private String prepay_id;//微信返回的支付交易会话ID
+        private String partnerid;//微信支付分配的商户号,partnerId
+        private String prepayid;//微信返回的支付交易会话ID
         private String packageValue;//暂填写固定值Sign=WXPay
-        private String nonce_str;//随机字符串，不长于32位。推荐随机数生成算法d
+        private String noncestr;//随机字符串，不长于32位。推荐随机数生成算法d
         private String timestamp;//时间戳
         private String sign;//签名
         private String result_code;//结果码
@@ -57,21 +57,20 @@ public class WXPayParamModel {
             this.appid = appid;
         }
 
-        public String getMch_id() {
-            return mch_id;
+        public String getPartnerid() {
+            return partnerid;
         }
 
-        public void setMch_id(String mch_id) {
-            this.mch_id = mch_id;
+        public void setPartnerid(String partnerid) {
+            this.partnerid = partnerid;
         }
 
-
-        public String getPrepay_id() {
-            return prepay_id;
+        public String getPrepayid() {
+            return prepayid;
         }
 
-        public void setPrepay_id(String prepay_id) {
-            this.prepay_id = prepay_id;
+        public void setPrepayid(String prepayid) {
+            this.prepayid = prepayid;
         }
 
         public String getPackageValue() {
@@ -82,12 +81,12 @@ public class WXPayParamModel {
             this.packageValue = packageValue;
         }
 
-        public String getNonce_str() {
-            return nonce_str;
+        public String getNoncestr() {
+            return noncestr;
         }
 
-        public void setNonce_str(String nonce_str) {
-            this.nonce_str = nonce_str;
+        public void setNoncestr(String noncestr) {
+            this.noncestr = noncestr;
         }
 
         public String getTimestamp() {
@@ -150,10 +149,10 @@ public class WXPayParamModel {
         public String toString() {
             return "WxpayParamsData{" +
                     "appid='" + appid + '\'' +
-                    ", mch_id='" + mch_id + '\'' +
-                    ", prepay_id='" + prepay_id + '\'' +
+                    ", partnerid='" + partnerid + '\'' +
+                    ", prepayid='" + prepayid + '\'' +
                     ", packageValue='" + packageValue + '\'' +
-                    ", nonce_str='" + nonce_str + '\'' +
+                    ", noncestr='" + noncestr + '\'' +
                     ", timestamp='" + timestamp + '\'' +
                     ", sign='" + sign + '\'' +
                     ", result_code='" + result_code + '\'' +

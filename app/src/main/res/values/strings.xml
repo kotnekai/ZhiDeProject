@@ -152,4 +152,8 @@
     <string name="shower_completed">洗澡完成</string>
     <string name="shower_back">返回</string>
 
+   <string name="pay_success">支付成功</string>
+   <string name="pay_failed">支付失败</string>
+   <string name="pay_cancel">支付取消</string>
+
 </resources>

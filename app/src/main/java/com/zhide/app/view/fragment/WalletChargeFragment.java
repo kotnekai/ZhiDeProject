@@ -1,16 +1,13 @@
 package com.zhide.app.view.fragment;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.zhide.app.R;
+import com.zhide.app.common.ApplicationHolder;
 import com.zhide.app.common.CommonParams;
 import com.zhide.app.delegate.IConfirmClickListener;
 import com.zhide.app.delegate.IGetAliPayResult;
@@ -74,7 +71,6 @@ public class WalletChargeFragment extends BaseFragment {
     private IGetAliPayResult alipayResult;
     private List<TextView> selectTvList;
     private long userId;
-    private IWXAPI msgApi;
 
     @Override
     protected void initView() {
@@ -216,6 +212,7 @@ public class WalletChargeFragment extends BaseFragment {
                     ToastUtil.showShort(ResourceUtils.getInstance().getString(R.string.select_pay_type));
                     return;
                 }
+                Log.d("admin", "onClick: cbSelectWxPay.isChecked()="+cbSelectWxPay.isChecked());
                 if (cbSelectWxPay.isChecked()) {
                     PayManager.getInstance().getWxPayParams(selectAmount,userId);
                 } else if (cbSelectAliPay.isChecked()) {
@@ -223,13 +220,6 @@ public class WalletChargeFragment extends BaseFragment {
                 }
                 break;
         }
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Log.d("admin", "onCreate: appId="+CommonParams.WECHAT_APPID);
-        msgApi = WXAPIFactory.createWXAPI(getActivity(),CommonParams.WECHAT_APPID );
     }
 
     /**
@@ -249,11 +239,11 @@ public class WalletChargeFragment extends BaseFragment {
              if(paramData==null){
                  return;
              }
-            if(!msgApi.isWXAppInstalled()){
+            if(!ApplicationHolder.getInstance().getMsgApi().isWXAppInstalled()){
                 ToastUtil.showShort("请您先安装微信客户端！");
                 return;
             }
-            PayManager.getInstance().sendWxPayRequest(msgApi,paramData);
+            PayManager.getInstance().sendWxPayRequest(paramData);
 
         } else {
             AliPayParamModel aliPayParamModel = event.getAliPayParamModel();

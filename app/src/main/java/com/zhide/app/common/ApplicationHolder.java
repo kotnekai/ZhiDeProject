@@ -44,6 +44,10 @@ public class ApplicationHolder {
         this.msgApi = msgApi;
     }
 
+    public IWXAPI getMsgApi() {
+        return msgApi;
+    }
+
     public Context getAppContext() {
         if (mContext == null) {
             Log.e("ApplicationHolder",

@@ -76,6 +76,9 @@ public abstract class BaseFragment extends Fragment {
         if (bindObj != null) {
             bindObj.unbind();
         }
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     /**

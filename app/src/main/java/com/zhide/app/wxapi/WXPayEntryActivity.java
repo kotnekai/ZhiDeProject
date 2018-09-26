@@ -14,6 +14,7 @@ import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.zhide.app.R;
 import com.zhide.app.common.CommonParams;
+import com.zhide.app.utils.ToastUtil;
 import com.zhide.app.view.base.BaseActivity;
 
 import butterknife.BindView;
@@ -63,21 +64,20 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
 
     @Override
     public void onResp(BaseResp resp) {
-        Log.d("xyc", "onPayFinish, errCode = " + resp.errCode);
-        Log.d("xyc", "onPayFinish, errStr = " + resp.errStr);
-        Log.d("xyc", "onPayFinish, openId = " + resp.openId);
-        Log.d("xyc", "onPayFinish, transaction = " + resp.transaction);
 
         if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
             switch (resp.errCode) {
                 case -1:
-                    tvResult.setText("支付失败！");
+                    tvResult.setText(getString(R.string.pay_failed));
+                    ToastUtil.showShort(getString(R.string.pay_failed));
                     break;
                 case 0:
-                    tvResult.setText("支付成功！");
+                    ToastUtil.showShort(getString(R.string.pay_success));
+                    tvResult.setText(getString(R.string.pay_success));
                     break;
                 case -2:
-                    tvResult.setText("支付取消！");
+                    tvResult.setText(getString(R.string.pay_cancel));
+                    ToastUtil.showShort(getString(R.string.pay_cancel));
                     break;
             }
 
