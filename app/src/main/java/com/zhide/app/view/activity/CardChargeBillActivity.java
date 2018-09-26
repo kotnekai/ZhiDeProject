@@ -58,7 +58,7 @@ public class CardChargeBillActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
-        mLayoutManager.setStackFromEnd(true);
+        mLayoutManager.setStackFromEnd(false);
         recyclerView.setLayoutManager(mLayoutManager);
         adapter = new CardBillAdapter(this, dataList);
         recyclerView.setAdapter(adapter);

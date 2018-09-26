@@ -86,10 +86,10 @@ public class MyBillActivity extends BaseActivity {
         adapter = new MyBillAdapter(this, dataList);
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
-        mLayoutManager.setStackFromEnd(true);
+        mLayoutManager.setStackFromEnd(false);
         recycleView.setLayoutManager(mLayoutManager);
         recycleView.setAdapter(adapter);
-        selectType = getString(R.string.all_str);
+        selectType = "";
         BillManager.getInstance().getMyBillData(userId, selectType);
     }
 
@@ -113,7 +113,7 @@ public class MyBillActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tvAllTab:
-                selectType = getString(R.string.all_str);
+                selectType ="";
                 ivTabIcon1.setVisibility(View.VISIBLE);
                 ivTabIcon2.setVisibility(View.INVISIBLE);
                 ivTabIcon3.setVisibility(View.INVISIBLE);
