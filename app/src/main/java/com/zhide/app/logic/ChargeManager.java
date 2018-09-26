@@ -43,10 +43,8 @@ public class ChargeManager {
     }
 
 
-
-    public void getWeChatPayParams(float amount,long userId) {
-        Log.d("admin", "getWeChatPayParams: amount="+amount);
-        amount = 0.1f;
+    public void getWeChatPayParams(float amount, long userId) {
+        Log.d("admin", "getWeChatPayParams: amount=" + amount);
         JSONObject params = new JSONObject();
         try {
             params.put("USR_Money", amount);
@@ -54,10 +52,8 @@ public class ChargeManager {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        //CommonUrl.GET_WECHAT_PARAMS
-        //String url = "https://wxpay.wxutil.com/pub_v2/app/app_pay.php";
 
-             dataManager.sendPostRequestData(CommonUrl.GET_WECHAT_PARAMS, params)
+        dataManager.sendPostRequestData(CommonUrl.GET_WECHAT_PARAMS, params)
                 .execute(new GenericsCallback<WXPayParamModel>(new JsonGenericsSerializator()) {
                     @Override
                     public void onError(Response response, Call call, Exception e, int id) {
@@ -123,7 +119,7 @@ public class ChargeManager {
      * 学生用水结算接口
      *
      * @param realBill 产生的实际费用
-     * @param USB_Id  后台返回的订单id
+     * @param USB_Id   后台返回的订单id
      */
     public void useWaterSettlement(float realBill, int USB_Id) {
 
