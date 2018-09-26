@@ -12,7 +12,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="15dp"
         android:layout_marginTop="10dp"
-        android:text="123.34"
+        android:text="0.0"
         android:textColor="@color/green_color"
         android:textSize="17sp" />
 
@@ -32,7 +32,7 @@
         android:layout_below="@id/tvTotalBalance"
         android:layout_marginRight="15dp"
         android:layout_marginTop="10dp"
-        android:text="123.34"
+        android:text="0.0"
         android:textSize="@dimen/com_text_size_12sp" />
 
     <TextView
@@ -54,7 +54,7 @@
         android:layout_below="@id/tvCashBalance"
         android:layout_marginRight="15dp"
         android:layout_marginTop="10dp"
-        android:text="123.34"
+        android:text="0.0"
         android:textSize="@dimen/com_text_size_12sp" />
 
     <TextView
@@ -176,7 +176,6 @@
             android:id="@+id/tvChargeActTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:layout_marginTop="10dp"
             android:text="@string/charge_act_introduce"
             android:textColor="@color/light_text_blue_color" />
@@ -186,23 +185,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="自2018/9/1-2019/09/12充值优惠多多" />
+            android:text="暂无活动" />
 
         <TextView
             android:id="@+id/tvChargeTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:layout_marginTop="10dp"
             android:text="@string/charge_introduce"
-            android:textColor="@color/light_text_blue_color" />
+            android:textColor="@color/light_text_blue_color"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tvIntroContent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="@string/charge_IntroContent" />
+            android:text="@string/charge_IntroContent"
+            android:visibility="gone" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -230,21 +230,19 @@
                 android:layout_marginLeft="15dp"
                 android:drawableRight="@mipmap/alipay" />
 
-
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/tvReCharge"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/com_btn_blue_5r_bg_shape"
-            android:gravity="center"
-            android:text="确认充值"
-            android:textColor="@color/white" />
-
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tvReCharge"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="15dp"
+        android:background="@drawable/com_btn_blue_5r_bg_shape"
+        android:gravity="center"
+        android:text="确认充值"
+        android:textColor="@color/white" />
 
 </RelativeLayout>

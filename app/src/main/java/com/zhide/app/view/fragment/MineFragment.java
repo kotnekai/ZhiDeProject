@@ -90,7 +90,7 @@ public class MineFragment extends BaseFragment implements TextWatcher {
     protected void initData() {
         userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
 
-        UserManager.getInstance().getUserInfoById(userId, 3);
+        UserManager.getInstance().getUserInfoById(userId, CommonParams.PAGE_MINE_FRAG_TYPE);
     }
 
     @Override

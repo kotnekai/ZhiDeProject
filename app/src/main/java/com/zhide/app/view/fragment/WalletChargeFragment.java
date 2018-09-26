@@ -12,10 +12,12 @@ import com.zhide.app.common.CommonParams;
 import com.zhide.app.delegate.IConfirmClickListener;
 import com.zhide.app.delegate.IGetAliPayResult;
 import com.zhide.app.eventBus.PayOrderEvent;
-import com.zhide.app.eventBus.RechargeInfoEvent;
+import com.zhide.app.eventBus.PayResultEvent;
+import com.zhide.app.eventBus.UserInfoEvent;
 import com.zhide.app.logic.PayManager;
+import com.zhide.app.logic.UserManager;
 import com.zhide.app.model.AliPayParamModel;
-import com.zhide.app.model.ReChargeModel;
+import com.zhide.app.model.UserData;
 import com.zhide.app.model.WXPayParamModel;
 import com.zhide.app.utils.DialogUtils;
 import com.zhide.app.utils.EmptyUtil;
@@ -95,16 +97,6 @@ public class WalletChargeFragment extends BaseFragment {
     }
 
 
-    private void updateTvState(TextView tv) {
-        for (int i = 0; i < selectTvList.size(); i++) {
-            if (tv == selectTvList.get(i)) {
-                tv.setSelected(true);
-            } else {
-                selectTvList.get(i).setSelected(false);
-            }
-        }
-    }
-
     @Override
     protected void initData() {
         selectTvList = new ArrayList<>();
@@ -123,6 +115,18 @@ public class WalletChargeFragment extends BaseFragment {
                 Log.d("xyc", "getResult: result=" + result);
             }
         };
+        UserManager.getInstance().getUserInfoById(userId, CommonParams.PAGE_WALLET_FRAG_TYPE);
+
+    }
+
+    private void updateTvState(TextView tv) {
+        for (int i = 0; i < selectTvList.size(); i++) {
+            if (tv == selectTvList.get(i)) {
+                tv.setSelected(true);
+            } else {
+                selectTvList.get(i).setSelected(false);
+            }
+        }
     }
 
     @Override
@@ -141,26 +145,31 @@ public class WalletChargeFragment extends BaseFragment {
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onReChargeEvent(RechargeInfoEvent event) {
-        ReChargeModel chargeModel = event.getChargeModel();
-        if (chargeModel == null) {
+    public void onUserInfoEvent(UserInfoEvent event) {
+        int updatePage = event.getUpdatePage();
+        if (updatePage != CommonParams.PAGE_WALLET_FRAG_TYPE) {
+            return;
+        }
+        UserData userData = event.getUserData();
+
+        if (userData == null) {
             ToastUtil.showShort(getString(R.string.get_net_data_error));
             return;
         }
-        updateUI(chargeModel);
+        updateUI(userData);
     }
 
     /**
      * 更新界面数据
      *
-     * @param chargeModel
+     * @param
      */
-    private void updateUI(ReChargeModel chargeModel) {
-        tvTotalBalance.setText(String.valueOf(chargeModel.getTotalBalance()) + "元");
-        tvCashBalance.setText(String.valueOf(chargeModel.getCashBalance()) + "元");
-        tvGiftBalance.setText(String.valueOf(chargeModel.getGiftBalance()) + "元");
-        tvIntroActContent.setText(chargeModel.getChargeActTitle());
-        tvIntroContent.setText(chargeModel.getChargeTitle());
+    private void updateUI(UserData userData) {
+        tvTotalBalance.setText(String.valueOf(userData.getUSI_TotalBalance()) + "元");
+        tvCashBalance.setText(String.valueOf(userData.getUSI_MainBalance()) + "元");
+        tvGiftBalance.setText(String.valueOf(userData.getUSI_GiftBalance()) + "元");
+        tvIntroActContent.setText(userData.getSI_Recharge_Desc());
+
     }
 
     public static final int aliPayType = 1;
@@ -212,13 +221,21 @@ public class WalletChargeFragment extends BaseFragment {
                     ToastUtil.showShort(ResourceUtils.getInstance().getString(R.string.select_pay_type));
                     return;
                 }
-                Log.d("admin", "onClick: cbSelectWxPay.isChecked()="+cbSelectWxPay.isChecked());
+                Log.d("admin", "onClick: cbSelectWxPay.isChecked()=" + cbSelectWxPay.isChecked());
                 if (cbSelectWxPay.isChecked()) {
-                    PayManager.getInstance().getWxPayParams(selectAmount,userId);
+                    PayManager.getInstance().getWxPayParams(selectAmount, userId);
                 } else if (cbSelectAliPay.isChecked()) {
                     PayManager.getInstance().getAliPayParams(selectAmount);
                 }
                 break;
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPayResultEvent(PayResultEvent event) {
+        int code = event.getCode();
+        if (code == 0) {
+            UserManager.getInstance().getUserInfoById(userId, CommonParams.PAGE_WALLET_FRAG_TYPE);
         }
     }
 
@@ -236,10 +253,10 @@ public class WalletChargeFragment extends BaseFragment {
                 return;
             }
             WXPayParamModel.WxpayParamsData paramData = wxPayParamModel.getData();
-             if(paramData==null){
-                 return;
-             }
-            if(!ApplicationHolder.getInstance().getMsgApi().isWXAppInstalled()){
+            if (paramData == null) {
+                return;
+            }
+            if (!ApplicationHolder.getInstance().getMsgApi().isWXAppInstalled()) {
                 ToastUtil.showShort("请您先安装微信客户端！");
                 return;
             }

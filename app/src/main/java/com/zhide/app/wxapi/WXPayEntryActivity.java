@@ -14,8 +14,11 @@ import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.zhide.app.R;
 import com.zhide.app.common.CommonParams;
+import com.zhide.app.eventBus.PayResultEvent;
 import com.zhide.app.utils.ToastUtil;
 import com.zhide.app.view.base.BaseActivity;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 
@@ -74,13 +77,14 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
                 case 0:
                     ToastUtil.showShort(getString(R.string.pay_success));
                     tvResult.setText(getString(R.string.pay_success));
+
                     break;
                 case -2:
                     tvResult.setText(getString(R.string.pay_cancel));
                     ToastUtil.showShort(getString(R.string.pay_cancel));
                     break;
             }
-
+            EventBus.getDefault().post(new PayResultEvent(resp.errCode));
         }
     }
 }

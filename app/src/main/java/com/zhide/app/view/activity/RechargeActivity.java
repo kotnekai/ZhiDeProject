@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -31,6 +32,13 @@ public class RechargeActivity extends BaseActivity {
     TextView tvCardTab;
     @BindView(R.id.viewPager)
     ViewPager viewPager;
+
+    @BindView(R.id.ivTab1)
+    ImageView ivTab1;
+
+    @BindView(R.id.ivTab2)
+    ImageView ivTab2;
+
     private List<Fragment> fragmentList;
     private FragmentAdapter adapter;
 
@@ -61,6 +69,28 @@ public class RechargeActivity extends BaseActivity {
         fragmentList.add(new CardChargeFragment());
         adapter = new FragmentAdapter(fragmentList, getSupportFragmentManager());
         viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0) {
+                    ivTab1.setVisibility(View.VISIBLE);
+                    ivTab2.setVisibility(View.INVISIBLE);
+                } else {
+                    ivTab1.setVisibility(View.INVISIBLE);
+                    ivTab2.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
 
@@ -74,8 +104,13 @@ public class RechargeActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.tvWalletTab:
                 viewPager.setCurrentItem(0);
+                ivTab1.setVisibility(View.VISIBLE);
+                ivTab2.setVisibility(View.INVISIBLE);
+
                 break;
             case R.id.tvCardTab:
+                ivTab1.setVisibility(View.INVISIBLE);
+                ivTab2.setVisibility(View.VISIBLE);
                 viewPager.setCurrentItem(1);
                 break;
         }

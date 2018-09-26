@@ -14,7 +14,6 @@ import com.zhide.app.eventBus.CardBillEvent;
 import com.zhide.app.logic.BillManager;
 import com.zhide.app.model.CardBillModel;
 import com.zhide.app.utils.PreferencesUtils;
-import com.zhide.app.utils.ToastUtil;
 import com.zhide.app.view.adapter.CardBillAdapter;
 import com.zhide.app.view.base.BaseActivity;
 
@@ -78,7 +77,6 @@ public class CardChargeBillActivity extends BaseActivity {
         if (cardBillModel == null) {
             return;
         }
-        ToastUtil.showShort(cardBillModel.getMsg());
         if (cardBillModel.getCode() == 1) {
             updateUI(cardBillModel);
         }

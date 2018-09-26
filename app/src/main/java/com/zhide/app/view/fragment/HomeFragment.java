@@ -150,7 +150,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     public void onResume() {
         super.onResume();
         userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
-        UserManager.getInstance().getUserInfoById(userId, 1);
+        UserManager.getInstance().getUserInfoById(userId, CommonParams.PAGE_HOME_FRAG_TYPE);
     }
 
     private void updateInfoUI(UserData userData) {

@@ -4,9 +4,11 @@ import android.util.Log;
 
 import com.zhide.app.common.CommonUrl;
 import com.zhide.app.eventBus.ErrorMsgEvent;
+import com.zhide.app.eventBus.OkResponseEvent;
 import com.zhide.app.eventBus.PayOrderEvent;
 import com.zhide.app.eventBus.WaterPreBillEvent;
 import com.zhide.app.eventBus.WaterSettleEvent;
+import com.zhide.app.model.ResponseModel;
 import com.zhide.app.model.WXPayParamModel;
 import com.zhide.app.model.WaterPreBillModel;
 import com.zhide.app.model.WaterSettleModel;
@@ -144,5 +146,29 @@ public class ChargeManager {
                     }
                 });
     }
+    /**
+     * 充钱到卡片
+     */
+    public void payToCard(long userId,float amount) {
+        JSONObject params = new JSONObject();
+        try {
+            params.put("USI_Id", userId);
+            params.put("TurnMoney", amount);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        dataManager.sendPostRequestData(CommonUrl.payToCard, params)
+                .execute(new GenericsCallback<ResponseModel>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Response response, Call call, Exception e, int id) {
+                        String message = e.getMessage();
+                        EventBus.getDefault().post(new ErrorMsgEvent(message));
+                    }
 
+                    @Override
+                    public void onResponse(ResponseModel response, int id) {
+                        EventBus.getDefault().post(new OkResponseEvent(response));
+                    }
+                });
+    }
 }

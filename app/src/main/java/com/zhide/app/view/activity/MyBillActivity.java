@@ -7,6 +7,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -40,6 +41,15 @@ public class MyBillActivity extends BaseActivity {
     SmartRefreshLayout smartRefresh;
     @BindView(R.id.recycleView)
     RecyclerView recycleView;
+
+
+    @BindView(R.id.ivTabIcon1)
+    ImageView ivTabIcon1;
+    @BindView(R.id.ivTabIcon2)
+    ImageView ivTabIcon2;
+    @BindView(R.id.ivTabIcon3)
+    ImageView ivTabIcon3;
+
     private String selectType;
     private LinearLayoutManager mLayoutManager;
     private MyBillAdapter adapter;
@@ -104,12 +114,22 @@ public class MyBillActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.tvAllTab:
                 selectType = getString(R.string.all_str);
+                ivTabIcon1.setVisibility(View.VISIBLE);
+                ivTabIcon2.setVisibility(View.INVISIBLE);
+                ivTabIcon3.setVisibility(View.INVISIBLE);
+
                 break;
             case R.id.tvPayTab:
                 selectType = getString(R.string.pay_str);
+                ivTabIcon1.setVisibility(View.INVISIBLE);
+                ivTabIcon2.setVisibility(View.VISIBLE);
+                ivTabIcon3.setVisibility(View.INVISIBLE);
                 break;
             case R.id.tvChargeTab:
                 selectType = getString(R.string.recharge_title);
+                ivTabIcon1.setVisibility(View.INVISIBLE);
+                ivTabIcon2.setVisibility(View.INVISIBLE);
+                ivTabIcon3.setVisibility(View.VISIBLE);
                 break;
         }
         BillManager.getInstance().getMyBillData(userId, selectType);

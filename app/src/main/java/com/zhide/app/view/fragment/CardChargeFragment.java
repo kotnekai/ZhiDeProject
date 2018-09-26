@@ -1,20 +1,21 @@
 package com.zhide.app.view.fragment;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.zhide.app.R;
 import com.zhide.app.common.CommonParams;
 import com.zhide.app.delegate.IConfirmClickListener;
-import com.zhide.app.delegate.IGetAliPayResult;
-import com.zhide.app.eventBus.RechargeInfoEvent;
-import com.zhide.app.logic.PayManager;
-import com.zhide.app.model.ReChargeModel;
+import com.zhide.app.eventBus.OkResponseEvent;
+import com.zhide.app.eventBus.UserInfoEvent;
+import com.zhide.app.logic.ChargeManager;
+import com.zhide.app.logic.UserManager;
+import com.zhide.app.model.ResponseModel;
+import com.zhide.app.model.UserData;
 import com.zhide.app.utils.DialogUtils;
 import com.zhide.app.utils.EmptyUtil;
 import com.zhide.app.utils.PreferencesUtils;
-import com.zhide.app.utils.ResourceUtils;
+import com.zhide.app.utils.ProgressUtils;
 import com.zhide.app.utils.ToastUtil;
 import com.zhide.app.view.activity.CardChargeBillActivity;
 import com.zhide.app.view.base.BaseFragment;
@@ -24,7 +25,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -57,9 +57,9 @@ public class CardChargeFragment extends BaseFragment {
     TextView tvReCharge;
     @BindView(R.id.tvCardBill)
     TextView tvCardBill;
+    @BindView(R.id.tvIntroCard)
+    TextView tvIntroCard;
 
-
-    private IGetAliPayResult alipayResult;
     private List<TextView> selectTvList;
     private long userId;
 
@@ -68,15 +68,6 @@ public class CardChargeFragment extends BaseFragment {
 
     }
 
-    private void updateTvState(TextView tv) {
-        for (int i = 0; i < selectTvList.size(); i++) {
-            if (tv == selectTvList.get(i)) {
-                tv.setSelected(true);
-            } else {
-                selectTvList.get(i).setSelected(false);
-            }
-        }
-    }
 
     @Override
     protected void initData() {
@@ -89,13 +80,17 @@ public class CardChargeFragment extends BaseFragment {
         selectTvList.add(tvChargeOther);
         updateTvState(tvCharge30);
         userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
+        UserManager.getInstance().getUserInfoById(userId,CommonParams.PAGE_CARD_CHARGE_FRAG_TYPE);
+    }
 
-        alipayResult = new IGetAliPayResult() {
-            @Override
-            public void getResult(Map<String, String> result) {
-                Log.d("xyc", "getResult: result=" + result);
+    private void updateTvState(TextView tv) {
+        for (int i = 0; i < selectTvList.size(); i++) {
+            if (tv == selectTvList.get(i)) {
+                tv.setSelected(true);
+            } else {
+                selectTvList.get(i).setSelected(false);
             }
-        };
+        }
     }
 
     @Override
@@ -114,25 +109,43 @@ public class CardChargeFragment extends BaseFragment {
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onReChargeEvent(RechargeInfoEvent event) {
-        ReChargeModel chargeModel = event.getChargeModel();
-        if (chargeModel == null) {
+    public void onUserInfoEvent(UserInfoEvent event) {
+        int updatePage = event.getUpdatePage();
+        if(updatePage!=2){
+            return;
+        }
+        UserData userData = event.getUserData();
+
+        if (userData == null) {
             ToastUtil.showShort(getString(R.string.get_net_data_error));
             return;
         }
-        updateUI(chargeModel);
+        updateUI(userData);
     }
 
     /**
      * 更新界面数据
      *
-     * @param chargeModel
+     * @param userData
      */
-    private void updateUI(ReChargeModel chargeModel) {
-        tvTotalBalance.setText(String.valueOf(chargeModel.getTotalBalance()) + "元");
-        tvCashBalance.setText(String.valueOf(chargeModel.getCashBalance()) + "元");
-        tvGiftBalance.setText(String.valueOf(chargeModel.getGiftBalance()) + "元");
+    private void updateUI(UserData userData) {
+        tvTotalBalance.setText(String.valueOf(userData.getUSI_TotalBalance()) + "元");
+        tvCashBalance.setText(String.valueOf(userData.getUSI_MainBalance()) + "元");
+        tvGiftBalance.setText(String.valueOf(userData.getUSI_GiftBalance()) + "元");
+        tvCardMoney.setText(String.valueOf(userData.getUSI_MainCardBalance()) + "元");
+        tvIntroCard.setText(userData.getSI_Card_Recharge_Desc());
+    }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onOkResponseEvent(OkResponseEvent event) {
+        ResponseModel responseModel = event.getResponseModel();
+        if (responseModel == null) {
+            return;
+        }
+        ToastUtil.showShort(responseModel.getMsg());
+        if(responseModel.getCode()==1){
+            UserManager.getInstance().getUserInfoById(userId,CommonParams.PAGE_CARD_CHARGE_FRAG_TYPE);
+        }
     }
 
     public static final int aliPayType = 1;
@@ -180,62 +193,12 @@ public class CardChargeFragment extends BaseFragment {
                 });
                 break;
             case R.id.tvReCharge:
-            /*    DialogUtils.showBottomSelectTypePop(getActivity(), new SpinerOnItemClickListener() {
-                    @Override
-                    public void onItemClick(int position, int id) {
-                        getPayParams(id);
-                    }
-                });*/
+                ProgressUtils.getIntance().setProgressDialog(getString(R.string.charge_loading), getActivity());
+                ChargeManager.getInstance().payToCard(userId, selectAmount);
                 break;
             case R.id.tvCardBill:
                 startActivity(CardChargeBillActivity.makeIntent(getActivity()));
                 break;
-        }
-    }
-
-    /**
-     * 后台返回支付信息，回调到这里
-     *
-     * @param event
-     */
-/*    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onWxChatEvent(PayOrderEvent event) {
-        if (event.isWeChatPay()) {
-            WXPayParamModel wxPayParamModel = event.getWxPayParamModel();
-            if (wxPayParamModel == null) {
-                ToastUtil.showShort(getString(R.string.get_net_data_error));
-                return;
-            }
-            WXPayParamModel.WxpayParamsData paramData = wxPayParamModel.getData();
-            if (paramData == null) {
-                return;
-            }
-            PayManager.getInstance().sendWxPayRequest(paramData);
-        } else {
-            AliPayParamModel aliPayParamModel = event.getAliPayParamModel();
-            if (aliPayParamModel == null) {
-                ToastUtil.showShort(getString(R.string.get_net_data_error));
-                return;
-            }
-            PayManager.getInstance().sendAliPayRequest(getActivity(), aliPayParamModel, alipayResult);
-        }
-    }*/
-
-    /**
-     * 请求服务端进行支付
-     *
-     * @param type
-     */
-    private void getPayParams(int type) {
-        if (type == -1 || type == aliPayType) {
-            PayManager.getInstance().getAliPayParams(selectAmount);
-
-        } else if (type == wxPayType) {
-            if (userId == 0 || selectAmount == 0) {
-                ToastUtil.showShort(ResourceUtils.getInstance().getString(R.string.charge_error));
-                return;
-            }
-            PayManager.getInstance().getWxPayParams(selectAmount, userId);
         }
     }
 

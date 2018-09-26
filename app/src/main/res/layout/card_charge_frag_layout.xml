@@ -209,7 +209,6 @@
         android:layout_below="@id/tvChargeActTitle"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
-        android:text="@string/card_pay_content"
         android:textColor="@color/text_gray"
         android:textSize="@dimen/com_text_size_12sp" />
 

@@ -7,7 +7,7 @@ import com.zhide.app.model.UserData;
  */
 public class UserInfoEvent {
     private UserData userData;
-   private int  updatePage = 1;//1 首页，2 关于页 ，3 我的 页
+   private int  updatePage = 1;//1 首页，2 卡片充值页 ，3 我的 页
 
     public UserInfoEvent(UserData userData, int updatePage) {
         this.userData = userData;

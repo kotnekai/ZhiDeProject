@@ -34,6 +34,24 @@ public class UserData {
     private String SI_Code;//  扫学校二维码得出的guid
     private Float USI_GiftBalance;//  赠送余额
     private Float USI_TotalBalance;//  总余额 （基本余额+赠送余额）
+    private String SI_Card_Recharge_Desc;//  卡片充值说明
+    private String SI_Recharge_Desc;//  充值说明说明
+
+    public String getSI_Card_Recharge_Desc() {
+        return SI_Card_Recharge_Desc;
+    }
+
+    public void setSI_Card_Recharge_Desc(String SI_Card_Recharge_Desc) {
+        this.SI_Card_Recharge_Desc = SI_Card_Recharge_Desc;
+    }
+
+    public String getSI_Recharge_Desc() {
+        return SI_Recharge_Desc;
+    }
+
+    public void setSI_Recharge_Desc(String SI_Recharge_Desc) {
+        this.SI_Recharge_Desc = SI_Recharge_Desc;
+    }
 
     public String getSI_Name() {
         return SI_Name;

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,10 +7,10 @@
     tools:context=".view.activity.MyBillActivity">
 
     <LinearLayout
+        android:id="@+id/llTitleLayout"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@color/main_blue_color"
-
         android:orientation="horizontal">
 
         <TextView
@@ -53,15 +53,47 @@
             android:textColor="@color/white" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="32dp"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/ivTabIcon1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@mipmap/up_btn" />
+
+        <ImageView
+            android:id="@+id/ivTabIcon2"
+            android:layout_width="0dp"
+            android:visibility="invisible"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@mipmap/up_btn" />
+
+        <ImageView
+            android:id="@+id/ivTabIcon3"
+            android:visibility="invisible"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@mipmap/up_btn" />
+    </LinearLayout>
+
     <View
+        android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="5dp"
+        android:layout_below="@id/llTitleLayout"
         android:background="@color/divider_color" />
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/smartRefresh"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/view">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycleView"
@@ -69,4 +101,4 @@
             android:layout_height="match_parent" />
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
-</LinearLayout>
+</RelativeLayout>

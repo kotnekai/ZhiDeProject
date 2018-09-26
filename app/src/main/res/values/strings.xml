@@ -157,5 +157,6 @@
    <string name="pay_cancel">支付取消</string>
 
    <string name="login_loading">登录中...</string>
+   <string name="charge_loading">充值中...</string>
 
 </resources>
