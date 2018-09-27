@@ -33,8 +33,8 @@ public class WithdrawActivity extends BaseActivity {
     EditText edtAcceptCount;
     @BindView(R.id.edtPhoneNumber)
     EditText edtPhoneNumber;
-    @BindView(R.id.tvSurplusMoney)
-    TextView tvSurplusMoney;
+    @BindView(R.id.edtSurplusMoney)
+    EditText edtSurplusMoney;
     @BindView(R.id.tvCancel)
     TextView tvCancel;
     @BindView(R.id.tvSubmit)
@@ -73,7 +73,6 @@ public class WithdrawActivity extends BaseActivity {
         if (intent != null) {
             totalMoney = intent.getFloatExtra("totalMoney", 0);
         }
-        tvSurplusMoney.setText(String.valueOf(totalMoney));
     }
 
     @OnClick({R.id.tvCancel, R.id.tvSubmit})
@@ -94,7 +93,7 @@ public class WithdrawActivity extends BaseActivity {
         String payeeName = edtPayeeName.getText().toString();
         String acceptAccount = edtAcceptCount.getText().toString();
         String phoneNumber = edtPhoneNumber.getText().toString();
-        String surplusMoney = tvSurplusMoney.getText().toString();
+        String surplusMoney = edtSurplusMoney.getText().toString();
         if (EmptyUtil.isEmpty(payeeName) || EmptyUtil.isEmpty(acceptAccount) || EmptyUtil.isEmpty(phoneNumber)) {
             ToastUtil.showShort(getString(R.string.with_draw_empty_tip));
             return;

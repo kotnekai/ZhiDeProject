@@ -106,13 +106,19 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp">
 
-        <TextView
-            android:id="@+id/tvSurplusMoney"
+        <EditText
+            android:id="@+id/edtSurplusMoney"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:minWidth="70dp"
+            android:background="@color/white"
+            android:layout_height="30dp"
+            android:hint="请输入提现金额"
             android:text=""
+            android:textColorHint="@color/text_gray"
+            android:gravity="center"
+            android:inputType="numberDecimal"
             android:textColor="@color/normal_text_money_orange_color"
-            android:textSize="24sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:layout_width="wrap_content"
