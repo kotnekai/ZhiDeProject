@@ -378,7 +378,7 @@
                     android:layout_marginRight="15dp"
                     android:background="@color/white"
                     android:gravity="center|right"
-                    android:hint="请绑定学校"
+                    android:hint="请输入热水卡号"
                     android:minWidth="100dp"
                     android:paddingRight="10dp"
                     android:text=""

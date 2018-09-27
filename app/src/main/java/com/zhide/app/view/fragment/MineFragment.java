@@ -189,7 +189,7 @@ public class MineFragment extends BaseFragment implements TextWatcher {
         edtGender.setText(userData.getUSI_Sex());
         edtStuId.setText(userData.getUSI_SchoolNo());
         edtIdCard.setText(userData.getUSI_IDCard());
-        edtWaterCardId.setText(String.valueOf(userData.getUCI_Id()));
+        edtWaterCardId.setText(userData.getUSI_Card_SN_PIN());
         if(userData.getSI_Code()==null){
             llSchool.setVisibility(View.GONE);
             tvBindSchool.setVisibility(View.VISIBLE);
@@ -315,6 +315,7 @@ public class MineFragment extends BaseFragment implements TextWatcher {
         // 房间号
         userData.setUSI_Sex(edtGender.getText().toString());
         userData.setUSI_IDCard(edtIdCard.getText().toString());
+        userData.setUSI_Card_SN_PIN(edtWaterCardId.getText().toString());
         if (guidStr != null) {
             userData.setSI_Code(guidStr);
         }

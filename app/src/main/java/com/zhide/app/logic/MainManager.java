@@ -87,6 +87,7 @@ public class MainManager {
             params.put("USI_Sex", userData.getUSI_Sex());
             params.put("USI_IDCard", userData.getUSI_IDCard());
             params.put("SI_Code", userData.getSI_Code());
+            params.put("USI_Card_SN_PIN", userData.getUSI_Card_SN_PIN());
         } catch (JSONException e) {
             e.printStackTrace();
         }
