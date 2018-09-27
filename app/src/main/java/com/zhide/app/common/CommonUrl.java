@@ -22,7 +22,7 @@ public class CommonUrl {
 
     public static final String GET_APK_VERSION_INFO = BASE_URL + "/apk/che"  + "ck";
     public static final String GET_WECHAT_PARAMS = BASE_URL + "/Student/User_Recharge_Submit";
-    public static final String GET_ALIPAY_PARAMS = BASE_URL + "/apk/ali";
+    public static final String GET_ALIPAY_PARAMS = BASE_URL + "/Student/User_Recharge_Submit_Alipay";
     public static final String useWaterPreBill = BASE_URL + "/Student/User_Water_Deducting";
     public static final String useWaterSettlement = BASE_URL + "/Student/User_Water_Settlement";
     public static final String getUserInfoSchoolInfo = BASE_URL + "/Student/Get_UserInfo_Detail";

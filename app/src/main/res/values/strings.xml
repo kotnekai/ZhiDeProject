@@ -158,5 +158,7 @@
 
    <string name="login_loading">登录中...</string>
    <string name="charge_loading">充值中...</string>
+   <string name="please_install_weChat">请先安装微信客户端！</string>
+   <string name="please_install_aliPay">请先安装支付宝客户端！</string>
 
 </resources>

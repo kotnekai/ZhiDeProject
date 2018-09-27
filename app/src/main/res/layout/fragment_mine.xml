@@ -353,13 +353,43 @@
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/com_text_size_14sp" />
             </RelativeLayout>
-
             <View
                 android:id="@+id/view9"
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:background="@color/divider_color" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:paddingLeft="10dp"
+                    android:text="热水卡号" />
+
+                <EditText
+                    android:id="@+id/edtWaterCardId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/white"
+                    android:gravity="center|right"
+                    android:hint="请绑定学校"
+                    android:minWidth="100dp"
+                    android:paddingRight="10dp"
+                    android:text=""
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/com_text_size_14sp" />
+            </RelativeLayout>
+            <View
+                android:id="@+id/view10"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/divider_color" />
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp">
@@ -392,7 +422,7 @@
             </RelativeLayout>
 
             <View
-                android:id="@+id/view10"
+                android:id="@+id/view11"
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:background="@color/divider_color" />

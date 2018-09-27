@@ -8,9 +8,7 @@ import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.zhide.app.common.ApplicationHolder;
 import com.zhide.app.delegate.IGetAliPayResult;
-import com.zhide.app.model.AliPayParamModel;
 import com.zhide.app.model.WXPayParamModel;
-import com.zhide.app.utils.EmptyUtil;
 
 import java.util.Map;
 
@@ -30,8 +28,8 @@ public class PayManager {
         return instance;
     }
 
-    public void getAliPayParams(float selectAmount) {
-        ChargeManager.getInstance().getAliPayParams(selectAmount);
+    public void getAliPayParams(float selectAmount,long userId) {
+        ChargeManager.getInstance().getAliPayParams(selectAmount,userId);
     }
 
     public void getWxPayParams(float selectAmount, long userId) {
@@ -42,13 +40,9 @@ public class PayManager {
     /**
      * 调起支付宝支付
      *
-     * @param aliPayParamModel
+     * @param orderInfo
      */
-    public void sendAliPayRequest(final Activity context, final AliPayParamModel aliPayParamModel, final IGetAliPayResult aliPayResult) {
-        final String orderInfo = aliPayParamModel.getOrderInfo();
-        if (EmptyUtil.isEmpty(orderInfo)) {
-            return;
-        }
+    public void sendAliPayRequest(final Activity context, final String orderInfo, final IGetAliPayResult aliPayResult) {
         //异步处理
         Runnable payRunnable = new Runnable() {
             @Override

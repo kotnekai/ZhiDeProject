@@ -8,6 +8,7 @@ import com.zhide.app.eventBus.OkResponseEvent;
 import com.zhide.app.eventBus.PayOrderEvent;
 import com.zhide.app.eventBus.WaterPreBillEvent;
 import com.zhide.app.eventBus.WaterSettleEvent;
+import com.zhide.app.model.AliPayParamModel;
 import com.zhide.app.model.ResponseModel;
 import com.zhide.app.model.WXPayParamModel;
 import com.zhide.app.model.WaterPreBillModel;
@@ -70,15 +71,16 @@ public class ChargeManager {
                 });
     }
 
-    public void getAliPayParams(float amount) {
+    public void getAliPayParams(float amount,long userId) {
         JSONObject params = new JSONObject();
         try {
-            params.put("amount", amount);
+            params.put("USR_Money", amount);
+            params.put("USI_Id", userId);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         dataManager.sendPostRequestData(CommonUrl.GET_ALIPAY_PARAMS, params)
-                .execute(new GenericsCallback<WXPayParamModel>(new JsonGenericsSerializator()) {
+                .execute(new GenericsCallback<AliPayParamModel>(new JsonGenericsSerializator()) {
                     @Override
                     public void onError(Response response, Call call, Exception e, int id) {
                         String message = e.getMessage();
@@ -86,7 +88,7 @@ public class ChargeManager {
                     }
 
                     @Override
-                    public void onResponse(WXPayParamModel response, int id) {
+                    public void onResponse(AliPayParamModel response, int id) {
                         EventBus.getDefault().post(new PayOrderEvent(response, false));
                     }
                 });

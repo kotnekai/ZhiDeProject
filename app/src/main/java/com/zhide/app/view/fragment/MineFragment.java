@@ -73,6 +73,10 @@ public class MineFragment extends BaseFragment implements TextWatcher {
     EditText edtStuId;
     @BindView(R.id.edtIdCard)
     EditText edtIdCard;
+
+    @BindView(R.id.edtWaterCardId)
+    EditText edtWaterCardId;
+
     @BindView(R.id.tvResetPsw)
     TextView tvResetPsw;
     @BindView(R.id.tvLoginOut)
@@ -82,6 +86,8 @@ public class MineFragment extends BaseFragment implements TextWatcher {
     TextView tvBaseBalance;
     @BindView(R.id.tvGiftBalance)
     TextView tvGiftBalance;
+
+
 
     private float totalMoney;
     private long userId;
@@ -114,6 +120,7 @@ public class MineFragment extends BaseFragment implements TextWatcher {
         edtGender.addTextChangedListener(this);
         edtStuId.addTextChangedListener(this);
         edtIdCard.addTextChangedListener(this);
+        edtWaterCardId.addTextChangedListener(this);
     }
 
     /**
@@ -182,6 +189,7 @@ public class MineFragment extends BaseFragment implements TextWatcher {
         edtGender.setText(userData.getUSI_Sex());
         edtStuId.setText(userData.getUSI_SchoolNo());
         edtIdCard.setText(userData.getUSI_IDCard());
+        edtWaterCardId.setText(String.valueOf(userData.getUCI_Id()));
         if(userData.getSI_Code()==null){
             llSchool.setVisibility(View.GONE);
             tvBindSchool.setVisibility(View.VISIBLE);

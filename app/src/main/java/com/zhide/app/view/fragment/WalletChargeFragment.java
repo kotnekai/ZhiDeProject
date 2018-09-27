@@ -19,6 +19,7 @@ import com.zhide.app.logic.UserManager;
 import com.zhide.app.model.AliPayParamModel;
 import com.zhide.app.model.UserData;
 import com.zhide.app.model.WXPayParamModel;
+import com.zhide.app.utils.ClientInstallUtils;
 import com.zhide.app.utils.DialogUtils;
 import com.zhide.app.utils.EmptyUtil;
 import com.zhide.app.utils.PreferencesUtils;
@@ -226,16 +227,15 @@ public class WalletChargeFragment extends BaseFragment {
                     ToastUtil.showShort(ResourceUtils.getInstance().getString(R.string.select_pay_type));
                     return;
                 }
-                Log.d("admin", "onClick: cbSelectWxPay.isChecked()=" + cbSelectWxPay.isChecked());
+                boolean isInstallAliPay = ClientInstallUtils.checkAliPayInstalled(getActivity());
+                if (!isInstallAliPay) {
+                    ToastUtil.showShort(getString(R.string.please_install_aliPay));
+                    return;
+                }
                 if (cbSelectWxPay.isChecked()) {
                     PayManager.getInstance().getWxPayParams(selectAmount, userId);
                 } else if (cbSelectAliPay.isChecked()) {
-                    PayManager.getInstance().getAliPayParams(selectAmount);
-                   /* AliPayParamModel aliPayParamModel = new AliPayParamModel();
-                    aliPayParamModel.setOrderInfo("app_id=2018072860793651&biz_content=%7b%22body%22%3a%22%e6%99%ba%e5%be%97%e8%83%bd%e6%ba%90APP%e5%85%85%e5%80%bc%22%2c%22out_trade_no%22%3a%22B1809261810283130001%22%2c%22product_code%22%3a%22QUICK_MSECURITY_PAY%22%2c%22subject%22%3a%22%e6%99%ba%e5%be%97%e8%83%bd%e6%ba%90APP%e5%85%85%e5%80%bc%22%2c%22timeout_express%22%3a%2230m%22%2c%22total_amount%22%3a%220.2%22%7d&charset=UTF-8&format=json&method=alipay.trade.app.pay&notify_url=http%3a%2f%2fzdtest.zlan-ai.com%2fPayCallback%2fAlipayResultNotifyProcess&sign_type=RSA2&timestamp=2018-09-26+18%3a10%3a28&version=1.0&sign=u0%2fa6g5pUFfdKN9lnxIcAzX3Md2pl6Kp68dEC%2fv%2bc4GSYgcznNsv5HsjiPQKFfmg3lisl3%2bhVtyIGIat6q2%2fZ8HbwAFofnWG5icKIskKIqFQ5bEqZ6PEqybd%2fW5Rr8%2fZ3SNdykCpZlZHrnWzRsEgsdvf0ZPE9DXr1pjFLgIwI2U%2bmwQDPnzH6EVa5etq0PshsdM45tf%2bdcTiHSRWyK04Sh0DCoIdu6jc3RypSF1gQD9DoqqFCxvJrqF7JZ%2fsfkcE7DhkgiJfxHjxJynmD2%2bAsBm%2fL8WljfThgO9zikDAX%2fOxQrVMRWtnypM%2fQpcxRksEdcDtq7nzmIGYbG4QGln7FQ%3d%3d");
-*/
-                    //PayManager.getInstance().sendAliPayRequest(getActivity(), aliPayParamModel, alipayResult);
-
+                    PayManager.getInstance().getAliPayParams(selectAmount,userId);
                 }
                 break;
         }
@@ -267,7 +267,7 @@ public class WalletChargeFragment extends BaseFragment {
                 return;
             }
             if (!ApplicationHolder.getInstance().getMsgApi().isWXAppInstalled()) {
-                ToastUtil.showShort("请您先安装微信客户端！");
+                ToastUtil.showShort(getString(R.string.please_install_weChat));
                 return;
             }
             PayManager.getInstance().sendWxPayRequest(paramData);
@@ -278,7 +278,11 @@ public class WalletChargeFragment extends BaseFragment {
                 ToastUtil.showShort(getString(R.string.get_net_data_error));
                 return;
             }
-            PayManager.getInstance().sendAliPayRequest(getActivity(), aliPayParamModel, alipayResult);
+            String orderInfo = aliPayParamModel.getData();
+            if (orderInfo == null || orderInfo.isEmpty()) {
+                ToastUtil.showShort(getString(R.string.get_net_data_error));
+            }
+            PayManager.getInstance().sendAliPayRequest(getActivity(), orderInfo, alipayResult);
         }
     }
 
