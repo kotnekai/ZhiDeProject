@@ -618,7 +618,8 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
             //弹出框展示
 
             float balance = (mainBalance / 1000) - consumeMoney;
-         startActivity(ShowerCompletedActivity.makeIntent(mContext, completeTime, deducting / 1000, consumeMoney, 0, balance));
+            float returnMoney = (deducting / 1000) - consumeMoney;
+         startActivity(ShowerCompletedActivity.makeIntent(mContext, completeTime, deducting / 1000, consumeMoney, returnMoney, balance));
         }
     }
 
