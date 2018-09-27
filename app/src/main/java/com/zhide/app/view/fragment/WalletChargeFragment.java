@@ -227,14 +227,14 @@ public class WalletChargeFragment extends BaseFragment {
                     ToastUtil.showShort(ResourceUtils.getInstance().getString(R.string.select_pay_type));
                     return;
                 }
-                boolean isInstallAliPay = ClientInstallUtils.checkAliPayInstalled(getActivity());
-                if (!isInstallAliPay) {
-                    ToastUtil.showShort(getString(R.string.please_install_aliPay));
-                    return;
-                }
                 if (cbSelectWxPay.isChecked()) {
                     PayManager.getInstance().getWxPayParams(selectAmount, userId);
                 } else if (cbSelectAliPay.isChecked()) {
+                    boolean isInstallAliPay = ClientInstallUtils.checkAliPayInstalled(getActivity());
+                    if (!isInstallAliPay) {
+                        ToastUtil.showShort(getString(R.string.please_install_aliPay));
+                        return;
+                    }
                     PayManager.getInstance().getAliPayParams(selectAmount,userId);
                 }
                 break;

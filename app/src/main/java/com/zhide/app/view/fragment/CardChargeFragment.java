@@ -138,6 +138,7 @@ public class CardChargeFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onOkResponseEvent(OkResponseEvent event) {
+        ProgressUtils.getIntance().dismissProgress();
         ResponseModel responseModel = event.getResponseModel();
         if (responseModel == null) {
             return;
