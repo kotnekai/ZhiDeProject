@@ -73,7 +73,7 @@ public class ComApplication extends Application {
         Log.d("admin", "getMsgApi: msgApi1="+msgApi);
         ApplicationHolder.getInstance().setMsgApi(msgApi);
         PickViewUtil.initTimePickOptions(this);
-        ZXingLibrary.initDisplayOpinion(this);
+//        ZXingLibrary.initDisplayOpinion(this);
 
         mzjApplication = this;
     }

@@ -73,7 +73,15 @@ public class ShowerMainActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void initHeader() {
         setHeaderTitle(getString(R.string.shower_title));
+        setRightTextVisibility(View.VISIBLE);
+        setHeader_RightText(getString(R.string.shower_scan));
+        setHeader_RightTextClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(ShowerMainActivity.this,CaptureActivity.class));
 
+            }
+        });
     }
 
     @Override

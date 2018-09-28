@@ -178,4 +178,7 @@
     <string name="yes_tip">是</string>
     <string name="loading">加载中...</string>
 
+    <string name="shower_scan">扫一扫</string>
+
+
 </resources>
