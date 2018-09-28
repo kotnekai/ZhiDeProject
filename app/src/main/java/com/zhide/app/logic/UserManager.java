@@ -296,4 +296,34 @@ public class UserManager {
                 });
     }
 
+    /**
+     * 重置登录密码
+     * @param userId
+     * @param newPsw
+     * @param oldPsw
+     */
+    public void resetLoginPsw(long userId,String newPsw,String oldPsw) {
+        JSONObject params = new JSONObject();
+        try {
+            params.put("USI_Id", userId);
+            params.put("USI_Pwd", newPsw);
+            params.put("USI_OldPwd", oldPsw);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        dataInstance.sendPostRequestData(CommonUrl.resetLoginPsw, params)
+                .execute(new GenericsCallback<ResponseModel>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Response response, Call call, Exception e, int id) {
+                        String message = e.getMessage();
+                        EventBus.getDefault().post(new ErrorMsgEvent(message));
+                    }
+
+                    @Override
+                    public void onResponse(ResponseModel response, int id) {
+                        EventBus.getDefault().post(new OkResponseEvent(response));
+                    }
+                });
+    }
+
 }

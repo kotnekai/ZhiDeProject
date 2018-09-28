@@ -109,4 +109,9 @@
         <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
         <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
+    <style name="MyEditText" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/divider_color</item>
+        <item name="colorControlActivated">@color/divider_color</item>
+    </style>
+
 </resources>

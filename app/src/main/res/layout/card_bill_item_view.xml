@@ -44,7 +44,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="40"
-            android:textColor="@color/main_blue_color" />
+            android:textColor="@color/normal_text_money_orange_color" />
 
     </LinearLayout>
 </LinearLayout>

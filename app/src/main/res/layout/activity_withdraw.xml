@@ -106,23 +106,19 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp">
 
-        <EditText
-            android:id="@+id/edtSurplusMoney"
+        <TextView
+            android:id="@+id/tvSurplusMoney"
             android:layout_width="wrap_content"
-            android:minWidth="70dp"
-            android:background="@color/white"
             android:layout_height="30dp"
-            android:hint="请输入提现金额"
-            android:text=""
-            android:textColorHint="@color/text_gray"
             android:gravity="center"
-            android:inputType="numberDecimal"
+            android:text="0.0"
             android:textColor="@color/normal_text_money_orange_color"
-            android:textSize="18sp" />
+            android:textSize="24sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
             android:text="元"
             android:textColor="@color/normal_text_money_orange_color"
             android:textSize="18sp" />
@@ -136,13 +132,22 @@
         android:layout_below="@+id/llTotalMoney"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
-        android:text="仅退还现金余额，退款后账号赠送余额清零" />
+        android:text="@string/return_tip_one" />
+
+    <TextView
+        android:id="@+id/tvOkTip"
+        android:layout_below="@id/tvSurplusTip"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content"
+        android:text="@string/sure_return_tip" />
 
     <TextView
         android:id="@+id/tvCancel"
         android:layout_width="300dp"
         android:layout_height="40dp"
-        android:layout_below="@id/tvSurplusTip"
+        android:layout_below="@id/tvOkTip"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:background="@drawable/com_btn_blue_5r_bg_shape"

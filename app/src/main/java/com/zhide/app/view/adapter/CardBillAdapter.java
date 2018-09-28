@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.zhide.app.R;
 import com.zhide.app.model.CardBillModel;
-import com.zhide.app.model.MyBillModel;
 import com.zhide.app.utils.ResourceUtils;
 
 import java.util.List;
@@ -32,7 +31,7 @@ public class CardBillAdapter extends RecyclerView.Adapter<CardBillAdapter.MyView
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = inflater.inflate(R.layout.card_bill_item_view,parent,false);
+        View itemView = inflater.inflate(R.layout.card_bill_item_view, parent, false);
         return new MyViewHolder(itemView);
     }
 
@@ -43,9 +42,17 @@ public class CardBillAdapter extends RecyclerView.Adapter<CardBillAdapter.MyView
             return;
         }
         holder.tvTransTime.setText(dataModel.getUSCP_CreateTime());
+
         holder.tvTransType.setText(dataModel.getUSCP_Type());
-      //  holder.tvTransAmount.setText(dataModel.getUSCP_Money());
-     //   holder.tvRemainAmount.setText(dataModel.getUSCP_Money());
+        if (dataModel.getUSCP_Type().equals(context.getString(R.string.trans_in_card))) {
+            holder.tvTransType.setTextColor(ResourceUtils.getInstance().getColor(R.color.normal_text_money_green_color));
+            holder.tvTransAmount.setTextColor(ResourceUtils.getInstance().getColor(R.color.normal_text_money_green_color));
+        } else if (dataModel.getUSCP_Type().equals(context.getString(R.string.trans_out_card))) {
+            holder.tvTransType.setTextColor(ResourceUtils.getInstance().getColor(R.color.normal_text_money_red_color));
+            holder.tvTransAmount.setTextColor(ResourceUtils.getInstance().getColor(R.color.normal_text_money_red_color));
+        }
+        holder.tvTransAmount.setText(String.valueOf(dataModel.getUSCP_Money()));
+        holder.tvRemainAmount.setText(String.valueOf(dataModel.getUSCP_NextMoney()));
 
     }
 

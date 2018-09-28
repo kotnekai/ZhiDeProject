@@ -101,7 +101,7 @@
         android:layout_height="5dp"
         android:layout_below="@id/tvCardMoney"
         android:layout_marginTop="10dp"
-        android:background="@color/divider_color" />
+        android:background="@color/main_light_blue_color" />
 
     <TextView
         android:id="@+id/tvChargeTip"
@@ -110,93 +110,29 @@
         android:layout_below="@id/view1"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
-        android:text="卡片充值金额" />
+        android:text="卡片充值金额："
+        android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/tvCharge30"
-        android:layout_width="100dp"
-        android:layout_height="30dp"
-        android:layout_below="@id/tvChargeTip"
-        android:layout_marginLeft="15dp"
+    <EditText
+        android:id="@+id/edtInputMoney"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:layout_marginTop="10dp"
-        android:background="@drawable/com_btn_line_bg_blue_black_selector"
-        android:gravity="center"
-        android:text="30元"
-        android:textColor="@drawable/com_text_white_blue_selector" />
-
-    <TextView
-        android:id="@+id/tvCharge40"
-        android:layout_width="100dp"
-        android:layout_height="30dp"
-        android:layout_below="@id/tvChargeTip"
+        android:drawableLeft="@mipmap/renminbi"
         android:layout_marginLeft="15dp"
-        android:layout_marginTop="10dp"
-        android:layout_toRightOf="@id/tvCharge30"
-        android:background="@drawable/com_btn_line_bg_blue_black_selector"
-        android:gravity="center"
-        android:text="40元"
-        android:textColor="@drawable/com_text_white_blue_selector" />
-
-    <TextView
-        android:id="@+id/tvCharge50"
-        android:layout_width="100dp"
-        android:layout_height="30dp"
-        android:layout_below="@id/tvChargeTip"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="10dp"
-        android:layout_toRightOf="@id/tvCharge40"
-        android:background="@drawable/com_btn_line_bg_blue_black_selector"
-        android:gravity="center"
-        android:text="50元"
-        android:textColor="@drawable/com_text_white_blue_selector" />
-
-    <TextView
-        android:id="@+id/tvCharge80"
-        android:layout_width="100dp"
-        android:layout_height="30dp"
-        android:layout_below="@id/tvCharge30"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="10dp"
-
-        android:background="@drawable/com_btn_line_bg_blue_black_selector"
-        android:gravity="center"
-        android:text="80元"
-        android:textColor="@drawable/com_text_white_blue_selector" />
-
-    <TextView
-        android:id="@+id/tvCharge100"
-        android:layout_width="100dp"
-        android:layout_height="30dp"
-        android:layout_below="@id/tvCharge30"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="10dp"
-        android:layout_toRightOf="@id/tvCharge30"
-        android:background="@drawable/com_btn_line_bg_blue_black_selector"
-        android:gravity="center"
-        android:text="100元"
-        android:textColor="@drawable/com_text_white_blue_selector" />
-
-    <TextView
-        android:id="@+id/tvChargeOther"
-        android:layout_width="100dp"
-        android:layout_height="30dp"
-        android:layout_below="@id/tvCharge30"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="10dp"
-        android:layout_toRightOf="@id/tvCharge40"
-        android:background="@drawable/com_btn_line_bg_blue_black_selector"
-        android:gravity="center"
-        android:hint="其他"
+        android:textSize="14sp"
+        android:inputType="numberDecimal"
         android:text=""
-        android:textColor="@drawable/com_text_white_blue_selector"
-        android:textColorHint="@drawable/com_text_white_blue_selector"
-        android:textSize="15sp" />
+         android:layout_marginRight="15dp"
+        android:hint="@string/input_card_money"
+        android:theme="@style/MyEditText"
+        android:layout_below="@id/tvChargeTip" />
 
     <TextView
         android:id="@+id/tvChargeActTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvCharge80"
+        android:layout_below="@id/edtInputMoney"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
         android:text="@string/card_pay_tip"
@@ -225,6 +161,7 @@
         android:gravity="center"
         android:text="确认充值"
         android:textColor="@color/white" />
+
     <TextView
         android:id="@+id/tvCardBill"
         android:layout_width="match_parent"

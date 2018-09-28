@@ -28,11 +28,11 @@ import com.zhide.app.utils.DialogUtils;
 import com.zhide.app.utils.PreferencesUtils;
 import com.zhide.app.utils.ToastUtil;
 import com.zhide.app.utils.UIUtils;
+import com.zhide.app.view.activity.ChangeLoginPswActivity;
 import com.zhide.app.view.activity.LoginActivity;
 import com.zhide.app.view.activity.MyBillActivity;
 import com.zhide.app.view.activity.QRCodeActivity;
 import com.zhide.app.view.activity.RechargeActivity;
-import com.zhide.app.view.activity.ResetPswActivity;
 import com.zhide.app.view.activity.WithdrawActivity;
 import com.zhide.app.view.base.BaseFragment;
 
@@ -89,7 +89,7 @@ public class MineFragment extends BaseFragment implements TextWatcher {
 
 
 
-    private float totalMoney;
+    private float mainMoney;
     private long userId;
 
     @Override
@@ -180,7 +180,7 @@ public class MineFragment extends BaseFragment implements TextWatcher {
     }
 
     private void updateUserInfoUI(UserData userData) {
-        totalMoney = userData.getUSI_TotalBalance();
+        mainMoney = userData.getUSI_MainBalance();
         tvTotalMoney.setText(UIUtils.getFloatData(userData.getUSI_TotalBalance()));
         tvBaseBalance.setText(UIUtils.getFloatData(userData.getUSI_MainBalance()));
         tvGiftBalance.setText(UIUtils.getFloatData(userData.getUSI_GiftBalance()));
@@ -190,14 +190,32 @@ public class MineFragment extends BaseFragment implements TextWatcher {
         edtStuId.setText(userData.getUSI_SchoolNo());
         edtIdCard.setText(userData.getUSI_IDCard());
         edtWaterCardId.setText(userData.getUSI_Card_SN_PIN());
-        if(userData.getSI_Code()==null){
+
+        if(userData.getSI_Code()==null){ // 表示未绑定学校
             llSchool.setVisibility(View.GONE);
             tvBindSchool.setVisibility(View.VISIBLE);
+
+            edtRoomAddress.setEnabled(false);
+            edtStuId.setEnabled(false);
+            edtWaterCardId.setEnabled(false);
+
+            edtRoomAddress.setHint(getString(R.string.no_bind_school));
+            edtStuId.setHint(getString(R.string.no_bind_school));
+            edtWaterCardId.setHint(getString(R.string.no_bind_school));
         }else {
             guidStr = userData.getSI_Code();
             llSchool.setVisibility(View.VISIBLE);
             tvBindSchool.setVisibility(View.GONE);
             tvSchoolName.setText(userData.getSI_Name());
+
+            edtRoomAddress.setEnabled(true);
+            edtRoomAddress.setHint(R.string.input_address_tip);
+
+            edtStuId.setEnabled(true);
+            edtStuId.setHint(R.string.input_stu_id);
+
+            edtWaterCardId.setEnabled(true);
+            edtWaterCardId.setHint("请输入热水卡号");
         }
     }
 
@@ -227,7 +245,7 @@ public class MineFragment extends BaseFragment implements TextWatcher {
                 startActivity(RechargeActivity.makeIntent(getActivity()));
                 break;
             case R.id.tvWithdraw:
-                startActivity(WithdrawActivity.makeIntent(getActivity(), totalMoney));
+                startActivity(WithdrawActivity.makeIntent(getActivity(), mainMoney));
                 break;
             case R.id.tvMyBill:
                 startActivity(MyBillActivity.makeIntent(getActivity()));
@@ -243,14 +261,14 @@ public class MineFragment extends BaseFragment implements TextWatcher {
                 break;
 
             case R.id.tvResetPsw:
-                startActivity(ResetPswActivity.makeIntent(getActivity()));
+                startActivity(ChangeLoginPswActivity.makeIntent(getActivity()));
                 break;
             case R.id.tvLoginOut:
 
                 DialogUtils.showConfirmDialog(getActivity(), getString(R.string.login_out), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                       PreferencesUtils.putLong(CommonParams.LOGIN_USER_ID, 0);
+                        PreferencesUtils.putLong(CommonParams.LOGIN_USER_ID, 0);
                         startActivity(LoginActivity.makeIntent(getActivity()));
                         getActivity().finish();
                     }

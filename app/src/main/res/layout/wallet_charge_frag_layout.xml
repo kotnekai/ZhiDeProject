@@ -168,14 +168,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvCharge80"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
+
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/tvChargeActTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
             android:layout_marginTop="10dp"
             android:text="@string/charge_act_introduce"
             android:textColor="@color/light_text_blue_color" />
@@ -183,6 +183,8 @@
         <TextView
             android:id="@+id/tvIntroActContent"
             android:layout_width="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="暂无活动" />
@@ -204,10 +206,17 @@
             android:text="@string/charge_IntroContent"
             android:visibility="gone" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:background="@color/main_light_blue_color"
+            android:layout_height="5dp"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
             android:text="支付方式："
             android:textSize="18sp" />
 
@@ -215,6 +224,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
             android:orientation="horizontal">
 
             <CheckBox

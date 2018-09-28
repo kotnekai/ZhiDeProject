@@ -210,13 +210,18 @@ public class WalletChargeFragment extends BaseFragment {
                 break;
             case R.id.tvChargeOther:
                 updateTvState(tvChargeOther);
-                DialogUtils.showTipsDialog(getActivity(), getString(R.string.charge_other_tip), true, new IConfirmClickListener() {
+                DialogUtils.showTipsDialog(getActivity(),getString(R.string.input_other_tip),getString(R.string.input_other_money_tip), true, new IConfirmClickListener() {
                     @Override
                     public void confirmClick(String remarks) {
                         if (EmptyUtil.isEmpty(remarks)) {
                             tvChargeOther.setText(getString(R.string.charge_other_tip));
                         } else {
                             selectAmount = Float.parseFloat(remarks);
+                            if(selectAmount<100||selectAmount>300){
+                                ToastUtil.showShort(getString(R.string.input_other_tip));
+                                tvChargeOther.setText(getString(R.string.charge_other_tip));
+                                return;
+                            }
                             tvChargeOther.setText(remarks + "元");
                         }
                     }

@@ -42,7 +42,7 @@ public class QRCodeActivity extends BaseActivity {
 
     @Override
     protected void initHeader() {
-
+      setHeaderTitle(getString(R.string.school_qr_code));
     }
 
     @Override

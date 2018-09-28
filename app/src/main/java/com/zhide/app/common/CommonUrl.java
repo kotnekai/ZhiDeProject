@@ -28,4 +28,6 @@ public class CommonUrl {
     public static final String getUserInfoSchoolInfo = BASE_URL + "/Student/Get_UserInfo_Detail";
     public static final String payToCard = BASE_URL + "/Student/User_MainBalanceTurnCardBalance";
 
+    public static final String resetLoginPsw = BASE_URL + "/Student/User_ResetPwd";
+
 }

@@ -25,6 +25,7 @@
             android:id="@+id/edtContent"
             android:layout_width="match_parent"
             android:layout_height="30dp"
+            android:hint="请输入自定义金额(100-300元)"
             android:layout_marginLeft="50dp"
             android:background="@color/white"
             android:layout_marginRight="50dp"

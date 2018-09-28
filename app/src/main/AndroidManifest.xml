@@ -84,8 +84,6 @@
                 <data android:scheme="wxac87d65c49952574" />
             </intent-filter>
         </activity>
-
-
         <activity
             android:name=".view.activity.MyBillActivity"
             android:screenOrientation="portrait" />
@@ -129,10 +127,14 @@
         <activity
             android:name=".view.activity.CardChargeBillActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".view.activity.QRCodeActivity"
+        <activity
+            android:name=".view.activity.QRCodeActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.ShowerCompletedActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.ChangeLoginPswActivity"
             android:screenOrientation="portrait" />
     </application>
 

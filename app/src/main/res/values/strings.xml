@@ -104,6 +104,7 @@
 
     <string name="with_draw_empty_tip">请填写完整信息</string>
     <string name="charge_other_tip">其他</string>
+    <string name="input_other_money_tip">输入其他充值金额</string>
 
     <string name="register_count_time">%ss后重新发送</string>
     <string name="register_get_code">获取短信验证码</string>
@@ -152,13 +153,27 @@
     <string name="shower_completed">洗澡完成</string>
     <string name="shower_back">返回</string>
 
-   <string name="pay_success">支付成功</string>
-   <string name="pay_failed">支付失败</string>
-   <string name="pay_cancel">支付取消</string>
+    <string name="pay_success">支付成功</string>
+    <string name="pay_failed">支付失败</string>
+    <string name="pay_cancel">支付取消</string>
 
-   <string name="login_loading">登录中...</string>
-   <string name="charge_loading">充值中...</string>
-   <string name="please_install_weChat">请先安装微信客户端！</string>
-   <string name="please_install_aliPay">请先安装支付宝客户端！</string>
+    <string name="login_loading">登录中...</string>
+    <string name="charge_loading">充值中...</string>
+    <string name="please_install_weChat">请先安装微信客户端！</string>
+    <string name="please_install_aliPay">请先安装支付宝客户端！</string>
+    <string name="no_bind_school">未绑定学校</string>
+    <string name="input_address_tip">请输入地址</string>
+    <string name="input_stu_id">请输入学号</string>
+    <string name="school_qr_code">学校二维码</string>
+    <string name="change_psw_title">修改密码</string>
+    <string name="input_old_psw">请输入旧密码</string>
+    <string name="input_new_psw">请输入新密码</string>
+    <string name="no_equal_psw">两次密码不一致</string>
+    <string name="return_tip_one">仅退还现金余额，退款后账号赠送余额清零</string>
+    <string name="sure_return_tip">确认要退款吗？</string>
+    <string name="input_other_tip">请输入自定义金额(100-300元)</string>
+    <string name="input_card_money">请输入充值金额，不小于10元</string>
+    <string name="trans_in_card">转入卡片</string>
+    <string name="trans_out_card">转入卡内</string>
 
 </resources>

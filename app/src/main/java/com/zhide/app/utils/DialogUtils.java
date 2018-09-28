@@ -8,7 +8,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +28,6 @@ import com.zhide.app.delegate.SpinerOnItemClickListener;
 import com.zhide.app.model.SpinnerSelectModel;
 import com.zhide.app.view.adapter.SpinerAdapter;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
 
@@ -86,19 +84,22 @@ public class DialogUtils {
      * @param title
      * @param
      */
-    public static void showTipsDialog(Context context, String title, boolean inputBtn, final IConfirmClickListener listener) {
+    public static void showTipsDialog(Context context, String hintContent,String title, boolean inputBtn, final IConfirmClickListener listener) {
         final AlertDialog dialog = new AlertDialog.Builder(context).create();
         View view = LayoutInflater.from(context).inflate(R.layout.tips_dialog_view, null);
 
         TextView tvOkBtn = (TextView) view.findViewById(R.id.tvOkBtn);
         TextView tvTitle = (TextView) view.findViewById(R.id.tvTitle);
         final EditText edtContent = (EditText) view.findViewById(R.id.edtContent);
+        if(hintContent!=null){
+            edtContent.setHint(hintContent);
+        }
         if (title != null) {
             tvTitle.setText(title);
         }
         if (inputBtn) {
             edtContent.setEnabled(true);
-            edtContent.setInputType(InputType.TYPE_CLASS_NUMBER);
+            edtContent.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         } else {
             edtContent.setEnabled(false);
         }

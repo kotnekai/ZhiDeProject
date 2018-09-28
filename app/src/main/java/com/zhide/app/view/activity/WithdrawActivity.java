@@ -11,8 +11,10 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zhide.app.R;
 import com.zhide.app.common.CommonParams;
 import com.zhide.app.eventBus.OkResponseEvent;
+import com.zhide.app.eventBus.UserInfoEvent;
 import com.zhide.app.logic.UserManager;
 import com.zhide.app.model.ResponseModel;
+import com.zhide.app.model.UserData;
 import com.zhide.app.model.WithdrawModel;
 import com.zhide.app.utils.EmptyUtil;
 import com.zhide.app.utils.PreferencesUtils;
@@ -33,8 +35,8 @@ public class WithdrawActivity extends BaseActivity {
     EditText edtAcceptCount;
     @BindView(R.id.edtPhoneNumber)
     EditText edtPhoneNumber;
-    @BindView(R.id.edtSurplusMoney)
-    EditText edtSurplusMoney;
+    @BindView(R.id.tvSurplusMoney)
+    TextView tvSurplusMoney;
     @BindView(R.id.tvCancel)
     TextView tvCancel;
     @BindView(R.id.tvSubmit)
@@ -58,7 +60,7 @@ public class WithdrawActivity extends BaseActivity {
 
     public static Intent makeIntent(Context context, float totalMoney) {
         Intent intent = new Intent(context, WithdrawActivity.class);
-        intent.putExtra("totalMoney", totalMoney);
+        intent.putExtra("mainMoney", totalMoney);
         return intent;
     }
 
@@ -71,8 +73,33 @@ public class WithdrawActivity extends BaseActivity {
     private void initData() {
         Intent intent = getIntent();
         if (intent != null) {
-            totalMoney = intent.getFloatExtra("totalMoney", 0);
+            totalMoney = intent.getFloatExtra("mainMoney", 0);
         }
+        tvSurplusMoney.setText(String.valueOf(totalMoney));
+        long userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
+        UserManager.getInstance().getUserInfoById(userId,CommonParams.PAGE_WITH_DRAW_TYPE);
+    }
+    /**
+     * 用户信息，更新账户可用余额用的
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUserInfoEvent(UserInfoEvent event) {
+        if (event.getUpdatePage() != CommonParams.PAGE_WITH_DRAW_TYPE) {
+            return;
+        }
+        UserData userData = event.getUserData();
+        if (userData == null) {
+            return;
+        }
+        updateInfoUI(userData);
+    }
+
+    private void updateInfoUI(UserData userData) {
+        edtPayeeName.setText(userData.getUSI_AlipayName());
+        edtAcceptCount.setText(userData.getUSI_AlipayAcc());
+        edtPhoneNumber.setText(userData.getUSI_Mobile());
     }
 
     @OnClick({R.id.tvCancel, R.id.tvSubmit})
@@ -93,7 +120,7 @@ public class WithdrawActivity extends BaseActivity {
         String payeeName = edtPayeeName.getText().toString();
         String acceptAccount = edtAcceptCount.getText().toString();
         String phoneNumber = edtPhoneNumber.getText().toString();
-        String surplusMoney = edtSurplusMoney.getText().toString();
+        String surplusMoney = tvSurplusMoney.getText().toString();
         if (EmptyUtil.isEmpty(payeeName) || EmptyUtil.isEmpty(acceptAccount) || EmptyUtil.isEmpty(phoneNumber)) {
             ToastUtil.showShort(getString(R.string.with_draw_empty_tip));
             return;
