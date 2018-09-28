@@ -11,11 +11,20 @@ import android.widget.TextView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zhide.app.R;
+import com.zhide.app.common.CommonParams;
+import com.zhide.app.eventBus.UserInfoEvent;
+import com.zhide.app.logic.UserManager;
+import com.zhide.app.model.UserData;
+import com.zhide.app.utils.PreferencesUtils;
+import com.zhide.app.utils.ProgressUtils;
 import com.zhide.app.utils.UIUtils;
 import com.zhide.app.view.adapter.FragmentAdapter;
 import com.zhide.app.view.base.BaseActivity;
 import com.zhide.app.view.fragment.CardChargeFragment;
 import com.zhide.app.view.fragment.WalletChargeFragment;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,10 +74,13 @@ public class RechargeActivity extends BaseActivity {
 
     private void initData() {
         fragmentList = new ArrayList<>();
-        fragmentList.add(new WalletChargeFragment());
-        fragmentList.add(new CardChargeFragment());
+
+        long userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
+        ProgressUtils.getIntance().setProgressDialog(getString(R.string.loading), this);
+        UserManager.getInstance().getUserInfoById(userId, CommonParams.PAGE_CHARGE_ACTIVITY_TYPE);
         adapter = new FragmentAdapter(fragmentList, getSupportFragmentManager());
         viewPager.setAdapter(adapter);
+
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -80,9 +92,11 @@ public class RechargeActivity extends BaseActivity {
                 if (position == 0) {
                     ivTab1.setVisibility(View.VISIBLE);
                     ivTab2.setVisibility(View.INVISIBLE);
+
                 } else {
                     ivTab1.setVisibility(View.INVISIBLE);
                     ivTab2.setVisibility(View.VISIBLE);
+
                 }
             }
 
@@ -91,6 +105,32 @@ public class RechargeActivity extends BaseActivity {
 
             }
         });
+    }
+
+    /**
+     * 用户信息
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUserInfoEvent(UserInfoEvent event) {
+        ProgressUtils.getIntance().dismissProgress();
+        if (event.getUpdatePage() != CommonParams.PAGE_CHARGE_ACTIVITY_TYPE) {
+            return;
+        }
+        UserData userData = event.getUserData();
+        if (userData == null) {
+            return;
+        }
+        if (!userData.getSI_UseMode().equals("单蓝牙")) {
+            fragmentList.add(new WalletChargeFragment());
+            tvCardTab.setVisibility(View.GONE);
+        } else {
+            tvCardTab.setVisibility(View.VISIBLE);
+            fragmentList.add(new WalletChargeFragment());
+            fragmentList.add(new CardChargeFragment());
+        }
+        adapter.notifyDataSetChanged();
     }
 
 

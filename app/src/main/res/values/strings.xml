@@ -175,5 +175,7 @@
     <string name="input_card_money">请输入充值金额，不小于10元</string>
     <string name="trans_in_card">转入卡片</string>
     <string name="trans_out_card">转入卡内</string>
+    <string name="yes_tip">是</string>
+    <string name="loading">加载中...</string>
 
 </resources>

@@ -36,5 +36,6 @@ public class CommonParams {
     public static int PAGE_MINE_FRAG_TYPE = 3;
     public static int PAGE_WALLET_FRAG_TYPE = 4;
     public static int PAGE_WITH_DRAW_TYPE = 5;
+    public static int PAGE_CHARGE_ACTIVITY_TYPE = 6;
 
 }

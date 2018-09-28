@@ -97,7 +97,7 @@ public class UserManager {
 
                     @Override
                     public void onResponse(ResponseModel response, int id) {
-
+                        EventBus.getDefault().post(new OkResponseEvent(response));
                         Log.d("admin", "onResponse: response=" + response.getCode() + "-" + response.getMsg());
                     }
                 });
@@ -269,7 +269,11 @@ public class UserManager {
                 });
     }
 
-
+    /**
+     * 提现
+     *
+     * @param withdrawModel
+     */
     public void doWithdraw(WithdrawModel withdrawModel) {
         JSONObject params = new JSONObject();
         try {
@@ -298,11 +302,12 @@ public class UserManager {
 
     /**
      * 重置登录密码
+     *
      * @param userId
      * @param newPsw
      * @param oldPsw
      */
-    public void resetLoginPsw(long userId,String newPsw,String oldPsw) {
+    public void resetLoginPsw(long userId, String newPsw, String oldPsw) {
         JSONObject params = new JSONObject();
         try {
             params.put("USI_Id", userId);
@@ -326,4 +331,27 @@ public class UserManager {
                 });
     }
 
+    public void forgetPassword(String phone, String newPsw, String smsCode) {
+        JSONObject params = new JSONObject();
+        try {
+            params.put("USI_Mobile", phone);
+            params.put("USI_Pwd", newPsw);
+            params.put("USI_SMSCode", smsCode);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        dataInstance.sendPostRequestData(CommonUrl.forgetPassword, params)
+                .execute(new GenericsCallback<ResponseModel>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Response response, Call call, Exception e, int id) {
+                        String message = e.getMessage();
+                        EventBus.getDefault().post(new ErrorMsgEvent(message));
+                    }
+
+                    @Override
+                    public void onResponse(ResponseModel response, int id) {
+                        EventBus.getDefault().post(new ModifyPswEvent(response));
+                    }
+                });
+    }
 }

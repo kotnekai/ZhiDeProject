@@ -12,11 +12,11 @@ import android.widget.TextView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zhide.app.R;
-import com.zhide.app.common.CommonParams;
 import com.zhide.app.eventBus.ModifyPswEvent;
+import com.zhide.app.eventBus.OkResponseEvent;
+import com.zhide.app.logic.UserManager;
 import com.zhide.app.model.ResponseModel;
 import com.zhide.app.utils.EmptyUtil;
-import com.zhide.app.utils.PreferencesUtils;
 import com.zhide.app.utils.ToastUtil;
 import com.zhide.app.utils.UIUtils;
 import com.zhide.app.view.base.BaseActivity;
@@ -100,13 +100,40 @@ public class ResetPswActivity extends BaseActivity {
                     countTimer.cancel();
                     countTimer.start();///开启倒计时
                 }
+                UserManager.getInstance().sendSmsCode(phoneNumber);
                 break;
             case R.id.rlReset:
-                long userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
+                String phone = edtPhoneNumber.getText().toString();
+                String newPsw = edtNewPsw.getText().toString();
+                String verifyCode = edtVerifyCode.getText().toString();
 
+                if (EmptyUtil.isEmpty(phone)) {
+                    ToastUtil.showShort(getString(R.string.please_input_phone));
+                    return;
+                }
+                if (EmptyUtil.isEmpty(newPsw)) {
+                    ToastUtil.showShort(getString(R.string.input_new_psw));
+                    return;
+                }
+                if (EmptyUtil.isEmpty(verifyCode)) {
+                    ToastUtil.showShort(getString(R.string.register_no_code));
+                    return;
+                }
+                UserManager.getInstance().forgetPassword(phone, newPsw, verifyCode);
                 break;
         }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onOkResponseEvent(OkResponseEvent event) {
+        ResponseModel responseModel = event.getResponseModel();
+        if (responseModel == null) {
+            ToastUtil.showShort(getString(R.string.get_net_data_error));
+            return;
+        }
+        ToastUtil.showShort(responseModel.getMsg());
+    }
+
 
     /**
      * 点击按钮后倒计时

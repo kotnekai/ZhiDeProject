@@ -29,5 +29,6 @@ public class CommonUrl {
     public static final String payToCard = BASE_URL + "/Student/User_MainBalanceTurnCardBalance";
 
     public static final String resetLoginPsw = BASE_URL + "/Student/User_ResetPwd";
+    public static final String forgetPassword = BASE_URL + "/Student/User_ForgetResetPwd";
 
 }

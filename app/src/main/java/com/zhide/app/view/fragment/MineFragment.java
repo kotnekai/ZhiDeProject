@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.uuzuche.lib_zxing.activity.CaptureActivity;
@@ -87,6 +88,10 @@ public class MineFragment extends BaseFragment implements TextWatcher {
     @BindView(R.id.tvGiftBalance)
     TextView tvGiftBalance;
 
+    @BindView(R.id.rlCardId)
+    RelativeLayout rlCardId;
+    @BindView(R.id.view9)
+    View view9;
 
 
     private float mainMoney;
@@ -180,7 +185,23 @@ public class MineFragment extends BaseFragment implements TextWatcher {
     }
 
     private void updateUserInfoUI(UserData userData) {
+
         mainMoney = userData.getUSI_MainBalance();
+
+        String IsRefund = userData.getSI_IsRefund();
+        if (IsRefund.equals(getString(R.string.yes_tip))) {
+            tvWithdraw.setVisibility(View.VISIBLE);
+        } else {
+            tvWithdraw.setVisibility(View.GONE);
+        }
+        if (userData.getSI_UseMode().equals("单蓝牙")) {
+            rlCardId.setVisibility(View.GONE);
+            view9.setVisibility(View.GONE);
+        } else {
+            edtWaterCardId.setVisibility(View.GONE);
+            rlCardId.setVisibility(View.VISIBLE);
+            view9.setVisibility(View.VISIBLE);
+        }
         tvTotalMoney.setText(UIUtils.getFloatData(userData.getUSI_TotalBalance()));
         tvBaseBalance.setText(UIUtils.getFloatData(userData.getUSI_MainBalance()));
         tvGiftBalance.setText(UIUtils.getFloatData(userData.getUSI_GiftBalance()));
@@ -191,7 +212,7 @@ public class MineFragment extends BaseFragment implements TextWatcher {
         edtIdCard.setText(userData.getUSI_IDCard());
         edtWaterCardId.setText(userData.getUSI_Card_SN_PIN());
 
-        if(userData.getSI_Code()==null){ // 表示未绑定学校
+        if (userData.getSI_Code() == null) { // 表示未绑定学校
             llSchool.setVisibility(View.GONE);
             tvBindSchool.setVisibility(View.VISIBLE);
 
@@ -202,7 +223,7 @@ public class MineFragment extends BaseFragment implements TextWatcher {
             edtRoomAddress.setHint(getString(R.string.no_bind_school));
             edtStuId.setHint(getString(R.string.no_bind_school));
             edtWaterCardId.setHint(getString(R.string.no_bind_school));
-        }else {
+        } else {
             guidStr = userData.getSI_Code();
             llSchool.setVisibility(View.VISIBLE);
             tvBindSchool.setVisibility(View.GONE);

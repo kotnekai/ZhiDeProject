@@ -36,6 +36,24 @@ public class UserData {
     private Float USI_TotalBalance;//  总余额 （基本余额+赠送余额）
     private String SI_Card_Recharge_Desc;//  卡片充值说明
     private String SI_Recharge_Desc;//  充值说明说明
+    private String SI_IsRefund;//  是否退款 是或否
+    private String SI_UseMode;//  是否退款 是或否
+
+    public String getSI_UseMode() {
+        return SI_UseMode;
+    }
+
+    public void setSI_UseMode(String SI_UseMode) {
+        this.SI_UseMode = SI_UseMode;
+    }
+
+    public String getSI_IsRefund() {
+        return SI_IsRefund;
+    }
+
+    public void setSI_IsRefund(String SI_IsRefund) {
+        this.SI_IsRefund = SI_IsRefund;
+    }
 
     public String getSI_Card_Recharge_Desc() {
         return SI_Card_Recharge_Desc;
