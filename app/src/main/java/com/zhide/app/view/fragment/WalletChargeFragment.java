@@ -117,16 +117,6 @@ public class WalletChargeFragment extends BaseFragment {
 
     }
 
-    private void updateTvState(TextView tv) {
-        for (int i = 0; i < selectTvList.size(); i++) {
-            if (tv == selectTvList.get(i)) {
-                tv.setSelected(true);
-            } else {
-                selectTvList.get(i).setSelected(false);
-            }
-        }
-    }
-
     @Override
     protected void reLoadData() {
 
@@ -212,7 +202,7 @@ public class WalletChargeFragment extends BaseFragment {
                             tvSelect.setText(getString(R.string.charge_other_tip));
                             return;
                         }
-                        tvSelect.setText(remarks);
+                        tvSelect.setText(remarks+"元");
                     }
                 }
             });

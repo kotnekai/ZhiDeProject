@@ -303,19 +303,17 @@
                     android:paddingLeft="10dp"
                     android:text="性别" />
 
-                <EditText
-                    android:id="@+id/edtGender"
+                <Spinner
+                    android:id="@+id/spGender"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="15dp"
-                    android:background="@color/white"
-                    android:paddingRight="10dp"
-                    android:gravity="center|right"
-                    android:hint="请输入性别"
-                    android:minWidth="100dp"
-                    android:text=""
+                    android:background="@null"
+                    android:spinnerMode="dropdown"
+                    android:gravity="right"
+                    android:text="男"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/com_text_size_14sp" />
 

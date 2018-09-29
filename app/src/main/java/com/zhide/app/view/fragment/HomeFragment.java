@@ -176,7 +176,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             TextView tvNewsDate = newsView.findViewById(R.id.tvNewsDate);
             TextView tvNewsDesc = newsView.findViewById(R.id.tvNewsDesc);
             tvNewsTitle.setText(data.get(i).getNI_Title());
-            tvNewsDate.setText(data.get(i).getNI_UpdateTime());
+
+            String ni_updateTime = data.get(i).getNI_UpdateTime();
+            String[] split = ni_updateTime.split(" ");
+            tvNewsDate.setText(split[0]);
             tvNewsDesc.setText(data.get(i).getNI_Summary());
             final String ni_url = data.get(i).getNI_Url();
             if (ni_url != null) {

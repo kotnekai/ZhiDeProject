@@ -48,7 +48,9 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         final NewsModel.NewsData newsData = mDatas.get(getRealPosition(holder));
         holder.tvNewsTitle.setText(newsData.getNI_Title());
-        holder.tvNewsDate.setText(newsData.getNI_UpdateTime());
+        String ni_updateTime = newsData.getNI_UpdateTime();
+        String[] split = ni_updateTime.split(" ");
+        holder.tvNewsDate.setText(split[0]);
         holder.tvNewsDesc.setText(newsData.getNI_Summary());
         holder.llItemLayout.setOnClickListener(new View.OnClickListener() {
             @Override
