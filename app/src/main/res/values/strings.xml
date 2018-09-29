@@ -181,6 +181,7 @@
     <string name="shower_scan">扫一扫</string>
     <string name="scanner_qr_title">二维码扫描</string>
     <string name="complete_info_tip">请先绑定学校及完善个人信息</string>
+    <string name="select_amount">请选择充值金额</string>
 
 
 </resources>

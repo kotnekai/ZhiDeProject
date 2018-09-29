@@ -38,6 +38,15 @@ public class UserData {
     private String SI_Recharge_Desc;//  充值说明说明
     private String SI_IsRefund;//  是否退款 是或否
     private String SI_UseMode;//  是否退款 是或否
+    private String SI_RechargeMoney;//  允许充值的金额
+
+    public String getSI_RechargeMoney() {
+        return SI_RechargeMoney;
+    }
+
+    public void setSI_RechargeMoney(String SI_RechargeMoney) {
+        this.SI_RechargeMoney = SI_RechargeMoney;
+    }
 
     public String getSI_UseMode() {
         return SI_UseMode;
