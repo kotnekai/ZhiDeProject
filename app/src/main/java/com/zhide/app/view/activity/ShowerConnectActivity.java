@@ -876,9 +876,9 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
         downRateInfo.ConsumeDT = DateUtils.getTimeID();
 
         //个人账号使用次数
-        downRateInfo.UseCount = 100;
+        downRateInfo.UseCount = 1;
         //预扣金额
-        downRateInfo.PerMoney = 5000;
+        downRateInfo.PerMoney = PerMoney;
         //1标准水表2阶梯收费
         downRateInfo.ParaTypeID = 1;
         //费率1
