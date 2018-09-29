@@ -24,6 +24,7 @@ import com.zhide.app.model.ResponseModel;
 import com.zhide.app.model.SchoolInfoModel;
 import com.zhide.app.model.UserData;
 import com.zhide.app.utils.DialogUtils;
+import com.zhide.app.utils.EmptyUtil;
 import com.zhide.app.utils.PreferencesUtils;
 import com.zhide.app.utils.ToastUtil;
 import com.zhide.app.utils.UIUtils;
@@ -95,6 +96,7 @@ public class MineFragment extends BaseFragment implements TextWatcher {
 
     private float mainMoney;
     private long userId;
+    private UserData userData;
 
     @Override
     protected void initData() {
@@ -176,17 +178,16 @@ public class MineFragment extends BaseFragment implements TextWatcher {
         if (event.getUpdatePage() != 3) {
             return;
         }
-        UserData userData = event.getUserData();
+        userData = event.getUserData();
         if (userData == null) {
             return;
         }
-        updateUserInfoUI(userData);
+        updateUserInfoUI();
     }
 
-    private void updateUserInfoUI(UserData userData) {
+    private void updateUserInfoUI() {
 
         mainMoney = userData.getUSI_MainBalance();
-
         String IsRefund = userData.getSI_IsRefund();
         if (IsRefund.equals(getString(R.string.yes_tip))) {
             tvWithdraw.setVisibility(View.VISIBLE);
@@ -262,9 +263,26 @@ public class MineFragment extends BaseFragment implements TextWatcher {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tvRecharge:
+                if (userData == null) {
+                    return;
+                }
+                boolean completeInfo1 = EmptyUtil.isCompleteInfo(userData);
+                completeInfo1 = true;
+                if (!completeInfo1) {
+                    ToastUtil.showShort(getString(R.string.complete_info_tip));
+                    return;
+                }
                 startActivity(RechargeActivity.makeIntent(getActivity()));
                 break;
             case R.id.tvWithdraw:
+                if (userData == null) {
+                    return;
+                }
+                boolean completeInfo2 = EmptyUtil.isCompleteInfo(userData);
+                if (!completeInfo2) {
+                    ToastUtil.showShort(getString(R.string.complete_info_tip));
+                    return;
+                }
                 startActivity(WithdrawActivity.makeIntent(getActivity(), mainMoney));
                 break;
             case R.id.tvMyBill:
@@ -295,7 +313,7 @@ public class MineFragment extends BaseFragment implements TextWatcher {
                 });
                 break;
             case R.id.tvSaveInfo:
-                 submitPersonInfo();
+                submitPersonInfo();
                 break;
             case R.id.tvBindSchool:
                 Intent intent = new Intent(getActivity(), ScannerQrActivity.class);
@@ -324,7 +342,7 @@ public class MineFragment extends BaseFragment implements TextWatcher {
          * 处理二维码扫描结果
          */
         String result = bundle.getString(QR_DATA);
-        Log.d("admin", "onActivityResult: result="+result);
+        Log.d("admin", "onActivityResult: result=" + result);
         if (result != null) {
             guidStr = result;
             ToastUtil.showShort(result);
