@@ -80,8 +80,6 @@ public  class CaptureActivity extends AppCompatActivity implements OnScannerComp
         });
         //隐藏设备列表
          initdata();
-
-
         setAdmin();
     }
     private void setAdmin() {
@@ -119,7 +117,7 @@ public  class CaptureActivity extends AppCompatActivity implements OnScannerComp
         int laserMode = 0;
         int scanMode = 0;
 
-        mScannerView.setMediaResId(R.raw.beep);//设置扫描成功的声音
+        //mScannerView.setMediaResId(R.raw.beep);//设置扫描成功的声音
 
        // mScannerView.setLaserFrameBoundColor(R.color.base_color);
         mScannerView.setLaserFrameSize(240,240);
@@ -231,18 +229,11 @@ public  class CaptureActivity extends AppCompatActivity implements OnScannerComp
         }
     }
 
-
-
     @Override
     public void onBackPressed() {
         // super.onBackPressed();
         finish();
     }
-
-
-
-
-
 
     private void showErrorQR(String string) {
         Toast.makeText(CaptureActivity.this, string,Toast.LENGTH_SHORT);

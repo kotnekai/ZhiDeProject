@@ -16,7 +16,6 @@ import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
-import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 import com.zhide.app.R;
 import com.zhide.app.okhttp.MyOkhttpUtils;
 import com.zhide.app.utils.PickViewUtil;
@@ -73,7 +72,7 @@ public class ComApplication extends Application {
         Log.d("admin", "getMsgApi: msgApi1="+msgApi);
         ApplicationHolder.getInstance().setMsgApi(msgApi);
         PickViewUtil.initTimePickOptions(this);
-//        ZXingLibrary.initDisplayOpinion(this);
+      // ZXingLibrary.initDisplayOpinion(this);
 
         mzjApplication = this;
     }

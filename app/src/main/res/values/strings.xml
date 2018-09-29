@@ -179,6 +179,7 @@
     <string name="loading">加载中...</string>
 
     <string name="shower_scan">扫一扫</string>
+    <string name="scanner_qr_title">二维码扫描</string>
 
 
 </resources>

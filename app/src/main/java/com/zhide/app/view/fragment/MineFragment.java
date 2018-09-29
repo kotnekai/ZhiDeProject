@@ -11,8 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.uuzuche.lib_zxing.activity.CaptureActivity;
-import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.zhide.app.R;
 import com.zhide.app.common.CommonParams;
 import com.zhide.app.eventBus.MineAccountEvent;
@@ -34,6 +32,7 @@ import com.zhide.app.view.activity.LoginActivity;
 import com.zhide.app.view.activity.MyBillActivity;
 import com.zhide.app.view.activity.QRCodeActivity;
 import com.zhide.app.view.activity.RechargeActivity;
+import com.zhide.app.view.activity.ScannerQrActivity;
 import com.zhide.app.view.activity.WithdrawActivity;
 import com.zhide.app.view.base.BaseFragment;
 
@@ -296,10 +295,10 @@ public class MineFragment extends BaseFragment implements TextWatcher {
                 });
                 break;
             case R.id.tvSaveInfo:
-                submitPersonInfo();
+                 submitPersonInfo();
                 break;
             case R.id.tvBindSchool:
-                Intent intent = new Intent(getActivity(), CaptureActivity.class);
+                Intent intent = new Intent(getActivity(), ScannerQrActivity.class);
                 startActivityForResult(intent, REQUEST_CODE);
                 break;
         }
@@ -307,40 +306,37 @@ public class MineFragment extends BaseFragment implements TextWatcher {
 
     private String guidStr;
     private final int REQUEST_CODE = 101;
+    public static final String QR_DATA = "data";
+    public static final int RESULT_CODE = 200;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d("admin", "onActivityResult: data=" + data);
+        if ((requestCode != REQUEST_CODE && resultCode != RESULT_CODE) || data == null) {
+            return;
+        }
+        Bundle bundle = data.getExtras();
+        if (bundle == null) {
+            return;
+        }
         /**
          * 处理二维码扫描结果
          */
-        if (requestCode == REQUEST_CODE) {
-            //处理扫描结果（在界面上显示）
-            if (null != data) {
-                Bundle bundle = data.getExtras();
-                if (bundle == null) {
-                    return;
-                }
-                if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
-                    String result = bundle.getString(CodeUtils.RESULT_STRING);
-                    ToastUtil.showShort(UIUtils.getValueString(R.string.scan_code));
+        String result = bundle.getString(QR_DATA);
+        Log.d("admin", "onActivityResult: result="+result);
+        if (result != null) {
+            guidStr = result;
+            ToastUtil.showShort(result);
+            tvBindSchool.setVisibility(View.GONE);
+            llSchool.setVisibility(View.VISIBLE);
+            UserManager.getInstance().getUserSchoolInfo(guidStr);
+            submitPersonInfo();
+        } else {
+            tvBindSchool.setVisibility(View.VISIBLE);
+            llSchool.setVisibility(View.GONE);
+            ToastUtil.showShort(UIUtils.getValueString(R.string.scan_code));
 
-                    if (result != null) {
-                        guidStr = result;
-                        ToastUtil.showShort(result);
-                        tvBindSchool.setVisibility(View.GONE);
-                        llSchool.setVisibility(View.VISIBLE);
-                        UserManager.getInstance().getUserSchoolInfo(guidStr);
-                        submitPersonInfo();
-                    } else {
-                        tvBindSchool.setVisibility(View.VISIBLE);
-                        llSchool.setVisibility(View.GONE);
-                    }
-                } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
-                    ToastUtil.showShort(UIUtils.getValueString(R.string.scan_code));
-                }
-            }
         }
     }
 

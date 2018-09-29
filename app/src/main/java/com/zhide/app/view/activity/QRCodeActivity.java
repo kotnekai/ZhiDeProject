@@ -8,8 +8,8 @@ import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.klcxkj.jxing.encode.QREncode;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.zhide.app.R;
 import com.zhide.app.view.base.BaseActivity;
 
@@ -22,7 +22,7 @@ public class QRCodeActivity extends BaseActivity {
     @BindView(R.id.tvSchoolName)
     TextView tvSchoolName;
 
-    public static Intent makeIntent(Context context,String gUid, String schoolName) {
+    public static Intent makeIntent(Context context, String gUid, String schoolName) {
         Intent intent = new Intent(context, QRCodeActivity.class);
         intent.putExtra("schoolName", schoolName);
         intent.putExtra("gUid", gUid);
@@ -42,7 +42,7 @@ public class QRCodeActivity extends BaseActivity {
 
     @Override
     protected void initHeader() {
-      setHeaderTitle(getString(R.string.school_qr_code));
+        setHeaderTitle(getString(R.string.school_qr_code));
     }
 
     @Override
@@ -58,7 +58,8 @@ public class QRCodeActivity extends BaseActivity {
         if (TextUtils.isEmpty(gUid)) {
             return;
         }
-        Bitmap image = CodeUtils.createImage(gUid, 400, 400, null);
-        ivQrCode.setImageBitmap(image);
+        QREncode.Builder builder = new QREncode.Builder(this);
+        Bitmap bitmap = builder.setContents(gUid).build().encodeAsBitmap();
+         ivQrCode.setImageBitmap(bitmap);
     }
 }

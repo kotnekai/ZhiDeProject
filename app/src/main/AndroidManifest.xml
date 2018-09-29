@@ -139,6 +139,9 @@
         <activity
             android:name=".view.activity.CaptureActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.ScannerQrActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
