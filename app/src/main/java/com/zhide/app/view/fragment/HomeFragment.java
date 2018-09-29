@@ -20,7 +20,9 @@ import com.zhide.app.logic.UserManager;
 import com.zhide.app.model.NewsModel;
 import com.zhide.app.model.UserData;
 import com.zhide.app.model.UserSchoolDataModel;
+import com.zhide.app.utils.EmptyUtil;
 import com.zhide.app.utils.PreferencesUtils;
+import com.zhide.app.utils.ToastUtil;
 import com.zhide.app.utils.UIUtils;
 import com.zhide.app.view.activity.NewsListActivity;
 import com.zhide.app.view.activity.RechargeActivity;
@@ -55,6 +57,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     @BindView(R.id.tvCanUserMoney)
     TextView tvCanUserMoney;
     long userId;
+    private UserData userData;
 
     @Override
     protected int setFrgContainView() {
@@ -75,7 +78,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         }
 
         NewsModel newsModel = event.getNewsModel();
-        Log.d("admin", "onNewModelEvent: newsModel="+newsModel);
+        Log.d("admin", "onNewModelEvent: newsModel=" + newsModel);
 
         if (newsModel == null) {
             return;
@@ -139,11 +142,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         if (event.getUpdatePage() != 1) {
             return;
         }
-        UserData userData = event.getUserData();
+        userData = event.getUserData();
         if (userData == null) {
             return;
         }
-        updateInfoUI(userData);
+        updateInfoUI();
     }
 
     @Override
@@ -153,7 +156,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         UserManager.getInstance().getUserInfoById(userId, CommonParams.PAGE_HOME_FRAG_TYPE);
     }
 
-    private void updateInfoUI(UserData userData) {
+    private void updateInfoUI() {
         Float usi_totalBalance = userData.getUSI_TotalBalance();
         tvCanUserMoney.setText(UIUtils.getFloatData(usi_totalBalance));
     }
@@ -173,7 +176,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             TextView tvNewsDate = newsView.findViewById(R.id.tvNewsDate);
             TextView tvNewsDesc = newsView.findViewById(R.id.tvNewsDesc);
             tvNewsTitle.setText(data.get(i).getNI_Title());
-            tvNewsDate.setText(data.get(i).getNI_UpdateTime());
+
+            String ni_updateTime = data.get(i).getNI_UpdateTime();
+            String[] split = ni_updateTime.split(" ");
+            tvNewsDate.setText(split[0]);
             tvNewsDesc.setText(data.get(i).getNI_Summary());
             final String ni_url = data.get(i).getNI_Url();
             if (ni_url != null) {
@@ -203,9 +209,23 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.llRecharge:
+                if (userData == null) {
+                    return;
+                }
+                if (!EmptyUtil.isCompleteInfo(userData)) {
+                    ToastUtil.showShort(getString(R.string.complete_info_tip));
+                    return;
+                }
                 startActivity(RechargeActivity.makeIntent(getActivity()));
                 break;
             case R.id.llShower:
+                if (userData == null) {
+                    return;
+                }
+                if (!EmptyUtil.isCompleteInfo(userData)) {
+                    ToastUtil.showShort(getString(R.string.complete_info_tip));
+                    return;
+                }
                 UserManager.getInstance().getUserSchoolInfoById(userId, 1);
                 break;
             case R.id.tvNewsMore:

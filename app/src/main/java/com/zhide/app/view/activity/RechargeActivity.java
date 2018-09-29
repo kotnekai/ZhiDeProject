@@ -122,14 +122,21 @@ public class RechargeActivity extends BaseActivity {
         if (userData == null) {
             return;
         }
+
         if (!userData.getSI_UseMode().equals("单蓝牙")) {
             fragmentList.add(new WalletChargeFragment());
             tvCardTab.setVisibility(View.GONE);
+            ivTab2.setVisibility(View.GONE);
+            tvWalletTab.setEnabled(false);
         } else {
             tvCardTab.setVisibility(View.VISIBLE);
             fragmentList.add(new WalletChargeFragment());
             fragmentList.add(new CardChargeFragment());
+            ivTab2.setVisibility(View.INVISIBLE);
+            tvWalletTab.setEnabled(true);
+
         }
+
         adapter.notifyDataSetChanged();
     }
 

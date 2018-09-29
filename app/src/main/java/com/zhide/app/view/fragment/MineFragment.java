@@ -6,9 +6,12 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.zhide.app.R;
@@ -24,6 +27,7 @@ import com.zhide.app.model.ResponseModel;
 import com.zhide.app.model.SchoolInfoModel;
 import com.zhide.app.model.UserData;
 import com.zhide.app.utils.DialogUtils;
+import com.zhide.app.utils.EmptyUtil;
 import com.zhide.app.utils.PreferencesUtils;
 import com.zhide.app.utils.ToastUtil;
 import com.zhide.app.utils.UIUtils;
@@ -62,8 +66,8 @@ public class MineFragment extends BaseFragment implements TextWatcher {
     LinearLayout llSchool;
     @BindView(R.id.tvSchoolName)
     TextView tvSchoolName;
-    @BindView(R.id.edtGender)
-    EditText edtGender;
+    @BindView(R.id.spGender)
+    Spinner spGender;
     @BindView(R.id.tvBindSchool)
     TextView tvBindSchool;
 
@@ -95,6 +99,8 @@ public class MineFragment extends BaseFragment implements TextWatcher {
 
     private float mainMoney;
     private long userId;
+    private UserData userData;
+    private String selectSex;
 
     @Override
     protected void initData() {
@@ -119,12 +125,28 @@ public class MineFragment extends BaseFragment implements TextWatcher {
         tvSaveInfo.setSelected(false);
         tvSaveInfo.setEnabled(false);
 
+        final String[] arr={"男","女"};
+        ArrayAdapter<String> adapter=new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_multiple_choice,arr);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spGender.setAdapter(adapter);
+        spGender.setSelection(0);
         edtUserName.addTextChangedListener(this);
         tvSchoolName.addTextChangedListener(this);
-        edtGender.addTextChangedListener(this);
+
         edtStuId.addTextChangedListener(this);
         edtIdCard.addTextChangedListener(this);
         edtWaterCardId.addTextChangedListener(this);
+        spGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectSex = arr[position];
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     /**
@@ -176,17 +198,16 @@ public class MineFragment extends BaseFragment implements TextWatcher {
         if (event.getUpdatePage() != 3) {
             return;
         }
-        UserData userData = event.getUserData();
+        userData = event.getUserData();
         if (userData == null) {
             return;
         }
-        updateUserInfoUI(userData);
+        updateUserInfoUI();
     }
 
-    private void updateUserInfoUI(UserData userData) {
+    private void updateUserInfoUI() {
 
         mainMoney = userData.getUSI_MainBalance();
-
         String IsRefund = userData.getSI_IsRefund();
         if (IsRefund.equals(getString(R.string.yes_tip))) {
             tvWithdraw.setVisibility(View.VISIBLE);
@@ -206,7 +227,13 @@ public class MineFragment extends BaseFragment implements TextWatcher {
         tvGiftBalance.setText(UIUtils.getFloatData(userData.getUSI_GiftBalance()));
         edtUserName.setText(userData.getUSI_TrueName());
         edtRoomAddress.setText(userData.getUSI_SchoolRoomNo());
-        edtGender.setText(userData.getUSI_Sex());
+
+        if(userData.getUSI_Sex().equals("男")){
+            spGender.setSelection(0);
+        }else {
+            spGender.setSelection(1);
+        }
+
         edtStuId.setText(userData.getUSI_SchoolNo());
         edtIdCard.setText(userData.getUSI_IDCard());
         edtWaterCardId.setText(userData.getUSI_Card_SN_PIN());
@@ -262,9 +289,25 @@ public class MineFragment extends BaseFragment implements TextWatcher {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tvRecharge:
+                if (userData == null) {
+                    return;
+                }
+                boolean completeInfo1 = EmptyUtil.isCompleteInfo(userData);
+                if (!completeInfo1) {
+                    ToastUtil.showShort(getString(R.string.complete_info_tip));
+                    return;
+                }
                 startActivity(RechargeActivity.makeIntent(getActivity()));
                 break;
             case R.id.tvWithdraw:
+                if (userData == null) {
+                    return;
+                }
+                boolean completeInfo2 = EmptyUtil.isCompleteInfo(userData);
+                if (!completeInfo2) {
+                    ToastUtil.showShort(getString(R.string.complete_info_tip));
+                    return;
+                }
                 startActivity(WithdrawActivity.makeIntent(getActivity(), mainMoney));
                 break;
             case R.id.tvMyBill:
@@ -295,12 +338,13 @@ public class MineFragment extends BaseFragment implements TextWatcher {
                 });
                 break;
             case R.id.tvSaveInfo:
-                 submitPersonInfo();
+                submitPersonInfo();
                 break;
             case R.id.tvBindSchool:
                 Intent intent = new Intent(getActivity(), ScannerQrActivity.class);
                 startActivityForResult(intent, REQUEST_CODE);
                 break;
+
         }
     }
 
@@ -324,7 +368,7 @@ public class MineFragment extends BaseFragment implements TextWatcher {
          * 处理二维码扫描结果
          */
         String result = bundle.getString(QR_DATA);
-        Log.d("admin", "onActivityResult: result="+result);
+        Log.d("admin", "onActivityResult: result=" + result);
         if (result != null) {
             guidStr = result;
             ToastUtil.showShort(result);
@@ -347,8 +391,9 @@ public class MineFragment extends BaseFragment implements TextWatcher {
         userData.setUSI_Id(userId);
         userData.setUSI_TrueName(edtUserName.getText().toString());
         userData.setUSI_SchoolNo(edtStuId.getText().toString());
+
         // 房间号
-        userData.setUSI_Sex(edtGender.getText().toString());
+        userData.setUSI_Sex(selectSex);
         userData.setUSI_IDCard(edtIdCard.getText().toString());
         userData.setUSI_Card_SN_PIN(edtWaterCardId.getText().toString());
         if (guidStr != null) {

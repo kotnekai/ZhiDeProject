@@ -1,10 +1,12 @@
 package com.zhide.app.view.base;
 
+import android.Manifest;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +26,14 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import me.weyye.hipermission.HiPermission;
+import me.weyye.hipermission.PermissionCallback;
+import me.weyye.hipermission.PermissionItem;
 
 public abstract class BaseActivity extends AppCompatActivity implements DrawerLayout.DrawerListener {
 
@@ -74,12 +82,64 @@ public abstract class BaseActivity extends AppCompatActivity implements DrawerLa
         setContentView(getVew());
         // 全部绑定ButterKnife
         ButterKnife.bind(this);
+        checkPermission();
         // 全局注册EventBus ，，EventBus貌似不能重复注册，这里判断一下
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
         updateBaseData();
 
+    }
+    /**
+     * 初始化需要申请的权限
+     *
+     * @return
+     */
+    private List<PermissionItem> initPermissionList() {
+        List<PermissionItem> permissionItems = new ArrayList<>();
+        permissionItems.add(new PermissionItem(Manifest.permission.WRITE_EXTERNAL_STORAGE, "存储权限", R.drawable.permission_ic_storage));
+        permissionItems.add(new PermissionItem(Manifest.permission.ACCESS_FINE_LOCATION, "蓝牙扫描", R.drawable.permission_ic_sensors));
+        permissionItems.add(new PermissionItem(Manifest.permission.ACCESS_COARSE_LOCATION, "蓝牙定位", R.drawable.permission_ic_location));
+        permissionItems.add(new PermissionItem(Manifest.permission.CAMERA, "相机拍照", R.drawable.permission_ic_camera));
+
+        return permissionItems;
+    }
+    /**
+     * 安卓6.0动态检查权限
+     *
+     * @param
+     */
+    private void checkPermission() {
+        List<PermissionItem> permissionItems = initPermissionList();
+        if (permissionItems == null || permissionItems.size() == 0) {
+            return;
+        }
+        HiPermission.create(this)
+                .title("权限申请")
+                .permissions(permissionItems)
+                .msg("权限申请")
+                .animStyle(R.style.PermissionAnimScale)
+                .style(R.style.PermissionDefaultBlueStyle)
+                .checkMutiPermission(new PermissionCallback() {
+                    @Override
+                    public void onClose() {
+                        Log.d("xyc", "onClose: 1");
+                    }
+
+                    @Override
+                    public void onFinish() {
+                    }
+
+                    @Override
+                    public void onDeny(String permission, int position) {
+                        Log.d("xyc", "onDeny:1 ");
+                    }
+
+                    @Override
+                    public void onGuarantee(String permission, int position) {
+                        Log.d("xyc", "onGuarantee:1 ");
+                    }
+                });
     }
 
     /**

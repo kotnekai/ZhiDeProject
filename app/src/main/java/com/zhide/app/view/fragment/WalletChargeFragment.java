@@ -1,6 +1,7 @@
 package com.zhide.app.view.fragment;
 
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -11,12 +12,14 @@ import com.zhide.app.common.ApplicationHolder;
 import com.zhide.app.common.CommonParams;
 import com.zhide.app.delegate.IConfirmClickListener;
 import com.zhide.app.delegate.IGetAliPayResult;
+import com.zhide.app.delegate.ISelectClickListener;
 import com.zhide.app.eventBus.PayOrderEvent;
 import com.zhide.app.eventBus.PayResultEvent;
 import com.zhide.app.eventBus.UserInfoEvent;
 import com.zhide.app.logic.PayManager;
 import com.zhide.app.logic.UserManager;
 import com.zhide.app.model.AliPayParamModel;
+import com.zhide.app.model.SelectModel;
 import com.zhide.app.model.UserData;
 import com.zhide.app.model.WXPayParamModel;
 import com.zhide.app.utils.ClientInstallUtils;
@@ -26,6 +29,8 @@ import com.zhide.app.utils.PreferencesUtils;
 import com.zhide.app.utils.ResourceUtils;
 import com.zhide.app.utils.ToastUtil;
 import com.zhide.app.view.base.BaseFragment;
+import com.zhide.app.view.views.FlowLayout;
+import com.zhide.app.view.views.SelectItemView;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -47,18 +52,7 @@ public class WalletChargeFragment extends BaseFragment {
     TextView tvCashBalance;
     @BindView(R.id.tvGiftBalance)
     TextView tvGiftBalance;
-    @BindView(R.id.tvCharge30)
-    TextView tvCharge30;
-    @BindView(R.id.tvCharge40)
-    TextView tvCharge40;
-    @BindView(R.id.tvCharge50)
-    TextView tvCharge50;
-    @BindView(R.id.tvCharge80)
-    TextView tvCharge80;
-    @BindView(R.id.tvCharge100)
-    TextView tvCharge100;
-    @BindView(R.id.tvChargeOther)
-    TextView tvChargeOther;
+
     @BindView(R.id.tvIntroActContent)
     TextView tvIntroActContent;
     @BindView(R.id.tvIntroContent)
@@ -68,8 +62,12 @@ public class WalletChargeFragment extends BaseFragment {
 
     @BindView(R.id.cbSelectWxPay)
     CheckBox cbSelectWxPay;
+
     @BindView(R.id.cbSelectAliPay)
     CheckBox cbSelectAliPay;
+
+    @BindView(R.id.flSelectAmount)
+    FlowLayout flSelectAmount;
 
     private IGetAliPayResult alipayResult;
     private List<TextView> selectTvList;
@@ -101,13 +99,7 @@ public class WalletChargeFragment extends BaseFragment {
     @Override
     protected void initData() {
         selectTvList = new ArrayList<>();
-        selectTvList.add(tvCharge30);
-        selectTvList.add(tvCharge40);
-        selectTvList.add(tvCharge50);
-        selectTvList.add(tvCharge80);
-        selectTvList.add(tvCharge100);
-        selectTvList.add(tvChargeOther);
-        updateTvState(tvCharge30);
+
         userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
         UserManager.getInstance().getUserInfoById(userId, CommonParams.PAGE_WALLET_FRAG_TYPE);
 
@@ -123,16 +115,6 @@ public class WalletChargeFragment extends BaseFragment {
             }
         };
 
-    }
-
-    private void updateTvState(TextView tv) {
-        for (int i = 0; i < selectTvList.size(); i++) {
-            if (tv == selectTvList.get(i)) {
-                tv.setSelected(true);
-            } else {
-                selectTvList.get(i).setSelected(false);
-            }
-        }
     }
 
     @Override
@@ -175,59 +157,97 @@ public class WalletChargeFragment extends BaseFragment {
         tvCashBalance.setText(String.valueOf(userData.getUSI_MainBalance()) + "元");
         tvGiftBalance.setText(String.valueOf(userData.getUSI_GiftBalance()) + "元");
         tvIntroActContent.setText(userData.getSI_Recharge_Desc());
+        userData.setSI_RechargeMoney("30|50|80|100|其他");
+
+        String rechargeMoney = userData.getSI_RechargeMoney();
+        //SI_RechargeMoney":"30|50|80|100",
+        if (EmptyUtil.isEmpty(rechargeMoney)) {
+            return;
+        }
+        String[] splitData = rechargeMoney.split("\\|");
+        for (int i = 0; i < splitData.length; i++) {
+            SelectModel selectModel = new SelectModel();
+            selectModel.setName(splitData[i]);
+            selectModel.setId(i);
+            SelectItemView selectItemView = (SelectItemView) LayoutInflater.from(getActivity()).inflate(R.layout.select_item_view, null);
+            if (i == 0) {
+                selectModel.setCheck(true);
+            }
+            selectItemView.setSelectModel(selectModel);
+            flSelectAmount.addView(selectItemView);
+            selectItemView.setOnSelectItemListener(new ISelectClickListener() {
+                @Override
+                public void selectIt(TextView view, String selectName, long selectId) {
+                    ToastUtil.showShort(selectName);
+                    updateState(flSelectAmount, selectId);
+                    selectClick(selectName,view);
+                }
+            });
+        }
 
     }
 
+    private void selectClick(String selectName, final TextView tvSelect) {
+        if(selectName.equals("其他")){
+            DialogUtils.showTipsDialog(getActivity(), getString(R.string.input_other_tip), getString(R.string.input_other_money_tip), true, new IConfirmClickListener() {
+                @Override
+                public void confirmClick(String remarks) {
+                    if (EmptyUtil.isEmpty(remarks)) {
+                        tvSelect.setText(getString(R.string.charge_other_tip));
+                        selectAmount = 0;
+                    } else {
+                        selectAmount = Float.parseFloat(remarks);
+                        if (selectAmount < 100 || selectAmount > 300) {
+                            ToastUtil.showShort(getString(R.string.input_other_tip));
+                            tvSelect.setText(getString(R.string.charge_other_tip));
+                            return;
+                        }
+                        tvSelect.setText(remarks+"元");
+                    }
+                }
+            });
+        }else {
+            selectAmount = Float.parseFloat(selectName);
+        }
+    }
+
+    /**
+     * 点击之后更新所有按钮的状态
+     *
+     * @param flowLayout
+     * @param selectId
+     */
+    public void updateState(FlowLayout flowLayout, long selectId) {
+        if (flowLayout == null || flowLayout.getChildCount() == 0) {
+            return;
+        }
+        for (int i = 0; i < flowLayout.getChildCount(); i++) {
+            SelectItemView selectItemView = (SelectItemView) flowLayout.getChildAt(i);
+            SelectModel selectModel = selectItemView.getSelectModel();
+            if (selectModel.getId() == selectId) {
+                selectItemView.setSelected(true);
+                selectModel.setCheck(true);
+            } else {
+                selectItemView.setSelected(false);
+                selectModel.setCheck(false);
+            }
+            selectItemView.setSelectModel(selectModel);
+        }
+    }
+
+
     public static final int aliPayType = 1;
     public static final int wxPayType = 2;
-    public float selectAmount = 30;
+    public float selectAmount = 0;
 
-    @OnClick({R.id.tvCharge30, R.id.tvCharge40, R.id.tvCharge50, R.id.tvCharge80, R.id.tvCharge100, R.id.tvChargeOther, R.id.tvReCharge})
+    @OnClick({R.id.tvReCharge})
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tvCharge30:
-                updateTvState(tvCharge30);
-                selectAmount = 30;
-                break;
-            case R.id.tvCharge40:
-                updateTvState(tvCharge40);
-                selectAmount = 40;
-                break;
-            case R.id.tvCharge50:
-                updateTvState(tvCharge50);
-                selectAmount = 50;
-
-                break;
-            case R.id.tvCharge80:
-                updateTvState(tvCharge80);
-                selectAmount = 80;
-
-                break;
-            case R.id.tvCharge100:
-                updateTvState(tvCharge100);
-                selectAmount = 100;
-
-                break;
-            case R.id.tvChargeOther:
-                updateTvState(tvChargeOther);
-                DialogUtils.showTipsDialog(getActivity(),getString(R.string.input_other_tip),getString(R.string.input_other_money_tip), true, new IConfirmClickListener() {
-                    @Override
-                    public void confirmClick(String remarks) {
-                        if (EmptyUtil.isEmpty(remarks)) {
-                            tvChargeOther.setText(getString(R.string.charge_other_tip));
-                        } else {
-                            selectAmount = Float.parseFloat(remarks);
-                            if(selectAmount<100||selectAmount>300){
-                                ToastUtil.showShort(getString(R.string.input_other_tip));
-                                tvChargeOther.setText(getString(R.string.charge_other_tip));
-                                return;
-                            }
-                            tvChargeOther.setText(remarks + "元");
-                        }
-                    }
-                });
-                break;
             case R.id.tvReCharge:
+                if(selectAmount==0){
+                    ToastUtil.showShort(getString(R.string.select_amount));
+                    return;
+                }
                 if (!cbSelectWxPay.isChecked() && !cbSelectAliPay.isChecked()) {
                     ToastUtil.showShort(ResourceUtils.getInstance().getString(R.string.select_pay_type));
                     return;
@@ -240,7 +260,7 @@ public class WalletChargeFragment extends BaseFragment {
                         ToastUtil.showShort(getString(R.string.please_install_aliPay));
                         return;
                     }
-                    PayManager.getInstance().getAliPayParams(selectAmount,userId);
+                    PayManager.getInstance().getAliPayParams(selectAmount, userId);
                 }
                 break;
         }
