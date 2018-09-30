@@ -5,13 +5,12 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.zhide.app.R;
@@ -39,14 +38,18 @@ import com.zhide.app.view.activity.RechargeActivity;
 import com.zhide.app.view.activity.ScannerQrActivity;
 import com.zhide.app.view.activity.WithdrawActivity;
 import com.zhide.app.view.base.BaseFragment;
+import com.zhide.app.view.views.SpinerPopWindow;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class MineFragment extends BaseFragment implements TextWatcher {
+public class MineFragment extends BaseFragment implements TextWatcher, AdapterView.OnItemClickListener {
 
     @BindView(R.id.tvRecharge)
     TextView tvRecharge;
@@ -66,8 +69,8 @@ public class MineFragment extends BaseFragment implements TextWatcher {
     LinearLayout llSchool;
     @BindView(R.id.tvSchoolName)
     TextView tvSchoolName;
-    @BindView(R.id.spGender)
-    Spinner spGender;
+    @BindView(R.id.tvGender)
+    TextView tvGender;
     @BindView(R.id.tvBindSchool)
     TextView tvBindSchool;
 
@@ -101,6 +104,7 @@ public class MineFragment extends BaseFragment implements TextWatcher {
     private long userId;
     private UserData userData;
     private String selectSex;
+    private SpinerPopWindow mSpinerPopWindow;
 
     @Override
     protected void initData() {
@@ -120,33 +124,33 @@ public class MineFragment extends BaseFragment implements TextWatcher {
 
     }
 
+    private List<String> genderList;
+
     @Override
     protected void initView() {
         tvSaveInfo.setSelected(false);
         tvSaveInfo.setEnabled(false);
 
-        final String[] arr={"男","女"};
-        ArrayAdapter<String> adapter=new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_multiple_choice,arr);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spGender.setAdapter(adapter);
-        spGender.setSelection(0);
         edtUserName.addTextChangedListener(this);
         tvSchoolName.addTextChangedListener(this);
 
         edtStuId.addTextChangedListener(this);
         edtIdCard.addTextChangedListener(this);
         edtWaterCardId.addTextChangedListener(this);
-        spGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectSex = arr[position];
+        genderList = new ArrayList<>();
+        genderList.add("男");
+        genderList.add("女");
+        if (mSpinerPopWindow == null) {
+            mSpinerPopWindow = new SpinerPopWindow<>(getActivity(), genderList, this);
+        }
+    }
 
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (mSpinerPopWindow != null && mSpinerPopWindow.isShowing()) {
+            mSpinerPopWindow.dismiss();
+        }
+       tvGender.setText(genderList.get(position));
     }
 
     /**
@@ -228,12 +232,7 @@ public class MineFragment extends BaseFragment implements TextWatcher {
         edtUserName.setText(userData.getUSI_TrueName());
         edtRoomAddress.setText(userData.getUSI_SchoolRoomNo());
 
-        if(userData.getUSI_Sex().equals("男")){
-            spGender.setSelection(0);
-        }else {
-            spGender.setSelection(1);
-        }
-
+        tvGender.setText(userData.getUSI_Sex());
         edtStuId.setText(userData.getUSI_SchoolNo());
         edtIdCard.setText(userData.getUSI_IDCard());
         edtWaterCardId.setText(userData.getUSI_Card_SN_PIN());
@@ -285,7 +284,7 @@ public class MineFragment extends BaseFragment implements TextWatcher {
     }
 
 
-    @OnClick({R.id.tvBindSchool, R.id.tvSaveInfo, R.id.tvRecharge, R.id.tvWithdraw, R.id.tvMyBill, R.id.llSchool, R.id.tvResetPsw, R.id.tvLoginOut})
+    @OnClick({R.id.tvGender, R.id.tvBindSchool, R.id.tvSaveInfo, R.id.tvRecharge, R.id.tvWithdraw, R.id.tvMyBill, R.id.llSchool, R.id.tvResetPsw, R.id.tvLoginOut})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tvRecharge:
@@ -344,7 +343,10 @@ public class MineFragment extends BaseFragment implements TextWatcher {
                 Intent intent = new Intent(getActivity(), ScannerQrActivity.class);
                 startActivityForResult(intent, REQUEST_CODE);
                 break;
-
+            case R.id.tvGender:
+                mSpinerPopWindow.setWidth(tvGender.getWidth());
+                mSpinerPopWindow.showAsDropDown(tvGender, 0, 0, Gravity.CENTER_HORIZONTAL);
+                break;
         }
     }
 
@@ -391,9 +393,9 @@ public class MineFragment extends BaseFragment implements TextWatcher {
         userData.setUSI_Id(userId);
         userData.setUSI_TrueName(edtUserName.getText().toString());
         userData.setUSI_SchoolNo(edtStuId.getText().toString());
-
-        // 房间号
-        userData.setUSI_Sex(selectSex);
+        userData.setUSI_SchoolRoomNo(edtRoomAddress.getText().toString());
+        // 性别
+        userData.setUSI_Sex(tvGender.getText().toString());
         userData.setUSI_IDCard(edtIdCard.getText().toString());
         userData.setUSI_Card_SN_PIN(edtWaterCardId.getText().toString());
         if (guidStr != null) {
@@ -427,4 +429,5 @@ public class MineFragment extends BaseFragment implements TextWatcher {
         tvSaveInfo.setEnabled(true);
 
     }
+
 }

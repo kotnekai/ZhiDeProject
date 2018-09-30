@@ -45,9 +45,9 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="提现"
-                    android:visibility="gone"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/com_text_size_14sp" />
+                    android:textSize="@dimen/com_text_size_14sp"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <View
@@ -84,10 +84,10 @@
 
                     <TextView
                         android:id="@+id/tvBaseBalance"
-                         android:textColor="@color/light_text_blue_color"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0.00"
+                        android:textColor="@color/light_text_blue_color"
                         android:textSize="@dimen/com_text_size_12sp" />
 
                     <TextView
@@ -177,12 +177,12 @@
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
                     android:background="@color/white"
                     android:gravity="center|right"
                     android:hint="请输入姓名"
-                    android:paddingRight="10dp"
                     android:minWidth="100dp"
-                    android:layout_marginRight="15dp"
+                    android:paddingRight="10dp"
                     android:text=""
                     android:textColor="@color/text_color"
                     android:textSize="14sp" />
@@ -198,10 +198,10 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:gravity="right"
-                android:paddingRight="10dp"
                 android:layout_marginRight="15dp"
-                android:minWidth="100dp">
+                android:gravity="right"
+                android:minWidth="100dp"
+                android:paddingRight="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -274,12 +274,12 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="15dp"
-                    android:paddingRight="10dp"
-                    android:enabled="false"
                     android:background="@color/white"
+                    android:enabled="false"
                     android:gravity="center|right"
                     android:hint="@string/no_bind_school"
                     android:minWidth="100dp"
+                    android:paddingRight="10dp"
                     android:text=""
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/com_text_size_14sp" />
@@ -303,17 +303,20 @@
                     android:paddingLeft="10dp"
                     android:text="性别" />
 
-                <Spinner
-                    android:id="@+id/spGender"
+
+                <TextView
+                    android:id="@+id/tvGender"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="15dp"
-                    android:background="@null"
-                    android:spinnerMode="dropdown"
-                    android:gravity="right"
-                    android:text="男"
+                    android:gravity="right|center"
+                    android:minWidth="70dp"
+                    android:drawableRight="@mipmap/spinner"
+                    android:paddingRight="10dp"
+                    android:hint="请选择性别"
+                    android:drawablePadding="5dp"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/com_text_size_14sp" />
 
@@ -345,20 +348,22 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="15dp"
                     android:background="@color/white"
+                    android:enabled="false"
                     android:gravity="center|right"
                     android:hint="@string/no_bind_school"
                     android:minWidth="100dp"
                     android:paddingRight="10dp"
-                    android:enabled="false"
                     android:text=""
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/com_text_size_14sp" />
             </RelativeLayout>
+
             <View
                 android:id="@+id/view9"
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:background="@color/divider_color" />
+
             <RelativeLayout
                 android:id="@+id/rlCardId"
                 android:layout_width="match_parent"
@@ -387,11 +392,13 @@
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/com_text_size_14sp" />
             </RelativeLayout>
+
             <View
                 android:id="@+id/view10"
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:background="@color/divider_color" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp">
@@ -413,9 +420,9 @@
                     android:background="@color/white"
                     android:gravity="center|right"
                     android:hint="请输入身份证"
-                    android:paddingRight="10dp"
-
                     android:minWidth="100dp"
+
+                    android:paddingRight="10dp"
                     android:text=""
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/com_text_size_14sp" />
