@@ -208,8 +208,7 @@ public  class CaptureActivity extends AppCompatActivity implements OnScannerComp
 
                 Intent intent = new Intent();
                 intent.setClass(CaptureActivity.this, ShowerConnectActivity.class);
-//                intent.putExtra(ShowerConnectActivity.DEVICE_MAC, bDevice.getAddress());
-//                intent.putExtra(ShowerConnectActivity.DEVICE_NAME, bDevice.getName());
+                intent.putExtra(ShowerConnectActivity.DEVICE_NAME, okString[0]);
 
                 if (!okString[2].contains(":")) {
                     intent.putExtra(ShowerConnectActivity.DEVICE_MAC,getMacMode(okString[2]));
