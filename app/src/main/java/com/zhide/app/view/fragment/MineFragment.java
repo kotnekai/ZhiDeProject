@@ -222,7 +222,6 @@ public class MineFragment extends BaseFragment implements TextWatcher, AdapterVi
             rlCardId.setVisibility(View.GONE);
             view9.setVisibility(View.GONE);
         } else {
-            edtWaterCardId.setVisibility(View.GONE);
             rlCardId.setVisibility(View.VISIBLE);
             view9.setVisibility(View.VISIBLE);
         }
