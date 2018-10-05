@@ -93,7 +93,7 @@ public class ShowerCompletedActivity extends BaseActivity implements View.OnClic
         balance = intent.getFloatExtra(CommonParams.USI_MAINBALANCE, 0);
 
 
-        tvCompletedTime.setText(DateUtils.dateToStamp(completeTime));
+        tvCompletedTime.setText(DateUtils.getCompletedTime(String.valueOf(completeTime)));
         tvPerSave.setText(String.format(getString(R.string.shower_money_unit), deducting + ""));
         tvPayMoney.setText(String.format(getString(R.string.shower_money_unit), consumeMoney + ""));
         tvReturnMoney.setText(String.format(getString(R.string.shower_money_unit), returnMoney + ""));

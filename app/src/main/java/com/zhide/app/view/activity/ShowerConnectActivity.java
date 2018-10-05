@@ -40,6 +40,7 @@ import com.zhide.app.common.CommonParams;
 import com.zhide.app.eventBus.WaterPreBillEvent;
 import com.zhide.app.eventBus.WaterSettleEvent;
 import com.zhide.app.logic.ChargeManager;
+import com.zhide.app.logic.UserManager;
 import com.zhide.app.utils.DateUtils;
 import com.zhide.app.utils.DialogUtils;
 import com.zhide.app.utils.PreferencesUtils;
@@ -54,6 +55,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.math.BigDecimal;
 
 import butterknife.BindView;
 
@@ -606,7 +608,7 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
         //服务端返回学生用水预扣费接口，可以执行下发费率
         if (event.getWaterPreBillModel() != null) {
             int USB_Id = event.getWaterPreBillModel().getData().getUSB_Id();
-            startdDownfate(mprid, USB_Id, (int) mainBalance, (int) waterRate, mBuffer, tac_Buffer);
+            startdDownfate(mprid, USB_Id, (int) deducting, (int) waterRate, mBuffer, tac_Buffer);
         } else {
 
         }
@@ -617,9 +619,20 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
         if (event.getSettleModel() != null) {
             //弹出框展示
 
+
+
             float balance = (mainBalance / 1000) - consumeMoney;
             float returnMoney = (deducting / 1000) - consumeMoney;
-         startActivity(ShowerCompletedActivity.makeIntent(mContext, completeTime, deducting / 1000, consumeMoney, returnMoney, balance));
+
+            //精确1位小数
+            BigDecimal bd = new BigDecimal(balance);
+            bd = bd.setScale(1,BigDecimal.ROUND_HALF_UP);
+
+            startActivity(ShowerCompletedActivity.makeIntent(mContext, completeTime, deducting / 1000, consumeMoney, returnMoney, bd.floatValue()));
+            //刷新首页数据
+            long userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
+            UserManager.getInstance().getUserInfoById(userId, CommonParams.PAGE_HOME_FRAG_TYPE);
+
         }
     }
 
@@ -776,7 +789,7 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
                 break;
             case 1:
                 //饮水机
-                setHeaderTitle(getString(R.string.water_fountain));
+                setHeaderTitle(getString(R.string.water_meter));
                 switch (charge) {
                     case 0:
                         mStatus = 31;

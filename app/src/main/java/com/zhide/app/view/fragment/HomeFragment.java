@@ -20,6 +20,7 @@ import com.zhide.app.logic.UserManager;
 import com.zhide.app.model.NewsModel;
 import com.zhide.app.model.UserData;
 import com.zhide.app.model.UserSchoolDataModel;
+import com.zhide.app.utils.DateUtils;
 import com.zhide.app.utils.EmptyUtil;
 import com.zhide.app.utils.PreferencesUtils;
 import com.zhide.app.utils.ToastUtil;
@@ -33,6 +34,7 @@ import com.zhide.app.view.base.WebViewActivity;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import butterknife.BindView;
@@ -152,7 +154,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
         UserManager.getInstance().getUserInfoById(userId, CommonParams.PAGE_HOME_FRAG_TYPE);
     }
 

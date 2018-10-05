@@ -464,4 +464,27 @@ public class DateUtils {
         }
         return strs;
     }
+
+    /**
+     * 将时间戳转化为时间串
+     */
+    public static String getCompletedTime(String time) {
+        Date date = null;
+        String strs = "";
+        String finalTime = "";
+        SimpleDateFormat sdf;
+        try {
+            if (time.length() == 14) {
+                sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+            } else {
+                sdf = new SimpleDateFormat("yyMMddHHmmss");
+            }
+
+            date = sdf.parse(String.valueOf(time));
+            finalTime = new SimpleDateFormat(DATE_FORMAT_YEAR2).format(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return finalTime;
+    }
 }
