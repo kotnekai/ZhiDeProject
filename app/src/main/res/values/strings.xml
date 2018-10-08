@@ -153,9 +153,9 @@
     <string name="shower_completed">洗澡完成</string>
     <string name="shower_back">返回</string>
 
-    <string name="pay_success">支付成功</string>
-    <string name="pay_failed">支付失败</string>
-    <string name="pay_cancel">支付取消</string>
+    <string name="pay_success">充值成功</string>
+    <string name="pay_failed">对不起，充值失败</string>
+    <string name="pay_cancel">充值取消</string>
 
     <string name="login_loading">登录中...</string>
     <string name="charge_loading">充值中...</string>
@@ -182,6 +182,7 @@
     <string name="scanner_qr_title">二维码扫描</string>
     <string name="complete_info_tip">请先绑定学校及完善个人信息</string>
     <string name="select_amount">请选择充值金额</string>
+    <string name="failed_reson_tip">失败原因：</string>
 
 
 </resources>

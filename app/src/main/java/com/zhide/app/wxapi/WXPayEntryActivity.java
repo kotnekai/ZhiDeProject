@@ -3,6 +3,8 @@ package com.zhide.app.wxapi;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -15,7 +17,7 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.zhide.app.R;
 import com.zhide.app.common.CommonParams;
 import com.zhide.app.eventBus.PayResultEvent;
-import com.zhide.app.utils.ToastUtil;
+import com.zhide.app.utils.PreferencesUtils;
 import com.zhide.app.view.base.BaseActivity;
 
 import org.greenrobot.eventbus.EventBus;
@@ -29,6 +31,13 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
     private IWXAPI api;
     @BindView(R.id.tvResult)
     TextView tvResult;
+    @BindView(R.id.ivIcon)
+    ImageView ivIcon;
+    @BindView(R.id.tvPayAmount)
+    TextView tvPayAmount;
+    @BindView(R.id.tvGoBack)
+    TextView tvGoBack;
+
 
     @Override
     protected int getCenterView() {
@@ -49,9 +58,15 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         api = WXAPIFactory.createWXAPI(this, CommonParams.WECHAT_APPID);
-      //  api = ApplicationHolder.getInstance().getMsgApi();
+        //  api = ApplicationHolder.getInstance().getMsgApi();
         api.handleIntent(getIntent(), this);
-        Log.d("admin", "onCreate: api="+api);
+        Log.d("admin", "onCreate: api=" + api);
+        tvGoBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     @Override
@@ -67,21 +82,30 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
 
     @Override
     public void onResp(BaseResp resp) {
-
         if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
             switch (resp.errCode) {
                 case -1:
+                    ivIcon.setImageResource(R.mipmap.pay_failed);
                     tvResult.setText(getString(R.string.pay_failed));
-                    ToastUtil.showShort(getString(R.string.pay_failed));
-                    break;
-                case 0:
-                    ToastUtil.showShort(getString(R.string.pay_success));
-                    tvResult.setText(getString(R.string.pay_success));
+                    if (resp.errStr == null) {
+                        resp.errStr = "空";
+                    }
+                    tvPayAmount.setText(getString(R.string.failed_reson_tip) + resp.errStr);
 
                     break;
+                case 0:
+                    ivIcon.setImageResource(R.mipmap.pay_success);
+                    tvResult.setText(getString(R.string.pay_success));
+                    float selectAmount = PreferencesUtils.getFloat("selectAmount");
+                    tvPayAmount.setText(selectAmount+getString(R.string.yuan));
+                    break;
                 case -2:
+                    ivIcon.setImageResource(R.mipmap.pay_failed);
                     tvResult.setText(getString(R.string.pay_cancel));
-                    ToastUtil.showShort(getString(R.string.pay_cancel));
+                    if (resp.errStr == null) {
+                        resp.errStr = "空";
+                    }
+                    tvPayAmount.setText(getString(R.string.failed_reson_tip)+ resp.errStr);
                     break;
             }
             EventBus.getDefault().post(new PayResultEvent(resp.errCode));

@@ -142,19 +142,18 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUserInfoEvent(UserInfoEvent event) {
-        if (event.getUpdatePage() != 1) {
+        if (!(event.getUpdatePage() == CommonParams.PAGE_HOME_FRAG_TYPE || event.getUpdatePage() == CommonParams.PAGE_WALLET_FRAG_TYPE)) {
             return;
         }
+
         UserData userInfo = event.getUserData();
         if (userInfo == null) {
             return;
         }
+        userData = userInfo;
+        updateInfoUI();
         PreferencesUtils.putObject(CommonParams.USER_INFO, userInfo);
-        if (userData == null) {
-            userData = userInfo;
-            updateInfoUI();
-            PreferencesUtils.putObject(CommonParams.USER_INFO, userInfo);
-        }
+
     }
 
     @Override

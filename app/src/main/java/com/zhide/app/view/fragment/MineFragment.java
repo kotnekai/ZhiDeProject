@@ -203,18 +203,19 @@ public class MineFragment extends BaseFragment implements TextWatcher, AdapterVi
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUserInfoEvent(UserInfoEvent event) {
-        if (event.getUpdatePage() != 3) {
+        if (!(event.getUpdatePage() == CommonParams.PAGE_MINE_FRAG_TYPE||event.getUpdatePage()== CommonParams.PAGE_WALLET_FRAG_TYPE)) {
+            Log.d("admin", "onUserInfoEvent: 1");
             return;
         }
+        Log.d("admin", "onUserInfoEvent: 2");
+
         UserData userInfo = event.getUserData();
         if (userInfo == null) {
             return;
         }
-        if (userData == null) {
-            userData = userInfo;
-            updateUserInfoUI();
-            PreferencesUtils.putObject(CommonParams.USER_INFO, userInfo);
-        }
+        userData = userInfo;
+        updateUserInfoUI();
+        PreferencesUtils.putObject(CommonParams.USER_INFO, userInfo);
     }
 
     private void updateUserInfoUI() {

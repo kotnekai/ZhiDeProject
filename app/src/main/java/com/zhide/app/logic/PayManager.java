@@ -76,6 +76,7 @@ public class PayManager {
         request.sign = paramModel.getSign();
 
         IWXAPI msgApi = ApplicationHolder.getInstance().getMsgApi();
+
         msgApi.sendReq(request);
     }
 
