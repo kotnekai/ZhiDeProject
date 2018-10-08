@@ -193,7 +193,6 @@ public class WalletChargeFragment extends BaseFragment {
             selectItemView.setOnSelectItemListener(new ISelectClickListener() {
                 @Override
                 public void selectIt(TextView view, String selectName, long selectId) {
-                    ToastUtil.showShort(selectName);
                     updateState(flSelectAmount, selectId);
                     selectClick(selectName, view);
                 }
