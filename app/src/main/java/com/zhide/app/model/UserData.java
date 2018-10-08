@@ -1,9 +1,11 @@
 package com.zhide.app.model;
 
+import java.io.Serializable;
+
 /**
  * Create by Admin on 2018/9/13
  */
-public class UserData {
+public class UserData implements Serializable{
 
 
     private long USI_Id;//用户id

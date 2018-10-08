@@ -68,7 +68,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     protected void initData() {
         Log.d("admin", "initData: home");
         MainManager.getInstance().getMainPageNews(1);
-
+        userData = PreferencesUtils.getObject(CommonParams.USER_INFO);
+        if (userData != null) {
+            updateInfoUI();
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -142,11 +145,16 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         if (event.getUpdatePage() != 1) {
             return;
         }
-        userData = event.getUserData();
-        if (userData == null) {
+        UserData userInfo = event.getUserData();
+        if (userInfo == null) {
             return;
         }
-        updateInfoUI();
+        PreferencesUtils.putObject(CommonParams.USER_INFO, userInfo);
+        if (userData == null) {
+            userData = userInfo;
+            updateInfoUI();
+            PreferencesUtils.putObject(CommonParams.USER_INFO, userInfo);
+        }
     }
 
     @Override

@@ -111,6 +111,10 @@ public class MineFragment extends BaseFragment implements TextWatcher, AdapterVi
         userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
 
         UserManager.getInstance().getUserInfoById(userId, CommonParams.PAGE_MINE_FRAG_TYPE);
+        userData = PreferencesUtils.getObject(CommonParams.USER_INFO);
+        if (userData != null) {
+            updateUserInfoUI();
+        }
     }
 
     @Override
@@ -150,7 +154,7 @@ public class MineFragment extends BaseFragment implements TextWatcher, AdapterVi
         if (mSpinerPopWindow != null && mSpinerPopWindow.isShowing()) {
             mSpinerPopWindow.dismiss();
         }
-       tvGender.setText(genderList.get(position));
+        tvGender.setText(genderList.get(position));
     }
 
     /**
@@ -202,11 +206,15 @@ public class MineFragment extends BaseFragment implements TextWatcher, AdapterVi
         if (event.getUpdatePage() != 3) {
             return;
         }
-        userData = event.getUserData();
-        if (userData == null) {
+        UserData userInfo = event.getUserData();
+        if (userInfo == null) {
             return;
         }
-        updateUserInfoUI();
+        if (userData == null) {
+            userData = userInfo;
+            updateUserInfoUI();
+            PreferencesUtils.putObject(CommonParams.USER_INFO, userInfo);
+        }
     }
 
     private void updateUserInfoUI() {

@@ -28,6 +28,9 @@ public class CommonParams {
     //返回金额
     public static final String RETURN_MONEY = "return_money";
 
+    //用户信息，暂存一下
+    public static final String USER_INFO = "user_info";
+
 
     public static long currentUserId;
 
