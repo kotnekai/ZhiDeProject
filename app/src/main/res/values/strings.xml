@@ -82,7 +82,7 @@
     <string name="hair_drier">吹风机</string>
     <string name="Charger">充电器</string>
     <string name="air_conditioner">空调</string>
-    <string name="other">其它</string>
+    <string name="other">其他</string>
 
 
     <string name="charge_act_introduce"> 充值活动说明：</string>
@@ -171,7 +171,7 @@
     <string name="no_equal_psw">两次密码不一致</string>
     <string name="return_tip_one">仅退还现金余额，退款后账号赠送余额清零</string>
     <string name="sure_return_tip">确认要退款吗？</string>
-    <string name="input_other_tip">请输入自定义金额(100-300元)</string>
+    <string name="input_other_tip">请输入自定义金额(%s-%s元)</string>
     <string name="input_card_money">请输入充值金额，不小于10元</string>
     <string name="trans_in_card">转入卡片</string>
     <string name="trans_out_card">转入卡内</string>

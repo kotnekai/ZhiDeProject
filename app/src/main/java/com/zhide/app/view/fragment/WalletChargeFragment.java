@@ -147,6 +147,9 @@ public class WalletChargeFragment extends BaseFragment {
         updateUI(userData);
     }
 
+    private String otherMin;
+    private String otherMax;
+
     /**
      * 更新界面数据
      *
@@ -157,17 +160,29 @@ public class WalletChargeFragment extends BaseFragment {
         tvCashBalance.setText(String.valueOf(userData.getUSI_MainBalance()) + "元");
         tvGiftBalance.setText(String.valueOf(userData.getUSI_GiftBalance()) + "元");
         tvIntroActContent.setText(userData.getSI_Recharge_Desc());
-        userData.setSI_RechargeMoney("30|50|80|100|其他");
-
         String rechargeMoney = userData.getSI_RechargeMoney();
-        //SI_RechargeMoney":"30|50|80|100",
         if (EmptyUtil.isEmpty(rechargeMoney)) {
             return;
         }
         String[] splitData = rechargeMoney.split("\\|");
         for (int i = 0; i < splitData.length; i++) {
+            if (i == 0 && !splitData[i].startsWith(getString(R.string.other))) {
+                selectAmount = Float.parseFloat(splitData[i]);
+            }
             SelectModel selectModel = new SelectModel();
-            selectModel.setName(splitData[i]);
+            if (splitData[i].startsWith(getString(R.string.other))) {
+                String[] splitArea = splitData[i].split(",");
+                if (splitArea.length > 1) {
+                    String[] split = splitArea[1].split("-");
+                    if (split.length > 1) {
+                        otherMin = split[0];
+                        otherMax = split[1];
+                    }
+                }
+                selectModel.setName(getString(R.string.other));
+            } else {
+                selectModel.setName(splitData[i]);
+            }
             selectModel.setId(i);
             SelectItemView selectItemView = (SelectItemView) LayoutInflater.from(getActivity()).inflate(R.layout.select_item_view, null);
             if (i == 0) {
@@ -180,33 +195,45 @@ public class WalletChargeFragment extends BaseFragment {
                 public void selectIt(TextView view, String selectName, long selectId) {
                     ToastUtil.showShort(selectName);
                     updateState(flSelectAmount, selectId);
-                    selectClick(selectName,view);
+                    selectClick(selectName, view);
                 }
             });
         }
 
     }
 
+    float otherMinFloat = 100;
+    float otherMaxFloat = 200;
+
     private void selectClick(String selectName, final TextView tvSelect) {
-        if(selectName.equals("其他")){
-            DialogUtils.showTipsDialog(getActivity(), getString(R.string.input_other_tip), getString(R.string.input_other_money_tip), true, new IConfirmClickListener() {
+        if (otherMin != null && otherMax != null) {
+            otherMinFloat = Float.parseFloat(otherMin);
+            otherMaxFloat = Float.parseFloat(otherMax);
+        }
+        String otherTips = getString(R.string.input_other_tip);
+        final String formatTip = String.format(otherTips, otherMinFloat, otherMax);
+
+        if (selectName.startsWith(getString(R.string.other))) {
+            DialogUtils.showTipsDialog(getActivity(), formatTip, getString(R.string.input_other_money_tip), true, new IConfirmClickListener() {
                 @Override
                 public void confirmClick(String remarks) {
+
                     if (EmptyUtil.isEmpty(remarks)) {
-                        tvSelect.setText(getString(R.string.charge_other_tip));
+                        tvSelect.setText(formatTip);
                         selectAmount = 0;
                     } else {
                         selectAmount = Float.parseFloat(remarks);
-                        if (selectAmount < 100 || selectAmount > 300) {
-                            ToastUtil.showShort(getString(R.string.input_other_tip));
+
+                        if (selectAmount < otherMinFloat || selectAmount > otherMaxFloat) {
+                            ToastUtil.showShort(formatTip);
                             tvSelect.setText(getString(R.string.charge_other_tip));
                             return;
                         }
-                        tvSelect.setText(remarks+"元");
+                        tvSelect.setText(remarks + "元");
                     }
                 }
             });
-        }else {
+        } else {
             selectAmount = Float.parseFloat(selectName);
         }
     }
@@ -244,7 +271,8 @@ public class WalletChargeFragment extends BaseFragment {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tvReCharge:
-                if(selectAmount==0){
+
+                if (selectAmount == 0) {
                     ToastUtil.showShort(getString(R.string.select_amount));
                     return;
                 }

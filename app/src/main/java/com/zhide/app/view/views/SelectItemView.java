@@ -51,7 +51,7 @@ public class SelectItemView extends LinearLayout {
         } else {
             tvSelectItem.setSelected(false);
         }
-        if (selectModel.getName().equals("其他")) {
+        if (selectModel.getName().startsWith("其他")) {
             tvSelectItem.setText(selectModel.getName());
         } else {
             tvSelectItem.setText(selectModel.getName() + "元");
