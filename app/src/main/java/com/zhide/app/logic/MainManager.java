@@ -83,6 +83,8 @@ public class MainManager {
         try {
             params.put("USI_Id", userData.getUSI_Id());
             params.put("USI_TrueName", userData.getUSI_TrueName());
+            params.put("USI_TrueName", userData.getUSI_TrueName());
+            params.put("USI_SchoolNo", userData.getUSI_SchoolNo());
             params.put("USI_SchoolRoomNo", userData.getUSI_SchoolRoomNo());
             params.put("USI_Sex", userData.getUSI_Sex());
             params.put("USI_IDCard", userData.getUSI_IDCard());

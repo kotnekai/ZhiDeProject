@@ -278,6 +278,7 @@ public class MineFragment extends BaseFragment implements TextWatcher, AdapterVi
         if (responseModel.getCode() == 1) {
             tvSaveInfo.setSelected(false);
             tvSaveInfo.setEnabled(false);
+            UserManager.getInstance().getUserInfoById(userId, CommonParams.PAGE_MINE_FRAG_TYPE);
         }
         ToastUtil.showShort(responseModel.getMsg());
     }
