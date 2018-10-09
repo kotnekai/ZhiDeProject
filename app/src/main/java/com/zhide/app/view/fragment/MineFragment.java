@@ -25,6 +25,7 @@ import com.zhide.app.model.AccountInfoModel;
 import com.zhide.app.model.ResponseModel;
 import com.zhide.app.model.SchoolInfoModel;
 import com.zhide.app.model.UserData;
+import com.zhide.app.utils.DataUtils;
 import com.zhide.app.utils.DialogUtils;
 import com.zhide.app.utils.EmptyUtil;
 import com.zhide.app.utils.PreferencesUtils;
@@ -203,7 +204,7 @@ public class MineFragment extends BaseFragment implements TextWatcher, AdapterVi
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUserInfoEvent(UserInfoEvent event) {
-        if (!(event.getUpdatePage() == CommonParams.PAGE_MINE_FRAG_TYPE||event.getUpdatePage()== CommonParams.PAGE_WALLET_FRAG_TYPE)) {
+        if (!(event.getUpdatePage() == CommonParams.PAGE_MINE_FRAG_TYPE || event.getUpdatePage() == CommonParams.PAGE_WALLET_FRAG_TYPE)) {
             Log.d("admin", "onUserInfoEvent: 1");
             return;
         }
@@ -397,7 +398,16 @@ public class MineFragment extends BaseFragment implements TextWatcher, AdapterVi
 
     private void submitPersonInfo() {
         long userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
+        if (userId == 0) {
+            ToastUtil.showShort("用户信息出错，请重新登录");
+            return;
+        }
+        String idCard = edtIdCard.getText().toString();
 
+        if (!DataUtils.isIDCard(idCard)) {
+            ToastUtil.showShort("身份证格式错误，请重新输入");
+            return;
+        }
         UserData userData = new UserData();
         userData.setUSI_Id(userId);
         userData.setUSI_TrueName(edtUserName.getText().toString());

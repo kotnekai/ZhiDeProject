@@ -342,7 +342,6 @@ public class WalletChargeFragment extends BaseFragment {
             if (orderInfo == null || orderInfo.isEmpty()) {
                 ToastUtil.showShort(getString(R.string.get_net_data_error));
             }
-
             PayManager.getInstance().sendAliPayRequest(getActivity(), orderInfo, alipayResult);
         }
     }
