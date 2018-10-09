@@ -53,8 +53,8 @@ public abstract class BaseActivity extends AppCompatActivity implements DrawerLa
     TextView tvNext;
     @BindView(R.id.llCenterView)
     LinearLayout llCenterView;
-    @BindView(R.id.llEmptyPage)
-    LinearLayout llEmptyPage;
+  /*  @BindView(R.id.llEmptyPage)
+    LinearLayout llEmptyPage;*/
     @BindView(R.id.rlAddSelectContain)
     RelativeLayout rlAddSelectContain;
     private boolean needTranslucent = true;
@@ -219,7 +219,20 @@ public abstract class BaseActivity extends AppCompatActivity implements DrawerLa
             return;
         }
     }
-
+    /**
+     * 是否显示空白页面
+     *
+     * @param
+     */
+/*    public void setEmptyView(boolean isEmpty ) {
+        if (isEmpty) {
+            llCenterView.setVisibility(View.GONE);
+            llEmptyPage.setVisibility(View.VISIBLE);
+        } else {
+            llEmptyPage.setVisibility(View.GONE);
+            llCenterView.setVisibility(View.VISIBLE);
+        }
+    }*/
     /**
      * 这是设置全局的状态栏颜色
      * 从子类传进状态栏的颜色，记得在子类重写的initHeader()方法里面设置，否则会失效。

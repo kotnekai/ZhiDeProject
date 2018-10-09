@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -49,6 +50,9 @@ public class MyBillActivity extends BaseActivity {
     ImageView ivTabIcon2;
     @BindView(R.id.ivTabIcon3)
     ImageView ivTabIcon3;
+
+    @BindView(R.id.llEmptyPage)
+    LinearLayout llEmptyPage;
 
     private String selectType;
     private LinearLayoutManager mLayoutManager;
@@ -100,12 +104,26 @@ public class MyBillActivity extends BaseActivity {
             return;
         }
         List<MyBillModel.BillData> data = myBillModel.getData();
-        if (data == null) {
+        if (data == null || data.size() == 0) {
+            setEmptyPage(true);
+            dataList.clear();
+            adapter.notifyDataSetChanged();
             return;
         }
+        setEmptyPage(false);
         dataList.clear();
         dataList.addAll(data);
         adapter.notifyDataSetChanged();
+    }
+
+    private void setEmptyPage(boolean isEmpty) {
+        if (isEmpty) {
+            llEmptyPage.setVisibility(View.VISIBLE);
+            smartRefresh.setVisibility(View.GONE);
+        } else {
+            llEmptyPage.setVisibility(View.GONE);
+            smartRefresh.setVisibility(View.VISIBLE);
+        }
     }
 
 
@@ -113,7 +131,7 @@ public class MyBillActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tvAllTab:
-                selectType ="";
+                selectType = "";
                 ivTabIcon1.setVisibility(View.VISIBLE);
                 ivTabIcon2.setVisibility(View.INVISIBLE);
                 ivTabIcon3.setVisibility(View.INVISIBLE);
@@ -131,6 +149,7 @@ public class MyBillActivity extends BaseActivity {
                 ivTabIcon2.setVisibility(View.INVISIBLE);
                 ivTabIcon3.setVisibility(View.VISIBLE);
                 break;
+
         }
         BillManager.getInstance().getMyBillData(userId, selectType);
 

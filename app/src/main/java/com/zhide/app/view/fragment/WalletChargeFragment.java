@@ -108,8 +108,14 @@ public class WalletChargeFragment extends BaseFragment {
             public void getResult(Map<String, String> result) {
                 Log.d("xyc", "getResult: result=" + result);
                 String resultStatus = result.get("resultStatus");
+
                 if (resultStatus.equals("9000")) {
-                    ToastUtil.showShort(getString(R.string.pay_success));
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ToastUtil.showShort(getString(R.string.pay_success));
+                        }
+                    });
                     UserManager.getInstance().getUserInfoById(userId, CommonParams.PAGE_WALLET_FRAG_TYPE);
                 }
             }
@@ -336,6 +342,7 @@ public class WalletChargeFragment extends BaseFragment {
             if (orderInfo == null || orderInfo.isEmpty()) {
                 ToastUtil.showShort(getString(R.string.get_net_data_error));
             }
+
             PayManager.getInstance().sendAliPayRequest(getActivity(), orderInfo, alipayResult);
         }
     }

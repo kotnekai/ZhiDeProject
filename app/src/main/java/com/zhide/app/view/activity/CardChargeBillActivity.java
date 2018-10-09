@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zhide.app.R;
@@ -31,6 +33,10 @@ public class CardChargeBillActivity extends BaseActivity {
     SmartRefreshLayout smartRefresh;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
+
+    @BindView(R.id.llEmptyPage)
+    LinearLayout llEmptyPage;
+
     private List<CardBillModel.DataModel> dataList = new ArrayList<>();
     private CardBillAdapter adapter;
 
@@ -84,12 +90,27 @@ public class CardChargeBillActivity extends BaseActivity {
 
     private void updateUI(CardBillModel cardBillModel) {
         List<CardBillModel.DataModel> data = cardBillModel.getData();
-        if (data == null) {
+        if (data == null || data.size() == 0) {
+            dataList.clear();
+            adapter.notifyDataSetChanged();
+            setEmptyPage(true);
             return;
         }
+        setEmptyPage(false);
         dataList.clear();
         dataList.addAll(data);
         adapter.notifyDataSetChanged();
     }
+
+    private void setEmptyPage(boolean isEmpty) {
+        if (isEmpty) {
+            llEmptyPage.setVisibility(View.VISIBLE);
+            smartRefresh.setVisibility(View.GONE);
+        } else {
+            llEmptyPage.setVisibility(View.GONE);
+            smartRefresh.setVisibility(View.VISIBLE);
+        }
+    }
+
 
 }
