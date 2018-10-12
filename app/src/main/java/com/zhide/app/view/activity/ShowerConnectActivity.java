@@ -222,8 +222,16 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
                         case BluetoothAdapter.STATE_ON:
                             break;
                         case BluetoothAdapter.STATE_TURNING_OFF:
+                            System.out.print("===STATE_TURNING_OFF==");
                             break;
                         case BluetoothAdapter.STATE_OFF:
+                            System.out.print("===STATE_OFF==");
+                            if (isRunning)
+                            {
+                                System.out.print("===isRunning==");
+                                CMDUtils.jieshufeilv(mbtService, true);
+                            }
+
                             break;
                     }
                 } else if (intent.getAction().equals(BluetoothDevice.ACTION_BOND_STATE_CHANGED)) {

@@ -3,11 +3,15 @@ package com.zhide.app.view.fragment;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zhide.app.R;
@@ -25,6 +29,7 @@ import com.zhide.app.utils.PreferencesUtils;
 import com.zhide.app.utils.ToastUtil;
 import com.zhide.app.utils.UIUtils;
 import com.zhide.app.view.activity.NewsListActivity;
+import com.zhide.app.view.activity.OperateGuideActivity;
 import com.zhide.app.view.activity.RechargeActivity;
 import com.zhide.app.view.activity.ShowerMainActivity;
 import com.zhide.app.view.base.BaseFragment;
@@ -36,7 +41,9 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * @author Admin create by 2018-08-15
@@ -57,6 +64,13 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     @BindView(R.id.tvCanUserMoney)
     TextView tvCanUserMoney;
     long userId;
+    @BindView(R.id.llMainControl)
+    LinearLayout llMainControl;
+    @BindView(R.id.rlMoney)
+    RelativeLayout rlMoney;
+    @BindView(R.id.ivGuide)
+    ImageView ivGuide;
+    Unbinder unbinder;
     private UserData userData;
 
     @Override
@@ -212,7 +226,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
 
     @Override
-    @OnClick({R.id.llRecharge, R.id.llShower, R.id.tvNewsMore})
+    @OnClick({R.id.llRecharge, R.id.llShower, R.id.tvNewsMore,R.id.ivGuide})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.llRecharge:
@@ -238,6 +252,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             case R.id.tvNewsMore:
                 NewsListActivity.start(getActivity());
                 break;
+            case R.id.ivGuide:
+                startActivity(OperateGuideActivity.makeIntent(getActivity()));
+                break;
         }
     }
 
@@ -262,5 +279,19 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         });
         localBuilder.setCancelable(false).create();
         localBuilder.show();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder = ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

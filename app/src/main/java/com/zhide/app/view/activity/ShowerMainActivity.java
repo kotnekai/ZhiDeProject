@@ -187,9 +187,14 @@ public class ShowerMainActivity extends BaseActivity implements View.OnClickList
                         Log.e("water", "ACTION_FOUND device = " + address);
 
                         if (!mBluetoothName.contains(address)) {
-                            mBluetoothDevices.add(mDevice);
-                            mBluetoothName.add(address);
-                            scanBluetoothDeviceAdapter.changeData(mBluetoothDevices);
+
+                            //00开头的才是安卓水表
+                            String[] array = address.split(":");
+                            if (array[0].equals("00")) {
+                                mBluetoothDevices.add(mDevice);
+                                mBluetoothName.add(address);
+                                scanBluetoothDeviceAdapter.changeData(mBluetoothDevices);
+                            }
                         }
                         //设置找到的时间
                         lastFindTime = System.currentTimeMillis();

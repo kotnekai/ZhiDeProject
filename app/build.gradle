@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
-//apply plugin: 'com.jakewharton.butterknife'
+apply plugin: 'com.jakewharton.butterknife'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
     buildToolsVersion "27.0.2"
     // 签名配置
     signingConfigs {
@@ -57,7 +57,7 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:26.+'
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
     implementation 'org.jaaksi:pickerview:1.0.1'
-    implementation 'cn.yipianfengye.android:zxing-library:2.2'
+    //    implementation 'cn.yipianfengye.android:zxing-library:2.2'
     androidTestImplementation 'junit:junit:4.12'
     implementation project(path: ':okhttputils')
     implementation project(':okhttputils')
@@ -66,5 +66,5 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.0'
     implementation files('libs/klbsdk.jar')
     implementation 'com.github.Yinuan:Zxing-js:v1.4'
-//    compile 'com.android.support:multidex:1.0.1'
+    //    compile 'com.android.support:multidex:1.0.1'
 }
