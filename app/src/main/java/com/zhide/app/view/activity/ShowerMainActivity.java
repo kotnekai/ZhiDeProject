@@ -290,8 +290,10 @@ public class ShowerMainActivity extends BaseActivity implements View.OnClickList
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode==CommonParams.FINISH_CODE)
         {
-            setResult(CommonParams.FINISH_CODE);
-            finish();
+            if (resultCode==CommonParams.FINISH_CODE) {
+                setResult(CommonParams.FINISH_CODE);
+                finish();
+            }
         }
     }
 }

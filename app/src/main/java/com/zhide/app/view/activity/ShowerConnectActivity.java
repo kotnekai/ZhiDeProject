@@ -15,6 +15,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -98,6 +99,7 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     private int seconds;
     private long curTime;
     private boolean isStart = false;
+    private boolean isRunning = false;
     float mainBalance;
     //费率
     float waterRate;
@@ -660,6 +662,9 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(WaterPreBillEvent event) {
         //服务端返回学生用水预扣费接口，可以执行下发费率
+
+        isRunning = true;
+
         if (event.getWaterPreBillModel() != null) {
             int USB_Id = event.getWaterPreBillModel().getData().getUSB_Id();
             startdDownfate(mprid, USB_Id, (int) deducting, (int) waterRate, mBuffer, tac_Buffer);
@@ -1077,8 +1082,26 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode==CommonParams.FINISH_CODE)
         {
-            setResult(CommonParams.FINISH_CODE);
-            finish();
+            if (resultCode==CommonParams.FINISH_CODE) {
+                setResult(CommonParams.FINISH_CODE);
+                finish();
+            }
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode,KeyEvent event){
+        if(keyCode==KeyEvent.KEYCODE_BACK) {
+           if (isRunning)
+           {
+               return true;
+           }
+           else
+           {
+               setResult(100);
+               finish();
+           }
+        }
+        return super.onKeyDown(keyCode, event);//继续执行父类其他点击事件
     }
 }
