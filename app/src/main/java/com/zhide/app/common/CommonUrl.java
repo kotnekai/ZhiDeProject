@@ -31,4 +31,8 @@ public class CommonUrl {
     public static final String resetLoginPsw = BASE_URL + "/Student/User_ResetPwd";
     public static final String forgetPassword = BASE_URL + "/Student/User_ForgetResetPwd";
 
+    // 用户协议
+    public static final String user_agreement = BASE_URL + "/Wap/NewsContent?niid=1030";
+
+
 }

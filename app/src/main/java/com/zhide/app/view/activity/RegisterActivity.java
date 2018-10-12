@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zhide.app.R;
 import com.zhide.app.common.ComApplication;
+import com.zhide.app.common.CommonUrl;
 import com.zhide.app.eventBus.RegisterEvent;
 import com.zhide.app.logic.UserManager;
 import com.zhide.app.model.RegisterLoginModel;
@@ -23,6 +24,7 @@ import com.zhide.app.utils.EmptyUtil;
 import com.zhide.app.utils.ToastUtil;
 import com.zhide.app.utils.UIUtils;
 import com.zhide.app.view.base.BaseActivity;
+import com.zhide.app.view.base.WebViewActivity;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -125,7 +127,7 @@ public class RegisterActivity extends BaseActivity {
 
                 break;
             case R.id.tvAgreement:
-
+                startActivity(WebViewActivity.makeIntent(this,getString(R.string.agreement_url_title), CommonUrl.user_agreement));
                 break;
 
         }
