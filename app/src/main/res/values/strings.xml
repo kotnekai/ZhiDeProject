@@ -188,4 +188,7 @@
     <string name="device_charging_hints">其它人正在使用设备刷卡消费中，请稍等</string>
 
 
+    <string name="agreement_url_title">智得能源使用协议</string>
+
+
 </resources>
