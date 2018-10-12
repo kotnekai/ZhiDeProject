@@ -108,6 +108,7 @@ public class ShowerCompletedActivity extends BaseActivity implements View.OnClic
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tvReturnBack:
+                setResult(CommonParams.FINISH_CODE);
                 finish();
         }
     }

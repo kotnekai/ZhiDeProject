@@ -183,5 +183,8 @@
     <string name="complete_info_tip">请先绑定学校及完善个人信息</string>
     <string name="select_amount">请选择充值金额</string>
 
+    <string name="device_using_hints">其它用户正在使用中，请稍等</string>
+    <string name="device_charging_hints">其它人正在使用设备刷卡消费中，请稍等</string>
+
 
 </resources>

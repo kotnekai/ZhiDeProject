@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zhide.app.R;
+import com.zhide.app.common.CommonParams;
 import com.zhide.app.view.adapter.ScanBluetoothDeviceAdapter;
 import com.zhide.app.view.base.BaseActivity;
 import com.zhide.app.view.views.RippleBackground;
@@ -78,7 +79,7 @@ public class ShowerMainActivity extends BaseActivity implements View.OnClickList
         setHeader_RightTextClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(ShowerMainActivity.this,CaptureActivity.class));
+                startActivityForResult(new Intent(ShowerMainActivity.this,CaptureActivity.class),CommonParams.FINISH_CODE);
 
             }
         });
@@ -281,6 +282,16 @@ public class ShowerMainActivity extends BaseActivity implements View.OnClickList
             case R.id.tvSearch:
                 startSearch();
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==CommonParams.FINISH_CODE)
+        {
+            setResult(CommonParams.FINISH_CODE);
+            finish();
         }
     }
 }

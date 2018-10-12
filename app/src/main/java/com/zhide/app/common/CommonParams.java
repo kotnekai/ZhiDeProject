@@ -41,4 +41,8 @@ public class CommonParams {
     public static int PAGE_WITH_DRAW_TYPE = 5;
     public static int PAGE_CHARGE_ACTIVITY_TYPE = 6;
 
+    //结束洗澡代码，用于返回首页
+    public static int FINISH_CODE = 300;
+
+
 }

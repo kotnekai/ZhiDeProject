@@ -69,9 +69,18 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     public static final String DEVICE_MAC = "deviceMac";
     public static final String DEVICE_NAME = "deviceName";
 
+    public int mChargeType;
+
+    public static final int DEVICE_FREE = 0;
+    public static final int DEVICE_USING = 1;
+    public static final int DEVICE_CHARGING = 2;
+    public static final int DEVICE_CAIJI = 3;
+
+
     private BluetoothService mbtService = null;
     private BluetoothAdapter bluetoothAdapter;
 
+    boolean isShowPopup = false;
     String MAC = "";
     String deviceName = "";
     private int mStatus = 0;
@@ -297,6 +306,7 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
                 animationDrawable.start();
                 ivDeviceState.setImageResource(R.mipmap.stop);
                 tvState.setText(getString(R.string.driver_stop_use));
+                hideProgressDialog();
                 break;
             case 33:
                 //洗衣机的连接成功
@@ -371,8 +381,9 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
                         @Override
                         public void run() {
                             mPopupWindow.showAtLocation(parentView, Gravity.CENTER, 0, 0);
+                            isShowPopup = true;
                         }
-                    }, 500);
+                    }, 200);
                 } else {
                     mPopupWindow.showAtLocation(parentView, Gravity.CENTER, 0, 0);
                 }
@@ -384,7 +395,7 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
                     public void run() {
                         mPopupWindow.showAtLocation(parentView, Gravity.CENTER, 0, 0);
                     }
-                }, 500);
+                }, 200);
             } else {
                 mPopupWindow.showAtLocation(parentView, Gravity.CENTER, 0, 0);
             }
@@ -408,9 +419,18 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
      */
     private void hideProgressDialog() {
 //        rlConnectLayout.setVisibility(View.GONE);
-        if (mPopupWindow!=null) {
-            mPopupWindow.dismiss();
+
+        if (mPopupWindow!=null && isShowPopup)
+        {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mPopupWindow.dismiss();
+                    isShowPopup = false;
+                }
+            },700);
         }
+
         ivDeviceState.setEnabled(true);
     }
 
@@ -441,7 +461,20 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
                         case BluetoothService.STATE_CONNECTED:
                             //连上
                             ToastUtil.showShort(getString(R.string.driver_connect_success));
-                            CMDUtils.chaxueshebei(mbtService, true);
+//                            mStatus = 31;
+//                            mPopupWindow.dismiss();
+//                            switch (mChargeType)
+//                            {
+//                                case DEVICE_FREE:
+//                                    break;
+//                                case DEVICE_USING:
+//                                    break;
+//                                case DEVICE_CHARGING:
+//                                    break;
+//                                case DEVICE_CAIJI:
+                                    CMDUtils.chaxueshebei(mbtService, true);
+//                                    break;
+//                            }
                             // mbtService.startTime();
                             // resetHandler();
                             break;
@@ -545,23 +578,44 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
 
                 switch (mStatus) {
                     case 31:
-                        //连接成功
-                        //执行服务端接口，先预扣费
-                        long currentUserId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
-                        if (llDetail.getVisibility() == View.VISIBLE) {
-                            //隐藏水表名，余额等
-                            llDetail.startAnimation(mHiddenAction);
-                            llDetail.setVisibility(View.GONE);
-                            //按钮变大
-                            ivDeviceState.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    ivDeviceState.setLayoutParams(new LinearLayout.LayoutParams(UIUtils.dipToPx(mContext, 110),
-                                            UIUtils.dipToPx(mContext, 110)));
+                        //todo 判断水表状态情况
+                        switch (mChargeType)
+                        {
+                            case DEVICE_FREE:
+                                //设备空闲
+                                //执行服务端接口，先预扣费
+                                long currentUserId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
+                                if (llDetail.getVisibility() == View.VISIBLE) {
+                                    //隐藏水表名，余额等
+                                    llDetail.startAnimation(mHiddenAction);
+                                    llDetail.setVisibility(View.GONE);
+                                    //按钮变大
+                                    ivDeviceState.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            ivDeviceState.setLayoutParams(new LinearLayout.LayoutParams(UIUtils.dipToPx(mContext, 110),
+                                                    UIUtils.dipToPx(mContext, 110)));
+                                        }
+                                    }, 250);
                                 }
-                            }, 250);
+                                ChargeManager.getInstance().useWaterPreBill(currentUserId);
+                                break;
+
+                            case DEVICE_USING:
+                                //设备使用中
+                                ToastUtil.showLong(R.string.device_using_hints);
+                                break;
+
+                            case DEVICE_CHARGING:
+                                //刷卡消费中
+                                ToastUtil.showLong(R.string.device_charging_hints);
+                                break;
+                            case DEVICE_CAIJI:
+                                //数据采集
+                                CMDUtils.caijishuju(mbtService, true);
+                                break;
+
                         }
-                        ChargeManager.getInstance().useWaterPreBill(currentUserId);
                         break;
                     case 32:
                         //结束费率
@@ -619,8 +673,6 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
         if (event.getSettleModel() != null) {
             //弹出框展示
 
-
-
             float balance = (mainBalance / 1000) - consumeMoney;
             float returnMoney = (deducting / 1000) - consumeMoney;
 
@@ -628,7 +680,7 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
             BigDecimal bd = new BigDecimal(balance);
             bd = bd.setScale(1,BigDecimal.ROUND_HALF_UP);
 
-            startActivity(ShowerCompletedActivity.makeIntent(mContext, completeTime, deducting / 1000, consumeMoney, returnMoney, bd.floatValue()));
+            startActivityForResult(ShowerCompletedActivity.makeIntent(mContext, completeTime, deducting / 1000, consumeMoney, returnMoney, bd.floatValue()),CommonParams.FINISH_CODE);
             //刷新首页数据
             long userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
             UserManager.getInstance().getUserInfoById(userId, CommonParams.PAGE_HOME_FRAG_TYPE);
@@ -744,7 +796,7 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     public void chaxueNewshebeiOnback(boolean b, int charge, int mdeviceid, int mproductid, int maccountid,
                                       byte[] macBuffer, byte[] tac_timeBuffer, int macType, int lType, int constype, int macTime) {
 
-
+        mChargeType = charge;
         Log.d(mContext.getClass().getSimpleName(), "mdeviceid:" + mdeviceid);
         Log.d(mContext.getClass().getSimpleName(), "mproductid:" + mproductid);
         Log.d("-------", "maccountid:" + maccountid);
@@ -758,6 +810,16 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
         tac_Buffer = tac_timeBuffer;
         dType = constype;
         wtype = macType + "&" + lType;
+
+//        if (charge==3)
+//        {
+//            completeTime = Long.valueOf(timeid);
+//            consumeMoney = Float.valueOf(consumeMoneString).floatValue() / 1000;
+//            ChargeManager.getInstance().useWaterSettlement(consumeMoney, maccountid);
+//            CMDUtils.fanhuicunchu(mbtService, true, timeid,
+//                    mproductid, mdeviceid, maccountid, usercount);
+//        }
+
 //        ToastUtil.showShort("查询成功");
         if (mproductid == 0) {
             ToastUtil.showShort(getString(R.string.device_no_login));
@@ -777,7 +839,8 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
                         break;
                     case 1:
                         mStatus = 32;
-                        updateUI();
+//                        updateUI();
+
                         break;
                     case 2:
                         ToastUtil.showShort(getString(R.string.payment_cards));
@@ -798,13 +861,16 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
 
                         break;
                     case 1:
-                        mStatus = 32;
+
+                        mStatus = 31;
                         updateUI();
+//                        CMDUtils.jieshufeilv(mbtService, true);
                         break;
                     case 2:
                         ToastUtil.showShort(getString(R.string.payment_cards));
                         break;
                     case 3:
+                        //这里连接未采集数据的设备时，先隐藏连接框，然后结束扣费
                         CMDUtils.caijishuju(mbtService, true);
                         break;
                 }
@@ -1006,4 +1072,13 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==CommonParams.FINISH_CODE)
+        {
+            setResult(CommonParams.FINISH_CODE);
+            finish();
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package com.zhide.app.view.adapter;
 
+import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 
 import com.zhide.app.R;
+import com.zhide.app.common.CommonParams;
 import com.zhide.app.view.activity.ShowerConnectActivity;
 import com.zhide.app.view.widget.Effectstype;
 import com.zhide.app.view.widget.NiftyDialogBuilder;
@@ -110,7 +112,7 @@ public class ScanBluetoothDeviceAdapter extends BaseAdapter {
                                 intent.putExtra(ShowerConnectActivity.DEVICE_MAC, bDevice.getAddress());
                                 intent.putExtra(ShowerConnectActivity.DEVICE_NAME, bDevice.getName());
 
-                                mContext.startActivity(intent);
+                                ((Activity)mContext).startActivityForResult(intent,CommonParams.FINISH_CODE);
                             }
                         }).show();
             }
