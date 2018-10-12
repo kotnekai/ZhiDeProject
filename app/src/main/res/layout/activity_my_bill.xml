@@ -55,8 +55,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_marginTop="32dp"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp">
 
         <ImageView
             android:id="@+id/ivTabIcon1"
@@ -68,18 +68,18 @@
         <ImageView
             android:id="@+id/ivTabIcon2"
             android:layout_width="0dp"
-            android:visibility="invisible"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@mipmap/up_btn" />
+            android:src="@mipmap/up_btn"
+            android:visibility="invisible" />
 
         <ImageView
             android:id="@+id/ivTabIcon3"
-            android:visibility="invisible"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@mipmap/up_btn" />
+            android:src="@mipmap/up_btn"
+            android:visibility="invisible" />
     </LinearLayout>
 
     <View
@@ -89,16 +89,28 @@
         android:layout_below="@id/llTitleLayout"
         android:background="@color/divider_color" />
 
+    <LinearLayout
+        android:id="@+id/llEmptyPage"
+        android:layout_width="match_parent"
+
+        android:layout_height="match_parent"
+        android:layout_below="@id/view">
+
+        <include layout="@layout/com_empty_view_layout" />
+    </LinearLayout>
+
+
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/smartRefresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/view">
+        android:layout_below="@id/llEmptyPage">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycleView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+           />
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 </RelativeLayout>

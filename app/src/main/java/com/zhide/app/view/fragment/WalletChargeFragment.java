@@ -108,8 +108,14 @@ public class WalletChargeFragment extends BaseFragment {
             public void getResult(Map<String, String> result) {
                 Log.d("xyc", "getResult: result=" + result);
                 String resultStatus = result.get("resultStatus");
+
                 if (resultStatus.equals("9000")) {
-                    ToastUtil.showShort(getString(R.string.pay_success));
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ToastUtil.showShort(getString(R.string.pay_success));
+                        }
+                    });
                     UserManager.getInstance().getUserInfoById(userId, CommonParams.PAGE_WALLET_FRAG_TYPE);
                 }
             }
@@ -165,6 +171,7 @@ public class WalletChargeFragment extends BaseFragment {
             return;
         }
         String[] splitData = rechargeMoney.split("\\|");
+        flSelectAmount.removeAllViews();
         for (int i = 0; i < splitData.length; i++) {
             if (i == 0 && !splitData[i].startsWith(getString(R.string.other))) {
                 selectAmount = Float.parseFloat(splitData[i]);
@@ -210,7 +217,7 @@ public class WalletChargeFragment extends BaseFragment {
             otherMaxFloat = Float.parseFloat(otherMax);
         }
         String otherTips = getString(R.string.input_other_tip);
-        final String formatTip = String.format(otherTips, otherMinFloat, otherMax);
+        final String formatTip = String.format(otherTips, otherMinFloat+"", otherMaxFloat+"");
 
         if (selectName.startsWith(getString(R.string.other))) {
             DialogUtils.showTipsDialog(getActivity(), formatTip, getString(R.string.input_other_money_tip), true, new IConfirmClickListener() {
@@ -280,6 +287,7 @@ public class WalletChargeFragment extends BaseFragment {
                     return;
                 }
                 if (cbSelectWxPay.isChecked()) {
+                    PreferencesUtils.putFloat("selectAmount",selectAmount);
                     PayManager.getInstance().getWxPayParams(selectAmount, userId);
                 } else if (cbSelectAliPay.isChecked()) {
                     boolean isInstallAliPay = ClientInstallUtils.checkAliPayInstalled(getActivity());

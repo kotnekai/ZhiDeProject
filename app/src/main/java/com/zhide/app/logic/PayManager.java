@@ -43,6 +43,7 @@ public class PayManager {
      * @param orderInfo
      */
     public void sendAliPayRequest(final Activity context, final String orderInfo, final IGetAliPayResult aliPayResult) {
+
         //异步处理
         Runnable payRunnable = new Runnable() {
             @Override
@@ -50,6 +51,7 @@ public class PayManager {
                 //新建任务
                 PayTask alipay = new PayTask(context);
                 String version = alipay.getVersion();
+
                 //获取支付结果
                 Map<String, String> result = alipay.payV2(orderInfo, true);
                 aliPayResult.getResult(result);
@@ -76,6 +78,7 @@ public class PayManager {
         request.sign = paramModel.getSign();
 
         IWXAPI msgApi = ApplicationHolder.getInstance().getMsgApi();
+
         msgApi.sendReq(request);
     }
 

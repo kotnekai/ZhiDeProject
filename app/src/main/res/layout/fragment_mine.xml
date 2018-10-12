@@ -419,9 +419,9 @@
                     android:layout_marginRight="15dp"
                     android:background="@color/white"
                     android:gravity="center|right"
+                    android:maxLength="18"
                     android:hint="请输入身份证"
                     android:minWidth="100dp"
-
                     android:paddingRight="10dp"
                     android:text=""
                     android:textColor="@color/text_color"
