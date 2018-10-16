@@ -25,8 +25,11 @@
     <string name="cancel">取消</string>
     <string name="open">开启</string>
     <string name="repair_confirm">确认提交</string>
+    <string name="repair_meter">我已重启水表设备</string>
 
     <string name="dialog_bluetooth_connect">请打开手机蓝牙用于平台与水表连接</string>
+    <string name="dialog_bluetooth_stop_hints">手机蓝牙已断开，洗澡功能将退出，请重新连接</string>
+    <string name="dialog_bluetooth_stop_for_running">手机蓝牙已断开，计费暂停，请重启水表设备，APP将会进入自动计费</string>
 
 
     <string name="driver_connect_start">点击开始搜索</string>

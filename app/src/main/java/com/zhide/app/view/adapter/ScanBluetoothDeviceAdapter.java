@@ -1,6 +1,7 @@
 package com.zhide.app.view.adapter;
 
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
@@ -17,7 +18,9 @@ import android.widget.TextView;
 
 import com.zhide.app.R;
 import com.zhide.app.common.CommonParams;
+import com.zhide.app.utils.DialogUtils;
 import com.zhide.app.view.activity.ShowerConnectActivity;
+import com.zhide.app.view.activity.ShowerMainActivity;
 import com.zhide.app.view.widget.Effectstype;
 import com.zhide.app.view.widget.NiftyDialogBuilder;
 
@@ -86,35 +89,45 @@ public class ScanBluetoothDeviceAdapter extends BaseAdapter {
 
             @Override
             public void onClick(View v) {
-                final BluetoothDevice bDevice = (BluetoothDevice) v.getTag();
-                dialogBuilder
-                        .withTitle(mContext.getString(R.string.dialog_tips_title))
-                        .withMessage(
-                                mContext.getString(R.string.dialog_bluetooth_bind))
-                        .withEffect(Effectstype.Fadein)
-                        .isCancelable(false)
-                        .withButton1Text(
-                                mContext.getString(R.string.cancel))
-                        .setButton1Click(new OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialogBuilder.dismiss();
-                            }
-                        })
-                        .withButton2Text(mContext.getString(R.string.sure))
-                        .setButton2Click(new OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialogBuilder.dismiss();
+                BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+                if (!adapter.isEnabled()) {
+                    DialogUtils.showEnableBlueToothDialog((Activity) mContext);
+                } else {
+                    final BluetoothDevice bDevice = (BluetoothDevice) v.getTag();
+                    dialogBuilder
+                            .withTitle(mContext.getString(R.string.dialog_tips_title))
+                            .withMessage(
+                                    mContext.getString(R.string.dialog_bluetooth_bind))
+                            .withEffect(Effectstype.Fadein)
+                            .isCancelable(false)
+                            .withButton1Text(
+                                    mContext.getString(R.string.cancel))
+                            .setButton1Click(new OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialogBuilder.dismiss();
+                                }
+                            })
+                            .withButton2Text(mContext.getString(R.string.sure))
+                            .setButton2Click(new OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    try {
+                                        dialogBuilder.dismiss();
 
-                                Intent intent = new Intent();
-                                intent.setClass(mContext, ShowerConnectActivity.class);
-                                intent.putExtra(ShowerConnectActivity.DEVICE_MAC, bDevice.getAddress());
-                                intent.putExtra(ShowerConnectActivity.DEVICE_NAME, bDevice.getName());
+                                        Intent intent = new Intent();
+                                        intent.setClass(mContext, ShowerConnectActivity.class);
+                                        intent.putExtra(ShowerConnectActivity.DEVICE_MAC, bDevice.getAddress());
+                                        intent.putExtra(ShowerConnectActivity.DEVICE_NAME, bDevice.getName());
 
-                                ((Activity)mContext).startActivityForResult(intent,CommonParams.FINISH_CODE);
-                            }
-                        }).show();
+                                        ((Activity) mContext).startActivityForResult(intent, CommonParams.FINISH_CODE);
+                                    }catch (Exception ei)
+                                    {
+                                        ei.printStackTrace();
+                                    }
+                                }
+                            }).show();
+                }
             }
         });
         return view;

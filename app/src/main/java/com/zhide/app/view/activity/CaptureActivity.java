@@ -16,6 +16,8 @@
 package com.zhide.app.view.activity;
 
 import android.Manifest;
+import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -36,6 +38,7 @@ import com.klcxkj.jxing.OnScannerCompletionListener;
 import com.klcxkj.jxing.ScannerView;
 import com.klcxkj.jxing.common.Scanner;
 import com.zhide.app.R;
+import com.zhide.app.utils.DialogUtils;
 import com.zhide.app.view.widget.NiftyDialogBuilder;
 
 
@@ -45,19 +48,20 @@ import com.zhide.app.view.widget.NiftyDialogBuilder;
  * email:yinjuan@klcxkj.com
  * description: 二维码扫码类
  */
-public  class CaptureActivity extends AppCompatActivity implements OnScannerCompletionListener {
+public class CaptureActivity extends AppCompatActivity implements OnScannerCompletionListener {
 
     private static final String TAG = CaptureActivity.class.getSimpleName();
 
     private ImageView flash_img;
-   private int ifOpenLight = 0; // 判断是否开启闪光灯
+    private int ifOpenLight = 0; // 判断是否开启闪光灯
 
 
-   private int capture_type;
+    private int capture_type;
     private ScannerView mScannerView;
 
 
     protected NiftyDialogBuilder dialogBuilder;
+
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -79,15 +83,17 @@ public  class CaptureActivity extends AppCompatActivity implements OnScannerComp
             }
         });
         //隐藏设备列表
-         initdata();
+        initdata();
         setAdmin();
     }
+
     private void setAdmin() {
         if (ContextCompat.checkSelfPermission(CaptureActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             //权限还没有授予，需要在这里写申请权限的代码
             ActivityCompat.requestPermissions(CaptureActivity.this, new String[]{Manifest.permission.CAMERA}, 60);
         }
     }
+
     // 是否开启闪光灯
     private void openLight() {
         switch (ifOpenLight % 2) {
@@ -109,7 +115,6 @@ public  class CaptureActivity extends AppCompatActivity implements OnScannerComp
     }
 
 
-
     private void setdecode() {
         mScannerView = (ScannerView) findViewById(R.id.capture_preview);
         mScannerView.setOnScannerCompletionListener(this);
@@ -119,8 +124,8 @@ public  class CaptureActivity extends AppCompatActivity implements OnScannerComp
 
         //mScannerView.setMediaResId(R.raw.beep);//设置扫描成功的声音
 
-       // mScannerView.setLaserFrameBoundColor(R.color.base_color);
-        mScannerView.setLaserFrameSize(240,240);
+        // mScannerView.setLaserFrameBoundColor(R.color.base_color);
+        mScannerView.setLaserFrameSize(240, 240);
         if (scanMode == 1) {
             //二维码
             mScannerView.setScanMode(Scanner.ScanMode.QR_CODE_MODE);
@@ -154,10 +159,13 @@ public  class CaptureActivity extends AppCompatActivity implements OnScannerComp
         mScannerView.restartPreviewAfterDelay(delayMS);
         resetStatusView();
     }
+
     private Result mLastResult;
+
     private void resetStatusView() {
         mLastResult = null;
     }
+
     @Override
     protected void onResume() {
         mScannerView.onResume();
@@ -188,9 +196,10 @@ public  class CaptureActivity extends AppCompatActivity implements OnScannerComp
         }
         return super.onKeyDown(keyCode, event);
     }
+
     @Override
     public void onScannerCompletion(Result rawResult, ParsedResult parsedResult, Bitmap barcode) {
-        if (rawResult ==null){
+        if (rawResult == null) {
             showErrorQR("无效的二维码");
             return;
         }
@@ -205,20 +214,24 @@ public  class CaptureActivity extends AppCompatActivity implements OnScannerComp
 
                     return;
                 }
-
-                Intent intent = new Intent();
-                intent.setClass(CaptureActivity.this, ShowerConnectActivity.class);
-                intent.putExtra(ShowerConnectActivity.DEVICE_NAME, okString[0]);
-
-                if (!okString[2].contains(":")) {
-                    intent.putExtra(ShowerConnectActivity.DEVICE_MAC,getMacMode(okString[2]));
-
+                BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+                if (!bluetoothAdapter.isEnabled()) {
+                    DialogUtils.showEnableBlueToothDialog(CaptureActivity.this);
                 } else {
-                    intent.putExtra(ShowerConnectActivity.DEVICE_MAC, okString[2]);
-                }
+                    Intent intent = new Intent();
+                    intent.setClass(CaptureActivity.this, ShowerConnectActivity.class);
+                    intent.putExtra(ShowerConnectActivity.DEVICE_NAME, okString[0]);
 
-                startActivity(intent);
-                finish();
+                    if (!okString[2].contains(":")) {
+                        intent.putExtra(ShowerConnectActivity.DEVICE_MAC, getMacMode(okString[2]));
+
+                    } else {
+                        intent.putExtra(ShowerConnectActivity.DEVICE_MAC, okString[2]);
+                    }
+
+                    startActivity(intent);
+                    finish();
+                }
             } else {
                 showErrorQR(getString(R.string.error_qr));
             }
@@ -235,7 +248,7 @@ public  class CaptureActivity extends AppCompatActivity implements OnScannerComp
     }
 
     private void showErrorQR(String string) {
-        Toast.makeText(CaptureActivity.this, string,Toast.LENGTH_SHORT);
+        Toast.makeText(CaptureActivity.this, string, Toast.LENGTH_SHORT);
         restartPreviewAfterDelay(1000);
     }
 

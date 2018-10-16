@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zhide.app.R;
 import com.zhide.app.common.CommonParams;
+import com.zhide.app.utils.DialogUtils;
 import com.zhide.app.view.adapter.ScanBluetoothDeviceAdapter;
 import com.zhide.app.view.base.BaseActivity;
 import com.zhide.app.view.views.RippleBackground;
@@ -143,21 +144,6 @@ public class ShowerMainActivity extends BaseActivity implements View.OnClickList
     }
 
 
-    private void showEnableBlueToothDialog() {
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setMessage(R.string.dialog_bluetooth_connect)
-                .setNegativeButton(getString(R.string.cancel), null)
-                .setPositiveButton(getString(R.string.open), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        BluetoothAdapter.getDefaultAdapter().enable();
-                    }
-                }).create();
-        dialog.show();
-
-    }
-
-
     void registerReceivers() {
         // 设置广播信息过滤
         IntentFilter intentFilter = new IntentFilter();
@@ -236,7 +222,7 @@ public class ShowerMainActivity extends BaseActivity implements View.OnClickList
     void startSearch() {
         BluetoothAdapter blueadapter = BluetoothAdapter.getDefaultAdapter();
         if (!blueadapter.isEnabled()) {
-            showEnableBlueToothDialog();
+           DialogUtils.showEnableBlueToothDialog(ShowerMainActivity.this);
             tvSearchTitle.setVisibility(View.INVISIBLE);
         } else {
             tvSearchTitle.setVisibility(View.VISIBLE);

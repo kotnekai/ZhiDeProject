@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.AnimationDrawable;
@@ -13,6 +15,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -57,6 +60,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import butterknife.BindView;
 
@@ -140,6 +144,11 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     //属性动画对象
     TranslateAnimation mHiddenAction;
 
+    BluetoothDevice device;
+
+    UUID mUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+    private BluetoothSocket socket;
+
     @Override
     protected int getCenterView() {
         return R.layout.activity_shower_connect;
@@ -212,7 +221,7 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
         mStatusReceive = new BroadcastReceiver() {
 
             @Override
-            public void onReceive(Context context, Intent intent) {
+            public void onReceive(Context context, final Intent intent) {
 
                 if (intent.getAction().equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
                     int blueState = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, 0);
@@ -226,10 +235,32 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
                             break;
                         case BluetoothAdapter.STATE_OFF:
                             System.out.print("===STATE_OFF==");
-                            if (isRunning)
-                            {
+                            if (isRunning) {
+
                                 System.out.print("===isRunning==");
-                                CMDUtils.jieshufeilv(mbtService, true);
+                                AnimationDrawable animationDrawable = (AnimationDrawable) ivShower.getDrawable();
+                                animationDrawable.stop();
+                                AlertDialog dialog = new AlertDialog.Builder(mContext)
+                                        .setMessage(R.string.dialog_bluetooth_stop_for_running)
+                                        .setPositiveButton(mContext.getString(R.string.repair_meter), new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                                ShowerConnectActivity.this.setResult(CommonParams.FINISH_CODE);
+                                                finish();
+                                            }
+                                        }).create();
+                                dialog.show();
+                            } else {
+                                AlertDialog dialog = new AlertDialog.Builder(mContext)
+                                        .setMessage(R.string.dialog_bluetooth_stop_hints)
+                                        .setPositiveButton(mContext.getString(R.string.sure), new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                finish();
+                                            }
+                                        }).create();
+                                dialog.show();
                             }
 
                             break;
@@ -278,7 +309,16 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
                 bluetoothAdapter.cancelDiscovery();
                 Log.d(mContext.getClass().getSimpleName(), "bluetoothAdapter.isDiscovering():" + bluetoothAdapter.isDiscovering());
             }
-            mbtService.connect(bluetoothAdapter.getRemoteDevice(MAC));
+            BluetoothDevice device = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(MAC);
+
+            try {
+                socket = device.createRfcommSocketToServiceRecord(mUUID);
+                mbtService.connect(device);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
         }
     }
 
@@ -430,15 +470,14 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     private void hideProgressDialog() {
 //        rlConnectLayout.setVisibility(View.GONE);
 
-        if (mPopupWindow!=null && isShowPopup)
-        {
+        if (mPopupWindow != null && isShowPopup) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     mPopupWindow.dismiss();
                     isShowPopup = false;
                 }
-            },700);
+            }, 700);
         }
 
         ivDeviceState.setEnabled(true);
@@ -482,7 +521,7 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
 //                                case DEVICE_CHARGING:
 //                                    break;
 //                                case DEVICE_CAIJI:
-                                    CMDUtils.chaxueshebei(mbtService, true);
+                            CMDUtils.chaxueshebei(mbtService, true);
 //                                    break;
 //                            }
                             // mbtService.startTime();
@@ -589,8 +628,7 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
                 switch (mStatus) {
                     case 31:
                         //todo 判断水表状态情况
-                        switch (mChargeType)
-                        {
+                        switch (mChargeType) {
                             case DEVICE_FREE:
                                 //设备空闲
                                 //执行服务端接口，先预扣费
@@ -691,9 +729,9 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
 
             //精确1位小数
             BigDecimal bd = new BigDecimal(balance);
-            bd = bd.setScale(1,BigDecimal.ROUND_HALF_UP);
+            bd = bd.setScale(1, BigDecimal.ROUND_HALF_UP);
 
-            startActivityForResult(ShowerCompletedActivity.makeIntent(mContext, completeTime, deducting / 1000, consumeMoney, returnMoney, bd.floatValue()),CommonParams.FINISH_CODE);
+            startActivityForResult(ShowerCompletedActivity.makeIntent(mContext, completeTime, deducting / 1000, consumeMoney, returnMoney, bd.floatValue()), CommonParams.FINISH_CODE);
             //刷新首页数据
             long userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
             UserManager.getInstance().getUserInfoById(userId, CommonParams.PAGE_HOME_FRAG_TYPE);
@@ -711,10 +749,9 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
             }
         }
 
-        if (mPopupWindow!=null)
-        {
+        if (mPopupWindow != null) {
             mPopupWindow.dismiss();
-            mPopupWindow=null;
+            mPopupWindow = null;
         }
 
         Log.d(mContext.getClass().getSimpleName(), "onDestroy");
@@ -1088,9 +1125,8 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==CommonParams.FINISH_CODE)
-        {
-            if (resultCode==CommonParams.FINISH_CODE) {
+        if (requestCode == CommonParams.FINISH_CODE) {
+            if (resultCode == CommonParams.FINISH_CODE) {
                 setResult(CommonParams.FINISH_CODE);
                 finish();
             }
@@ -1098,17 +1134,14 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     }
 
     @Override
-    public boolean onKeyDown(int keyCode,KeyEvent event){
-        if(keyCode==KeyEvent.KEYCODE_BACK) {
-           if (isRunning)
-           {
-               return true;
-           }
-           else
-           {
-               setResult(100);
-               finish();
-           }
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (isRunning) {
+                return true;
+            } else {
+                setResult(100);
+                finish();
+            }
         }
         return super.onKeyDown(keyCode, event);//继续执行父类其他点击事件
     }

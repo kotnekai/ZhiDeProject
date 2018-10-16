@@ -2,7 +2,9 @@ package com.zhide.app.utils;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
@@ -297,4 +299,21 @@ public class DialogUtils {
 
     }
 
+
+    /**
+     * 蓝牙连接提示
+     * @param activity
+     */
+    public static void showEnableBlueToothDialog(Activity activity) {
+        AlertDialog dialog = new AlertDialog.Builder(activity)
+                .setMessage(R.string.dialog_bluetooth_connect)
+                .setNegativeButton(activity.getString(R.string.cancel), null)
+                .setPositiveButton(activity.getString(R.string.open), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        BluetoothAdapter.getDefaultAdapter().enable();
+                    }
+                }).create();
+        dialog.show();
+    }
 }
