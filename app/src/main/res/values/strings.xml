@@ -192,6 +192,9 @@
 
 
     <string name="agreement_url_title">智得能源使用协议</string>
+    <string name="to_bind_card">用户未绑定卡片信息，请先绑定热水卡</string>
+    <string name="no_low_10_yuan">卡片充值金额限定不能小于10元</string>
+
 
 
 </resources>

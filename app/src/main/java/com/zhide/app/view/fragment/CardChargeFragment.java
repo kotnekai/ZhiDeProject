@@ -12,6 +12,7 @@ import com.zhide.app.logic.ChargeManager;
 import com.zhide.app.logic.UserManager;
 import com.zhide.app.model.ResponseModel;
 import com.zhide.app.model.UserData;
+import com.zhide.app.utils.EmptyUtil;
 import com.zhide.app.utils.PreferencesUtils;
 import com.zhide.app.utils.ProgressUtils;
 import com.zhide.app.utils.ToastUtil;
@@ -47,6 +48,7 @@ public class CardChargeFragment extends BaseFragment {
     EditText edtInputMoney;
 
     private long userId;
+    private UserData userData;
 
     @Override
     protected void initView() {
@@ -59,6 +61,7 @@ public class CardChargeFragment extends BaseFragment {
 
         userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
         UserManager.getInstance().getUserInfoById(userId, CommonParams.PAGE_CARD_CHARGE_FRAG_TYPE);
+        userData = PreferencesUtils.getObject(CommonParams.USER_INFO);
     }
 
 
@@ -122,12 +125,26 @@ public class CardChargeFragment extends BaseFragment {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tvReCharge:
+
+                if (userData == null) {
+                    ToastUtil.showShort(getString(R.string.to_bind_card));
+                    return;
+                }
+                String cardPin = userData.getUSI_Card_SN_PIN();
+                if (EmptyUtil.isEmpty(cardPin)) {
+                    ToastUtil.showShort(getString(R.string.to_bind_card));
+                    return;
+                }
                 String selectAmount = edtInputMoney.getText().toString();
                 if (selectAmount.isEmpty()) {
                     ToastUtil.showShort(getString(R.string.input_card_money));
                     return;
                 }
                 float amount = Float.parseFloat(selectAmount);
+                if(amount<10.0f){
+                    ToastUtil.showShort(getString(R.string.no_low_10_yuan));
+                    return;
+                }
                 ProgressUtils.getIntance().setProgressDialog(getString(R.string.charge_loading), getActivity());
                 ChargeManager.getInstance().payToCard(userId, amount);
                 break;

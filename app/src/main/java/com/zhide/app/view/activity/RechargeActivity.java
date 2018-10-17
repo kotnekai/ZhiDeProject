@@ -123,7 +123,7 @@ public class RechargeActivity extends BaseActivity {
             return;
         }
 
-        if (!userData.getSI_UseMode().equals("单蓝牙")) {
+        if (userData.getSI_UseMode().equals("单蓝牙")) {
             fragmentList.add(new WalletChargeFragment());
             tvCardTab.setVisibility(View.GONE);
             ivTab2.setVisibility(View.GONE);

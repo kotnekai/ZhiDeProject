@@ -18,6 +18,8 @@ import com.zhide.app.model.BreakdownDeviceModel;
 import com.zhide.app.model.BreakdownModel;
 import com.zhide.app.model.ResponseModel;
 import com.zhide.app.model.SpinnerSelectModel;
+import com.zhide.app.model.UserData;
+import com.zhide.app.utils.EmptyUtil;
 import com.zhide.app.utils.PickViewUtil;
 import com.zhide.app.utils.PreferencesUtils;
 import com.zhide.app.utils.ProgressUtils;
@@ -56,6 +58,7 @@ public class RepairActivity extends BaseActivity {
     private List<SpinnerSelectModel> repairDeviceList = new ArrayList<>();
     private List<SpinnerSelectModel> repairReasonList = new ArrayList<>();
     private List<BreakdownDeviceModel> deviceData;
+    private UserData userData;
 
     @Override
     protected int getCenterView() {
@@ -80,6 +83,7 @@ public class RepairActivity extends BaseActivity {
 
     private void initData() {
         MainManager.getInstance().getBreakdownType();
+        userData = PreferencesUtils.getObject(CommonParams.USER_INFO);
 
     }
 
@@ -150,6 +154,11 @@ public class RepairActivity extends BaseActivity {
                 });
                 break;
             case R.id.tvSubmit:
+                boolean completeInfo = EmptyUtil.isCompleteInfo(userData);
+                if (!completeInfo) {
+                    ToastUtil.showShort(getString(R.string.complete_info_tip));
+                    return;
+                }
                 submitInfo();
                 break;
         }

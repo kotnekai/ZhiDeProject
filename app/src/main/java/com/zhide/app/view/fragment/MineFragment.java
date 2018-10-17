@@ -2,8 +2,6 @@ package com.zhide.app.view.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -39,6 +37,7 @@ import com.zhide.app.view.activity.RechargeActivity;
 import com.zhide.app.view.activity.ScannerQrActivity;
 import com.zhide.app.view.activity.WithdrawActivity;
 import com.zhide.app.view.base.BaseFragment;
+import com.zhide.app.view.views.KeyboardListenRelativeLayout;
 import com.zhide.app.view.views.SpinerPopWindow;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -50,7 +49,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class MineFragment extends BaseFragment implements TextWatcher, AdapterView.OnItemClickListener {
+public class MineFragment extends BaseFragment implements AdapterView.OnItemClickListener,KeyboardListenRelativeLayout.IOnKeyboardStateChangedListener {
 
     @BindView(R.id.tvRecharge)
     TextView tvRecharge;
@@ -65,7 +64,7 @@ public class MineFragment extends BaseFragment implements TextWatcher, AdapterVi
     @BindView(R.id.tvMyBill)
     TextView tvMyBill;
     @BindView(R.id.edtUserName)
-    TextView edtUserName;
+    EditText edtUserName;
     @BindView(R.id.llSchool)
     LinearLayout llSchool;
     @BindView(R.id.tvSchoolName)
@@ -100,6 +99,8 @@ public class MineFragment extends BaseFragment implements TextWatcher, AdapterVi
     @BindView(R.id.view9)
     View view9;
 
+    @BindView(R.id.rlDayHeader)
+    KeyboardListenRelativeLayout rlDayHeader;
 
     private float mainMoney;
     private long userId;
@@ -136,19 +137,31 @@ public class MineFragment extends BaseFragment implements TextWatcher, AdapterVi
         tvSaveInfo.setSelected(false);
         tvSaveInfo.setEnabled(false);
 
-        edtUserName.addTextChangedListener(this);
-        tvSchoolName.addTextChangedListener(this);
-
-        edtStuId.addTextChangedListener(this);
-        edtIdCard.addTextChangedListener(this);
-        edtWaterCardId.addTextChangedListener(this);
         genderList = new ArrayList<>();
         genderList.add("男");
         genderList.add("女");
         if (mSpinerPopWindow == null) {
             mSpinerPopWindow = new SpinerPopWindow<>(getActivity(), genderList, this);
         }
+        rlDayHeader.setOnKeyboardStateChangedListener(this);
+
     }
+
+    @Override
+    public void onKeyboardStateChanged(int state) {
+        switch (state) {
+            case KeyboardListenRelativeLayout.KEYBOARD_STATE_HIDE://软键盘隐藏
+
+                break;
+            case KeyboardListenRelativeLayout.KEYBOARD_STATE_SHOW://软键盘显示
+                tvSaveInfo.setEnabled(true);
+                tvSaveInfo.setSelected(true);
+                break;
+            default:
+                break;
+        }
+    }
+
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -205,10 +218,8 @@ public class MineFragment extends BaseFragment implements TextWatcher, AdapterVi
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUserInfoEvent(UserInfoEvent event) {
         if (!(event.getUpdatePage() == CommonParams.PAGE_MINE_FRAG_TYPE || event.getUpdatePage() == CommonParams.PAGE_WALLET_FRAG_TYPE)) {
-            Log.d("admin", "onUserInfoEvent: 1");
             return;
         }
-        Log.d("admin", "onUserInfoEvent: 2");
 
         UserData userInfo = event.getUserData();
         if (userInfo == null) {
@@ -368,7 +379,6 @@ public class MineFragment extends BaseFragment implements TextWatcher, AdapterVi
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("admin", "onActivityResult: data=" + data);
         if ((requestCode != REQUEST_CODE && resultCode != RESULT_CODE) || data == null) {
             return;
         }
@@ -404,7 +414,7 @@ public class MineFragment extends BaseFragment implements TextWatcher, AdapterVi
         }
         String idCard = edtIdCard.getText().toString();
 
-        if (!DataUtils.isIDCard(idCard)) {
+        if (!DataUtils.isValidIdNo(idCard)) {
             ToastUtil.showShort("身份证格式错误，请重新输入");
             return;
         }
@@ -421,31 +431,6 @@ public class MineFragment extends BaseFragment implements TextWatcher, AdapterVi
             userData.setSI_Code(guidStr);
         }
         MainManager.getInstance().savePersonInfo(userData);
-
-    }
-
-    private String beforeText;
-
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        beforeText = s.toString();
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
-
-        if (beforeText.equals(s.toString())) {
-            tvSaveInfo.setSelected(false);
-            tvSaveInfo.setEnabled(false);
-            return;
-        }
-        tvSaveInfo.setSelected(true);
-        tvSaveInfo.setEnabled(true);
 
     }
 
