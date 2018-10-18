@@ -316,4 +316,20 @@ public class DialogUtils {
                 }).create();
         dialog.show();
     }
+
+    /**
+     * 网络未连接
+     * @param activity
+     */
+    public static void showNetWorkNotConnectDialog(Activity activity) {
+        AlertDialog dialog = new AlertDialog.Builder(activity)
+                .setMessage(R.string.dialog_network_stop_connect)
+                .setPositiveButton(activity.getString(R.string.sure), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create();
+        dialog.show();
+    }
 }

@@ -3,6 +3,7 @@ package com.zhide.app.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -60,6 +61,7 @@ public class ShowerCompletedActivity extends BaseActivity implements View.OnClic
 
     @Override
     protected void initHeader() {
+        setLeftIconVisibility(View.GONE);
         setHeaderTitle(getString(R.string.consume_title));
     }
 
@@ -118,4 +120,11 @@ public class ShowerCompletedActivity extends BaseActivity implements View.OnClic
         super.onDestroy();
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);//继续执行父类其他点击事件
+    }
 }

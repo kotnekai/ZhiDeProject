@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -40,7 +41,9 @@ import com.example.jooronjar.utils.DigitalTrans;
 import com.example.jooronjar.utils.WaterCodeListener;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zhide.app.R;
+import com.zhide.app.Receiver.NetWorkStateReceiver;
 import com.zhide.app.common.CommonParams;
+import com.zhide.app.eventBus.NetWorkEvent;
 import com.zhide.app.eventBus.WaterPreBillEvent;
 import com.zhide.app.eventBus.WaterSettleEvent;
 import com.zhide.app.logic.ChargeManager;
@@ -95,6 +98,7 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     private Handler myHandle;
     private Dialog xiaofeiDialog;
     private BroadcastReceiver mStatusReceive;
+    private NetWorkStateReceiver netWorkStateReceiver;
 
     private int diff = 30000;
     private int days;
@@ -104,6 +108,9 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     private long curTime;
     private boolean isStart = false;
     private boolean isRunning = false;
+    private boolean isNetConnected = true;
+    //是否点击开始--这里做多一次查询设备，防止设备被使用而没有通知，坑
+    private boolean isClickStart = false;
     float mainBalance;
     //费率
     float waterRate;
@@ -139,8 +146,6 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     TextView tvConnectState;
     ImageView ivConnect;
 
-    //    @BindView(R.id.rlConnectLayout)
-//    RelativeLayout rlConnectLayout;
     //属性动画对象
     TranslateAnimation mHiddenAction;
 
@@ -161,6 +166,7 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
 
     @Override
     protected void initHeader() {
+        setLeftIconVisibility(View.GONE);
         setHeaderTitle(getString(R.string.shower_title));
     }
 
@@ -174,6 +180,20 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
         //连接设备
         connDevice();
         updateUI();
+    }
+
+    @Override
+    protected void onResume() {
+        //网络监听
+        initNetWork();
+        super.onResume();
+    }
+
+    //onPause()方法注销
+    @Override
+    protected void onPause() {
+        unregisterReceiver(netWorkStateReceiver);
+        super.onPause();
     }
 
     /**
@@ -204,6 +224,19 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
         tvMeterName.setText(deviceName);
         tvBalance.setText(String.format(getString(R.string.shower_money_unit), (mainBalance / 1000) + ""));
         tvPerSave.setText(String.format(getString(R.string.shower_money_unit), (deducting / 1000) + ""));
+    }
+
+
+    /**
+     * 网络监听
+     */
+    private void initNetWork() {
+        if (netWorkStateReceiver == null) {
+            netWorkStateReceiver = new NetWorkStateReceiver();
+        }
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(netWorkStateReceiver, filter);
     }
 
     /**
@@ -628,49 +661,29 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
                 switch (mStatus) {
                     case 31:
                         //todo 判断水表状态情况
-                        switch (mChargeType) {
-                            case DEVICE_FREE:
-                                //设备空闲
-                                //执行服务端接口，先预扣费
-                                long currentUserId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
-                                if (llDetail.getVisibility() == View.VISIBLE) {
-                                    //隐藏水表名，余额等
-                                    llDetail.startAnimation(mHiddenAction);
-                                    llDetail.setVisibility(View.GONE);
-                                    //按钮变大
-                                    ivDeviceState.postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            ivDeviceState.setLayoutParams(new LinearLayout.LayoutParams(UIUtils.dipToPx(mContext, 110),
-                                                    UIUtils.dipToPx(mContext, 110)));
-                                        }
-                                    }, 250);
+                            if (isNetConnected) {
+                                if (!isClickStart) {
+                                    isClickStart=true;
+                                    CMDUtils.chaxueshebei(mbtService, true);
                                 }
-                                ChargeManager.getInstance().useWaterPreBill(currentUserId);
-                                break;
-
-                            case DEVICE_USING:
-                                //设备使用中
-                                ToastUtil.showLong(R.string.device_using_hints);
-                                break;
-
-                            case DEVICE_CHARGING:
-                                //刷卡消费中
-                                ToastUtil.showLong(R.string.device_charging_hints);
-                                break;
-                            case DEVICE_CAIJI:
-                                //数据采集
-                                CMDUtils.caijishuju(mbtService, true);
-                                break;
-
-                        }
+                                else {
+                                    //设备空闲 开始洗澡
+                                   startShower();
+                                }
+                            } else {
+                                DialogUtils.showNetWorkNotConnectDialog(ShowerConnectActivity.this);
+                            }
                         break;
                     case 32:
-                        //结束费率
+                        if (isNetConnected) {
+                            //结束费率
 //                        ivShower.setImageResource(R.drawable.animation_shower);
-                        AnimationDrawable animationDrawable = (AnimationDrawable) ivShower.getDrawable();
-                        animationDrawable.stop();
-                        CMDUtils.jieshufeilv(mbtService, true);
+                            AnimationDrawable animationDrawable = (AnimationDrawable) ivShower.getDrawable();
+                            animationDrawable.stop();
+                            CMDUtils.jieshufeilv(mbtService, true);
+                        } else {
+                            DialogUtils.showNetWorkNotConnectDialog(ShowerConnectActivity.this);
+                        }
                         break;
                     case 33:
                         startDeal(mprid, mdecived, mBuffer, tac_Buffer);
@@ -705,12 +718,40 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
 
     }
 
+    /**
+     * 开始洗澡
+     */
+    private void startShower()
+    {
+        //执行服务端接口，先预扣费
+        long currentUserId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
+        if (llDetail.getVisibility() == View.VISIBLE) {
+            //隐藏水表名，余额等
+            llDetail.startAnimation(mHiddenAction);
+            llDetail.setVisibility(View.GONE);
+            //按钮变大
+            ivDeviceState.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    ivDeviceState.setLayoutParams(new LinearLayout.LayoutParams(UIUtils.dipToPx(mContext, 110),
+                            UIUtils.dipToPx(mContext, 110)));
+                }
+            }, 250);
+        }
+        ChargeManager.getInstance().useWaterPreBill(currentUserId);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(NetWorkEvent event) {
+        //返回网络状态
+       isNetConnected = event.getNetWorkStatus();
+
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(WaterPreBillEvent event) {
         //服务端返回学生用水预扣费接口，可以执行下发费率
-
         isRunning = true;
-
         if (event.getWaterPreBillModel() != null) {
             int USB_Id = event.getWaterPreBillModel().getData().getUSB_Id();
             startdDownfate(mprid, USB_Id, (int) deducting, (int) waterRate, mBuffer, tac_Buffer);
@@ -845,8 +886,38 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     @Override
     public void chaxueNewshebeiOnback(boolean b, int charge, int mdeviceid, int mproductid, int maccountid,
                                       byte[] macBuffer, byte[] tac_timeBuffer, int macType, int lType, int constype, int macTime) {
-
         mChargeType = charge;
+        //这里点击开始洗澡时，做多一次查询设备，以防止其它用户使用了，SDK不返回状态
+        if (isClickStart)
+        {
+            switch (mChargeType) {
+                case DEVICE_FREE:
+                    if (isNetConnected) {
+                        //设备空闲 开始洗澡
+                        startShower();
+                    } else {
+                        DialogUtils.showNetWorkNotConnectDialog(ShowerConnectActivity.this);
+                    }
+                    break;
+                case DEVICE_USING:
+                    //设备使用中
+                    ToastUtil.showLong(R.string.device_using_hints);
+                    break;
+
+                case DEVICE_CHARGING:
+                    //刷卡消费中
+                    ToastUtil.showLong(R.string.device_charging_hints);
+                    break;
+                case DEVICE_CAIJI:
+                    //数据采集
+                    CMDUtils.caijishuju(mbtService, true);
+                    break;
+            }
+            isClickStart = false;
+        }
+
+
+
         Log.d(mContext.getClass().getSimpleName(), "mdeviceid:" + mdeviceid);
         Log.d(mContext.getClass().getSimpleName(), "mproductid:" + mproductid);
         Log.d("-------", "maccountid:" + maccountid);
