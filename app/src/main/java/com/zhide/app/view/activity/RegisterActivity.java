@@ -17,9 +17,11 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zhide.app.R;
 import com.zhide.app.common.ComApplication;
 import com.zhide.app.common.CommonUrl;
+import com.zhide.app.eventBus.OkResponseEvent;
 import com.zhide.app.eventBus.RegisterEvent;
 import com.zhide.app.logic.UserManager;
 import com.zhide.app.model.RegisterLoginModel;
+import com.zhide.app.model.ResponseModel;
 import com.zhide.app.utils.EmptyUtil;
 import com.zhide.app.utils.ToastUtil;
 import com.zhide.app.utils.UIUtils;
@@ -97,10 +99,7 @@ public class RegisterActivity extends BaseActivity {
                     ToastUtil.showShort(getString(R.string.please_input_phone));
                     return;
                 }
-                if (countTimer != null) {
-                    countTimer.cancel();
-                    countTimer.start();///开启倒计时
-                }
+
                 UserManager.getInstance().sendSmsCode(phoneNumber);
                 break;
             case R.id.rlRegister:
@@ -146,7 +145,24 @@ public class RegisterActivity extends BaseActivity {
            ComApplication.getApp().removeAllActivity();//登录成功，把登录，，注册页finish
         }
     }
+    //发送验证码回调
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onOkResponseEvent(OkResponseEvent event) {
+        ResponseModel responseModel = event.getResponseModel();
+        if (responseModel == null) {
+            ToastUtil.showShort(getString(R.string.get_net_data_error));
+            return;
+        }
+        ToastUtil.showShort(responseModel.getMsg());
+        if (responseModel.getCode() == 0) {
+            return;
+        }
+        if (countTimer != null) {
+            countTimer.cancel();
+            countTimer.start();///开启倒计时
+        }
 
+    }
     /**
      * 点击按钮后倒计时
      */

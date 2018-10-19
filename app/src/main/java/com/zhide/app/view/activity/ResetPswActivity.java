@@ -96,11 +96,7 @@ public class ResetPswActivity extends BaseActivity {
                     ToastUtil.showShort(getString(R.string.please_input_phone));
                     return;
                 }
-                if (countTimer != null) {
-                    countTimer.cancel();
-                    countTimer.start();///开启倒计时
-                }
-                UserManager.getInstance().sendSmsCode(phoneNumber);
+                UserManager.getInstance().sendForgetSmsCode(phoneNumber);
                 break;
             case R.id.rlReset:
                 String phone = edtPhoneNumber.getText().toString();
@@ -132,6 +128,14 @@ public class ResetPswActivity extends BaseActivity {
             return;
         }
         ToastUtil.showShort(responseModel.getMsg());
+        if (responseModel.getCode() == 0) {
+            return;
+        }
+        if (countTimer != null) {
+            countTimer.cancel();
+            countTimer.start();///开启倒计时
+        }
+
     }
 
 
