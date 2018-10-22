@@ -75,7 +75,7 @@ public class UserManager {
     }
 
     /**
-     * 发送验证码
+     * 发送注册验证码
      *
      * @param mobile
      */
@@ -88,6 +88,35 @@ public class UserManager {
             e.printStackTrace();
         }
         dataInstance.sendPostRequestData(CommonUrl.sendSmsCode, params)
+                .execute(new GenericsCallback<ResponseModel>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Response response, Call call, Exception e, int id) {
+                        String message = e.getMessage();
+                        EventBus.getDefault().post(new ErrorMsgEvent(message));
+                    }
+
+                    @Override
+                    public void onResponse(ResponseModel response, int id) {
+                        EventBus.getDefault().post(new OkResponseEvent(response));
+                        Log.d("admin", "onResponse: response=" + response.getCode() + "-" + response.getMsg());
+                    }
+                });
+
+    }
+    /**
+     * 发送忘记密码验证码
+     *
+     * @param mobile
+     */
+    public void sendForgetSmsCode(String mobile) {
+
+        JSONObject params = new JSONObject();
+        try {
+            params.put("USI_Mobile", mobile);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        dataInstance.sendPostRequestData(CommonUrl.sendForgetSmsCode, params)
                 .execute(new GenericsCallback<ResponseModel>(new JsonGenericsSerializator()) {
                     @Override
                     public void onError(Response response, Call call, Exception e, int id) {

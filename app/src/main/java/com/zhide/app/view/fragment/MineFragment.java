@@ -257,7 +257,7 @@ public class MineFragment extends BaseFragment implements AdapterView.OnItemClic
         edtIdCard.setText(userData.getUSI_IDCard());
         edtWaterCardId.setText(userData.getUSI_Card_SN_PIN());
 
-        if (userData.getSI_Code() == null) { // 表示未绑定学校
+        if (EmptyUtil.isEmpty(userData.getSI_Code())) { // 表示未绑定学校
             llSchool.setVisibility(View.GONE);
             tvBindSchool.setVisibility(View.VISIBLE);
 
@@ -334,7 +334,7 @@ public class MineFragment extends BaseFragment implements AdapterView.OnItemClic
                 startActivity(MyBillActivity.makeIntent(getActivity()));
                 break;
             case R.id.llSchool:
-                if (guidStr == null) {
+                if (EmptyUtil.isEmpty(guidStr)) {
                     ToastUtil.showShort(getString(R.string.please_bind_school_tip));
                     return;
                 }
@@ -393,7 +393,6 @@ public class MineFragment extends BaseFragment implements AdapterView.OnItemClic
         Log.d("admin", "onActivityResult: result=" + result);
         if (result != null) {
             guidStr = result;
-            ToastUtil.showShort(result);
             tvBindSchool.setVisibility(View.GONE);
             llSchool.setVisibility(View.VISIBLE);
             UserManager.getInstance().getUserSchoolInfo(guidStr);
@@ -413,11 +412,12 @@ public class MineFragment extends BaseFragment implements AdapterView.OnItemClic
             return;
         }
         String idCard = edtIdCard.getText().toString();
-
-        if (!DataUtils.isValidIdNo(idCard)) {
-            ToastUtil.showShort("身份证格式错误，请重新输入");
-            return;
-        }
+         if(!EmptyUtil.isEmpty(idCard)){
+             if (!DataUtils.isValidIdNo(idCard)) {
+                 ToastUtil.showShort("身份证格式错误，请重新输入");
+                 return;
+             }
+         }
         UserData userData = new UserData();
         userData.setUSI_Id(userId);
         userData.setUSI_TrueName(edtUserName.getText().toString());
