@@ -14,7 +14,7 @@
         android:layout_marginTop="10dp"
         android:text="0.0"
         android:textColor="@color/green_color"
-        android:textSize="17sp" />
+        android:textSize="17dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -22,7 +22,7 @@
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
         android:text="账户基本余额："
-        android:textSize="17sp" />
+        android:textSize="17dp" />
 
     <TextView
         android:id="@+id/tvCashBalance"
@@ -33,7 +33,7 @@
         android:layout_marginRight="15dp"
         android:layout_marginTop="10dp"
         android:text="0.0"
-        android:textSize="@dimen/com_text_size_12sp" />
+        android:textSize="12dp" />
 
     <TextView
 
@@ -44,7 +44,7 @@
         android:layout_marginTop="10dp"
 
         android:text="现金余额："
-        android:textSize="@dimen/com_text_size_12sp" />
+        android:textSize="12dp" />
 
     <TextView
         android:id="@+id/tvGiftBalance"
@@ -55,7 +55,7 @@
         android:layout_marginRight="15dp"
         android:layout_marginTop="10dp"
         android:text="0.0"
-        android:textSize="@dimen/com_text_size_12sp" />
+        android:textSize="12dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -65,7 +65,7 @@
         android:layout_marginTop="10dp"
         android:text="赠送余额："
 
-        android:textSize="@dimen/com_text_size_12sp" />
+        android:textSize="12dp" />
 
     <View
         android:id="@+id/view1"
@@ -82,6 +82,7 @@
         android:layout_below="@id/view1"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
+        android:textSize="15dp"
         android:text="充值金额" />
 
     <com.zhide.app.view.views.FlowLayout
@@ -104,6 +105,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
+            android:textSize="14dp"
             android:layout_marginTop="10dp"
             android:text="@string/charge_act_introduce"
             android:textColor="@color/light_text_blue_color" />
@@ -114,6 +116,7 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_height="wrap_content"
+            android:textSize="14dp"
             android:layout_marginTop="10dp"
             android:text="暂无活动" />
 
@@ -146,7 +149,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginLeft="15dp"
             android:text="支付方式："
-            android:textSize="18sp" />
+            android:textSize="18dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -181,6 +184,7 @@
         android:background="@drawable/com_btn_blue_5r_bg_shape"
         android:gravity="center"
         android:text="确认充值"
+        android:textSize="15dp"
         android:textColor="@color/white" />
 
 </RelativeLayout>

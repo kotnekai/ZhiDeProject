@@ -59,6 +59,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="18dp"
             android:gravity="center_vertical"
+            android:textSize="14dp"
             android:text="@string/about_service_phone_number"
             android:textColor="@color/text_color" />
 

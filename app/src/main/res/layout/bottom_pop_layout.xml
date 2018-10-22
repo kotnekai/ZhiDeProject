@@ -17,7 +17,7 @@
             android:layout_centerVertical="true"
             android:text="请选择支付方式"
             android:textColor="@color/main_page_number_color"
-            android:textSize="@dimen/com_text_size_14sp" />
+            android:textSize="14dp" />
 
         <ImageView
             android:id="@+id/ivClosePop"
@@ -55,7 +55,7 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/ivIcon1"
             android:text="支付宝"
-            android:textSize="15sp" />
+            android:textSize="15dp" />
 
         <ImageView
             android:id="@+id/ivSelectAliPay"
@@ -93,7 +93,7 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/ivIcon2"
             android:text="微信支付"
-            android:textSize="15sp" />
+            android:textSize="15dp" />
         <ImageView
             android:id="@+id/ivSelectWxPay"
             android:layout_width="wrap_content"

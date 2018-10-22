@@ -14,5 +14,5 @@
         android:gravity="center"
         android:text="234"
         android:textColor="@drawable/com_text_white_blue_selector"
-        android:textSize="14sp" />
+        android:textSize="14dp" />
 </com.zhide.app.view.views.SelectItemView>
