@@ -12,9 +12,9 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="15dp"
         android:layout_marginTop="10dp"
-        android:text="123.34"
+        android:text=""
         android:textColor="@color/green_color"
-        android:textSize="17sp" />
+        android:textSize="17dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -22,7 +22,7 @@
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
         android:text="账户基本余额："
-        android:textSize="17sp" />
+        android:textSize="17dp" />
 
     <TextView
         android:id="@+id/tvCashBalance"
@@ -33,7 +33,7 @@
         android:layout_marginRight="15dp"
         android:layout_marginTop="10dp"
         android:text="123.34"
-        android:textSize="@dimen/com_text_size_12sp" />
+        android:textSize="12dp" />
 
     <TextView
 
@@ -44,7 +44,7 @@
         android:layout_marginTop="10dp"
 
         android:text="现金余额："
-        android:textSize="@dimen/com_text_size_12sp" />
+        android:textSize="12dp" />
 
     <TextView
         android:id="@+id/tvGiftBalance"
@@ -55,7 +55,7 @@
         android:layout_marginRight="15dp"
         android:layout_marginTop="10dp"
         android:text="123.34"
-        android:textSize="@dimen/com_text_size_12sp" />
+        android:textSize="12dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -65,7 +65,7 @@
         android:layout_marginTop="10dp"
         android:text="赠送余额："
 
-        android:textSize="@dimen/com_text_size_12sp" />
+        android:textSize="12dp" />
 
     <View
         android:id="@+id/view0"
@@ -82,7 +82,7 @@
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
         android:text="卡片余额："
-        android:textSize="@dimen/com_text_size_12sp" />
+        android:textSize="12dp" />
 
     <TextView
         android:id="@+id/tvCardMoney"
@@ -92,8 +92,8 @@
         android:layout_below="@id/view0"
         android:layout_marginRight="15dp"
         android:layout_marginTop="10dp"
-        android:text="123.34"
-        android:textSize="@dimen/com_text_size_12sp" />
+        android:text=""
+        android:textSize="12dp" />
 
     <View
         android:id="@+id/view1"
@@ -111,7 +111,7 @@
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
         android:text="卡片充值金额："
-        android:textSize="16sp" />
+        android:textSize="16dp" />
 
     <EditText
         android:id="@+id/edtInputMoney"
@@ -120,7 +120,7 @@
         android:layout_marginTop="10dp"
         android:drawableLeft="@mipmap/renminbi"
         android:layout_marginLeft="15dp"
-        android:textSize="14sp"
+        android:textSize="14dp"
         android:inputType="numberDecimal"
         android:text=""
          android:layout_marginRight="15dp"
@@ -146,7 +146,7 @@
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
         android:textColor="@color/text_gray"
-        android:textSize="@dimen/com_text_size_12sp" />
+        android:textSize="12dp" />
 
 
     <TextView
@@ -159,6 +159,7 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/com_btn_blue_5r_bg_shape"
         android:gravity="center"
+        android:textSize="14dp"
         android:text="确认充值"
         android:textColor="@color/white" />
 
@@ -172,6 +173,7 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/com_btn_line_blue_no_solid_shape"
         android:gravity="center"
+        android:textSize="14dp"
         android:text="卡片充值账单"
         android:textColor="@color/light_text_blue_color" />
 </RelativeLayout>

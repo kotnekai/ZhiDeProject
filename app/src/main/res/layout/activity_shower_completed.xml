@@ -23,7 +23,7 @@
         android:layout_gravity="center"
         android:text="@string/shower_completed"
         android:textColor="@color/white"
-        android:textSize="20sp" />
+        android:textSize="20dp" />
 
 
     <LinearLayout

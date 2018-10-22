@@ -39,12 +39,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/recharge_title"
+                        android:textSize="14dp"
                         android:textColor="@color/white" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/recharge_en_title"
+                        android:textSize="14dp"
+
                         android:textColor="@color/white" />
                 </LinearLayout>
 
@@ -85,12 +88,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/shower_title"
+                        android:textSize="14dp"
+
                         android:textColor="@color/white" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/shower_en_title"
+                        android:textSize="14dp"
+
                         android:textColor="@color/white" />
                 </LinearLayout>
             </LinearLayout>
@@ -110,7 +117,7 @@
                 android:gravity="center_vertical"
                 android:text="@string/can_use_money"
                 android:textColor="@color/dark_text_blue_color"
-                android:textSize="18sp" />
+                android:textSize="18dp" />
 
 
             <LinearLayout
@@ -127,7 +134,7 @@
                     android:layout_height="wrap_content"
                     android:text=""
                     android:textColor="@color/normal_text_money_orange_color"
-                    android:textSize="25sp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -137,7 +144,7 @@
 
                     android:text="@string/yuan"
                     android:textColor="@color/dark_text_blue_color"
-                    android:textSize="18sp" />
+                    android:textSize="18dp" />
             </LinearLayout>
         </RelativeLayout>
 

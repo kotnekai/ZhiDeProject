@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
-        android:textSize="15sp"
+        android:textSize="15dp"
         android:text="热水表" />
 
     <TextView
@@ -19,7 +19,7 @@
         android:layout_below="@id/tvTypeContent"
         android:layout_marginLeft="15dp"
         android:textColor="@color/text_gray"
-        android:textSize="@dimen/com_text_size_12sp"
+        android:textSize="12dp"
         android:layout_marginTop="5dp"
         android:text="2018/02/12" />
 
@@ -31,7 +31,7 @@
         android:layout_marginRight="15dp"
         android:layout_marginTop="20dp"
         android:text="232.00"
-        android:textSize="24sp" />
+        android:textSize="24dp" />
 
     <View
         android:layout_below="@id/tvTimeData"

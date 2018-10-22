@@ -14,7 +14,7 @@
         android:gravity="center"
         android:text="标题标题标题"
         android:textColor="@color/main_page_number_color"
-        android:textSize="17sp" />
+        android:textSize="17dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,7 +31,7 @@
             android:layout_marginRight="50dp"
             android:layout_marginTop="20dp"
             android:textColor="@color/text_color"
-            android:textSize="13sp" />
+            android:textSize="13dp" />
 
         <View
             android:layout_width="match_parent"
@@ -46,6 +46,6 @@
             android:gravity="center"
             android:text="确认"
             android:textColor="@color/main_blue_color"
-            android:textSize="17sp" />
+            android:textSize="17dp" />
     </LinearLayout>
 </LinearLayout>

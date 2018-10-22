@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:text="电话号码/Tel："
                 android:textColor="@color/text_gray"
-                android:textSize="@dimen/com_text_size_14sp" />
+                android:textSize="14dp" />
 
             <EditText
                 android:id="@+id/edtPhoneNumber"
@@ -49,7 +49,7 @@
                 android:maxLength="11"
                 android:paddingLeft="5dp"
                 android:text=""
-                android:textSize="15sp" />
+                android:textSize="15dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -57,7 +57,7 @@
                 android:layout_marginTop="10dp"
                 android:text="密码/Password："
                 android:textColor="@color/text_gray"
-                android:textSize="@dimen/com_text_size_14sp" />
+                android:textSize="14dp" />
 
             <RelativeLayout
                 android:layout_width="200dp"
@@ -74,7 +74,7 @@
                     android:background="@drawable/com_btn_line_black_shape"
                     android:inputType="textPassword"
                     android:paddingLeft="5dp"
-                    android:textSize="15sp" />
+                    android:textSize="15dp" />
 
                 <ImageView
                     android:id="@+id/ivRightIcon"
@@ -108,29 +108,32 @@
                     android:layout_centerVertical="true"
                     android:text="获取短信验证码"
                     android:textColor="@color/main_blue_color"
-                    android:textSize="@dimen/com_text_size_14sp" />
+                    android:textSize="14dp" />
             </RelativeLayout>
 
             <LinearLayout
-                android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
+
+
                 android:layout_height="wrap_content">
+
                 <CheckBox
                     android:id="@+id/cbAgree"
+                    android:layout_marginTop="5dp"
                     android:layout_width="25dp"
                     android:layout_height="20dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:text="@string/agreement_tip"
-                    android:textSize="10sp"
+                    android:textSize="10dp"
                     android:layout_marginLeft="5dp"
                     android:textColor="@color/text_gray"
                     android:layout_height="wrap_content" />
                  <TextView
                      android:id="@+id/tvAgreement"
                      android:layout_width="wrap_content"
-                     android:textSize="10sp"
+                     android:textSize="10dp"
                      android:textColor="@color/main_blue_color"
                      android:text="@string/agreement_content_tip"
                      android:layout_height="wrap_content" />
@@ -162,7 +165,7 @@
                 android:layout_marginTop="5dp"
                 android:text="注册"
                 android:textColor="@color/main_blue_color"
-                android:textSize="15sp" />
+                android:textSize="15dp" />
 
         </RelativeLayout>
 

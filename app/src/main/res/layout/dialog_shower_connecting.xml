@@ -27,7 +27,7 @@
             android:gravity="center"
             android:text="@string/connecting_device"
             android:textColor="@color/main_blue_color"
-            android:textSize="18sp" />
+            android:textSize="18dp" />
 
         <RelativeLayout
             android:layout_width="match_parent"

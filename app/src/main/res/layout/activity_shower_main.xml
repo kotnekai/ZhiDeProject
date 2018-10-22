@@ -37,7 +37,7 @@
                     android:layout_centerInParent="true"
                     android:text="@string/driver_connect_count1"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
+                    android:textSize="20dp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -48,7 +48,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:textColor="@color/bluetooth_count_color"
-                    android:textSize="24sp"
+                    android:textSize="24dp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -57,7 +57,7 @@
                     android:layout_centerInParent="true"
                     android:text="@string/driver_connect_count2"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
+                    android:textSize="20dp"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -71,7 +71,7 @@
                 android:gravity="center"
                 android:text="@string/driver_connect_start"
                 android:textColor="@color/white"
-                android:textSize="20sp"
+                android:textSize="20dp"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -94,7 +94,7 @@
             android:layout_marginLeft="20dp"
             android:text="@string/driver_please_search"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="16dp" />
 
         <ListView
             android:id="@+id/lvResult"
