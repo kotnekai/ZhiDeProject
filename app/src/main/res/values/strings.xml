@@ -198,5 +198,7 @@
     <string name="dialog_network_stop_connect">网络连接出错</string>
 
 
+    <string name="about_title">关于</string>
+    <string name="version">智得能源 \n Version 1.0.0</string>
 
 </resources>

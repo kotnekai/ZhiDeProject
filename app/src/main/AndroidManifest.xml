@@ -15,6 +15,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:name=".common.ComApplication"
@@ -142,6 +143,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.ScannerQrActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.AboutActivity"
             android:screenOrientation="portrait" />
     </application>
 
