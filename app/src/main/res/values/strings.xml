@@ -199,6 +199,6 @@
 
 
     <string name="about_title">关于</string>
-    <string name="version">智得能源 \n Version 1.0.0</string>
+    <string name="depart_name">广州智得能源科技有限公司 \n 版本号：V%s</string>
 
 </resources>

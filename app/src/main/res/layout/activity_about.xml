@@ -1,49 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@color/main_blue_color">
+    android:layout_height="match_parent"
+    android:background="@color/title_or_button_bg">
 
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_centerHorizontal="true"
-            android:gravity="center"
-            android:orientation="vertical">
+    <ImageView
+        android:id="@+id/about_logo"
+        android:layout_width="230dp"
+        android:layout_height="128dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:src="@mipmap/about_logo" />
 
-            <ImageView
-                android:id="@+id/about_logo"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:src="@mipmap/ic_launcher" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/about_logo"
-                android:layout_marginTop="18dp"
-                android:gravity="center"
-                android:text="@string/version"
-                android:textColor="@color/white"
-                android:textSize="16dp" />
-        </LinearLayout>
-    </RelativeLayout>
 
     <TextView
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
+        android:id="@+id/tvVersion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        android:gravity="center"
-        android:text="copyright"
-        android:visibility="gone"
-        android:textColor="@color/normal_text_title_color"
+        android:layout_above="@+id/about_logo"
+        android:layout_marginTop="18dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center" android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:textColor="@color/white"
         android:textSize="16dp" />
 </RelativeLayout>
