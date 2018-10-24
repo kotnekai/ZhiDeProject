@@ -275,7 +275,7 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
                                 animationDrawable.stop();
                                 AlertDialog dialog = new AlertDialog.Builder(mContext)
                                         .setMessage(R.string.dialog_bluetooth_stop_for_running)
-                                        .setPositiveButton(mContext.getString(R.string.repair_meter), new DialogInterface.OnClickListener() {
+                                        .setPositiveButton(mContext.getString(R.string.sure), new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 dialog.dismiss();
@@ -668,7 +668,9 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
                                 }
                                 else {
                                     //设备空闲 开始洗澡
-                                   startShower();
+                                   startShowerAnim();
+                                   //执行预扣费
+                                   useWaterPreBill();
                                 }
                             } else {
                                 DialogUtils.showNetWorkNotConnectDialog(ShowerConnectActivity.this);
@@ -721,10 +723,8 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     /**
      * 开始洗澡
      */
-    private void startShower()
+    private void startShowerAnim()
     {
-        //执行服务端接口，先预扣费
-        long currentUserId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
         if (llDetail.getVisibility() == View.VISIBLE) {
             //隐藏水表名，余额等
             llDetail.startAnimation(mHiddenAction);
@@ -738,6 +738,16 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
                 }
             }, 250);
         }
+
+    }
+
+    /**
+     * 执行预扣费
+     */
+    private void useWaterPreBill()
+    {
+        //执行服务端接口，先预扣费
+        long currentUserId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
         ChargeManager.getInstance().useWaterPreBill(currentUserId);
     }
 
@@ -754,6 +764,8 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
         isRunning = true;
         if (event.getWaterPreBillModel() != null) {
             int USB_Id = event.getWaterPreBillModel().getData().getUSB_Id();
+            //保存当前洗澡用户，如果断开了，也可以重新连接
+            PreferencesUtils.putInt(CommonParams.CURRENT_ACCOUNT_ID, USB_Id);
             startdDownfate(mprid, USB_Id, (int) deducting, (int) waterRate, mBuffer, tac_Buffer);
         } else {
 
@@ -887,6 +899,9 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     public void chaxueNewshebeiOnback(boolean b, int charge, int mdeviceid, int mproductid, int maccountid,
                                       byte[] macBuffer, byte[] tac_timeBuffer, int macType, int lType, int constype, int macTime) {
         mChargeType = charge;
+
+        int USBiD = PreferencesUtils.getInt(CommonParams.CURRENT_ACCOUNT_ID, 0);
+
         //这里点击开始洗澡时，做多一次查询设备，以防止其它用户使用了，SDK不返回状态
         if (isClickStart)
         {
@@ -894,14 +909,23 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
                 case DEVICE_FREE:
                     if (isNetConnected) {
                         //设备空闲 开始洗澡
-                        startShower();
+                        startShowerAnim();
+                        //执行预扣费
+                        useWaterPreBill();
                     } else {
                         DialogUtils.showNetWorkNotConnectDialog(ShowerConnectActivity.this);
                     }
                     break;
                 case DEVICE_USING:
                     //设备使用中
-                    ToastUtil.showLong(R.string.device_using_hints);
+
+                    //判断正在使用设备的用户是否本人
+                    if (USBiD > 0 && maccountid==USBiD) {
+                       //是本人，马上重新连接洗澡
+                        //TODO
+                    } else {
+                        ToastUtil.showLong(R.string.device_using_hints);
+                    }
                     break;
 
                 case DEVICE_CHARGING:
@@ -932,16 +956,6 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
         dType = constype;
         wtype = macType + "&" + lType;
 
-//        if (charge==3)
-//        {
-//            completeTime = Long.valueOf(timeid);
-//            consumeMoney = Float.valueOf(consumeMoneString).floatValue() / 1000;
-//            ChargeManager.getInstance().useWaterSettlement(consumeMoney, maccountid);
-//            CMDUtils.fanhuicunchu(mbtService, true, timeid,
-//                    mproductid, mdeviceid, maccountid, usercount);
-//        }
-
-//        ToastUtil.showShort("查询成功");
         if (mproductid == 0) {
             ToastUtil.showShort(getString(R.string.device_no_login));
             mStatus = 35;
@@ -982,8 +996,15 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
 
                         break;
                     case 1:
-
-                        mStatus = 31;
+                        if (USBiD > 0 && USBiD == maccountid)
+                        {
+                            //下发费率继续洗澡
+                            mStatus = 32;
+                            startShowerAnim();
+                        }
+                        else {
+                            mStatus = 31;
+                        }
                         updateUI();
 //                        CMDUtils.jieshufeilv(mbtService, true);
                         break;
@@ -1003,8 +1024,6 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
                     case 0:
                         mStatus = 33;
                         updateUI();
-
-
                         break;
                     case 1:
                         mStatus = 36;

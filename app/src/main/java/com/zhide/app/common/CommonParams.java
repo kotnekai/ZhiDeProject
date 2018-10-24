@@ -34,6 +34,9 @@ public class CommonParams {
 
     public static long currentUserId;
 
+    public static final String CURRENT_ACCOUNT_ID = "current_account_id";
+
+
     public static int PAGE_HOME_FRAG_TYPE = 1;
     public static int PAGE_CARD_CHARGE_FRAG_TYPE = 2;
     public static int PAGE_MINE_FRAG_TYPE = 3;
