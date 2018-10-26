@@ -7,7 +7,7 @@ import com.zhide.app.eventBus.GuideModelEvent;
 import com.zhide.app.eventBus.NewsModelEvent;
 import com.zhide.app.eventBus.OkResponseEvent;
 import com.zhide.app.eventBus.SaveInfoEvent;
-import com.zhide.app.eventBus.SystemInfoEvvent;
+import com.zhide.app.eventBus.SystemInfoEvent;
 import com.zhide.app.model.BreakdownModel;
 import com.zhide.app.model.GuideModel;
 import com.zhide.app.model.NewsModel;
@@ -21,6 +21,8 @@ import com.zhide.okhttputils.request.JsonGenericsSerializator;
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -133,14 +135,17 @@ public class MainManager {
                 });
     }
 
-    public void getSystemInfo() {
+    /**
+     * 获取系统信息，注册协议，app更新信息，电话号码
+     */
+    public void getSystemInfo(final int pageType) {
         JSONObject params = new JSONObject();
         try {
             params.put("ActionMethod", "systeminfo");
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        dataInstance.sendPostRequestData(CommonUrl.getGuideList, params)
+        dataInstance.sendPostRequestData(CommonUrl.getSystemInfo, params)
                 .execute(new GenericsCallback<SystemInfoModel>(new JsonGenericsSerializator()) {
                     @Override
                     public void onError(Response response, Call call, Exception e, int id) {
@@ -150,7 +155,7 @@ public class MainManager {
 
                     @Override
                     public void onResponse(SystemInfoModel response, int id) {
-                        EventBus.getDefault().post(new SystemInfoEvvent(response));
+                        EventBus.getDefault().post(new SystemInfoEvent(response,pageType));
                     }
                 });
     }
@@ -158,7 +163,7 @@ public class MainManager {
     /**
      * 故障列表
      */
-    public void getBreakdownType(){
+    public void getBreakdownType() {
         JSONObject params = new JSONObject();
         try {
             params.put("ActionMethod", "getbreakdowntype");
@@ -180,7 +185,7 @@ public class MainManager {
                 });
     }
 
-    public void submitBreakInfo(String device,String reson,long userId,String content){
+    public void submitBreakInfo(String device, String reson, long userId, String content) {
         JSONObject params = new JSONObject();
         try {
             params.put("ZBI_DeviceType", device);
@@ -204,4 +209,25 @@ public class MainManager {
                     }
                 });
     }
+
+    /**
+     * apk 信息
+     * @param infoModel
+     * @return
+     */
+    public  SystemInfoModel.SystemData getSystemModel(int type,SystemInfoModel infoModel) {
+        List<SystemInfoModel.SystemData> data = infoModel.getData();
+        SystemInfoModel.SystemData systemData = null;
+        if (data == null || data.size() == 0) {
+            return null;
+        }
+        for (int i = 0; i < data.size(); i++) {
+            if (type == data.get(i).getNI_Id()) {
+                systemData = data.get(i);
+                break;
+            }
+        }
+        return systemData;
+    }
+
 }

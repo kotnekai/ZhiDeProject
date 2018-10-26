@@ -5,20 +5,16 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.content.FileProvider;
-import android.util.Log;
+
 import com.zhide.app.common.ApplicationHolder;
-import com.zhide.app.common.CommonUrl;
-import com.zhide.app.eventBus.ApkInfoEvent;
-import com.zhide.app.model.ApkInfoModel;
+import com.zhide.app.model.SystemInfoModel;
 import com.zhide.app.model.VersionModel;
 import com.zhide.app.okhttp.DataManager;
 import com.zhide.app.okhttp.MyOkhttpUtils;
-import com.zhide.okhttputils.callback.GenericsCallback;
-import com.zhide.okhttputils.request.JsonGenericsSerializator;
-import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
 import java.io.IOException;
-import okhttp3.Call;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -65,44 +61,25 @@ public class AppUpdateManager {
         return 0;
     }
 
-    public void getApkVersionInfo(final boolean isSelfCheck) {
-        dataInstance.sendGetRequestData(CommonUrl.GET_APK_VERSION_INFO,null)
-                .execute(new GenericsCallback<ApkInfoModel>(new JsonGenericsSerializator()) {
-                    @Override
-                    public void onError(Response response,Call call, Exception e, int i) {
-
-                        EventBus.getDefault().post(new ApkInfoEvent(null, isSelfCheck));
-                    }
-
-                    @Override
-                    public void onResponse(ApkInfoModel apkInfoModel, int i) {
-                        EventBus.getDefault().post(new ApkInfoEvent(apkInfoModel, isSelfCheck));
-                    }
-                });
-    }
-
-    public boolean needUpdateApk(ApkInfoModel apkInfoModel) {
-        if (apkInfoModel == null) {
+    public boolean needUpdateApk(SystemInfoModel.SystemData systemModel) {
+        if (systemModel == null) {
             return false;
         }
-        String apkVersion = apkInfoModel.getApkVersion();
+        String apkVersion = systemModel.getNI_Summary();
         VersionModel versionModel = ApplicationHolder.getInstance().getVersionModel();
         if (versionModel == null || apkVersion == null) {
             return false;
         }
         String versionName = versionModel.getVersionName();
-        float v1 = Float.parseFloat(versionName);
-        float v2 = Float.parseFloat(apkVersion);
-        Log.d("xyc", "needUpdateApk: v1="+v1);
-        Log.d("xyc", "needUpdateApk: v2="+v2);
-        if(v2>v1){
+        if (!apkVersion.equals(versionName)) {
             return true;
         }
         return false;
     }
 
-    public void updateNewApk(Context context, ApkInfoModel apkInfoModel) {
-        String apkPath = apkInfoModel.getApkPath();
+    public void updateNewApk(Context context, SystemInfoModel.SystemData systemModel) {
+
+        String apkPath = systemModel.getNI_Url();
         if (apkPath == null) {
             return;
         }
@@ -110,7 +87,7 @@ public class AppUpdateManager {
         loadApkFile.updateAPk(context, apkPath);
     }
 
-    public void installApk(Context appContext,String filePath) {
+    public void installApk(Context appContext, String filePath) {
         //Context appContext = ApplicationHolder.getAppContext();
         File file = new File(filePath);
         if (!file.exists()) {

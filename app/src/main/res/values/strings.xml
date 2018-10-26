@@ -200,5 +200,7 @@
 
     <string name="about_title">关于</string>
     <string name="depart_name">广州智得能源科技有限公司 \n 版本号：V%s</string>
+    <string name="act_ver_update_checking">版本检查中...</string>
+    <string name="act_is_new_ver">当前已是最新版本</string>
 
 </resources>

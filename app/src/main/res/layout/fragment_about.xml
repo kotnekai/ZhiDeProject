@@ -54,13 +54,13 @@
             android:text="@string/about_service_phone" />
 
         <TextView
+            android:id="@+id/tvPhoneNumber"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_marginRight="18dp"
             android:gravity="center_vertical"
             android:textSize="14dp"
-            android:text="@string/about_service_phone_number"
             android:textColor="@color/text_color" />
 
 

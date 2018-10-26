@@ -16,13 +16,17 @@ import android.widget.TextView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zhide.app.R;
 import com.zhide.app.common.ComApplication;
-import com.zhide.app.common.CommonUrl;
+import com.zhide.app.common.CommonParams;
 import com.zhide.app.eventBus.OkResponseEvent;
 import com.zhide.app.eventBus.RegisterEvent;
+import com.zhide.app.eventBus.SystemInfoEvent;
+import com.zhide.app.logic.MainManager;
 import com.zhide.app.logic.UserManager;
 import com.zhide.app.model.RegisterLoginModel;
 import com.zhide.app.model.ResponseModel;
+import com.zhide.app.model.SystemInfoModel;
 import com.zhide.app.utils.EmptyUtil;
+import com.zhide.app.utils.PreferencesUtils;
 import com.zhide.app.utils.ToastUtil;
 import com.zhide.app.utils.UIUtils;
 import com.zhide.app.view.base.BaseActivity;
@@ -57,6 +61,7 @@ public class RegisterActivity extends BaseActivity {
     private final int millisInFuture = 60000;
     private final int countDownInterval = 1000;
     private CountTimer countTimer;
+    private String aggreeUrl;
 
     @Override
     protected int getCenterView() {
@@ -85,6 +90,29 @@ public class RegisterActivity extends BaseActivity {
         countTimer = new CountTimer(millisInFuture, countDownInterval);
         tvAgreement.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
         tvAgreement.getPaint().setAntiAlias(true);//抗锯齿
+        MainManager.getInstance().getSystemInfo(CommonParams.PAGE_REGISTER_ACTIVITY_TYPE);
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onSystemInfoEvent(SystemInfoEvent event) {
+        SystemInfoModel infoModel = event.getInfoModel();
+        if (event.getPageType() != CommonParams.PAGE_REGISTER_ACTIVITY_TYPE) {
+            return;
+        }
+        if (infoModel == null) {
+            ToastUtil.showShort(getString(R.string.get_net_data_error));
+            return;
+        }
+        if (infoModel.getCode() != 1) {
+            return;
+        }
+        PreferencesUtils.putObject(CommonParams.SYSTEM_INFO, infoModel);
+        SystemInfoModel.SystemData systemModel = MainManager.getInstance().getSystemModel(CommonParams.SYSTEM_AGGREE_ID, infoModel);
+        if (systemModel == null) {
+            return;
+        }
+        aggreeUrl = systemModel.getNI_Url();
     }
 
     @OnClick({R.id.ivRightIcon, R.id.tvGetVerifyCode, R.id.rlRegister, R.id.tvAgreement})
@@ -126,9 +154,11 @@ public class RegisterActivity extends BaseActivity {
 
                 break;
             case R.id.tvAgreement:
-                startActivity(WebViewActivity.makeIntent(this,getString(R.string.agreement_url_title), CommonUrl.user_agreement));
+                if (aggreeUrl == null) {
+                    return;
+                }
+                startActivity(WebViewActivity.makeIntent(this, getString(R.string.agreement_url_title), aggreeUrl));
                 break;
-
         }
     }
 
@@ -142,9 +172,10 @@ public class RegisterActivity extends BaseActivity {
         ToastUtil.showShort(registerModel.getMessage());
         if (registerModel.getCode() == 1) {
             startActivity(MainActivity.makeIntent(this));
-           ComApplication.getApp().removeAllActivity();//登录成功，把登录，，注册页finish
+            ComApplication.getApp().removeAllActivity();//登录成功，把登录，，注册页finish
         }
     }
+
     //发送验证码回调
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onOkResponseEvent(OkResponseEvent event) {
@@ -163,6 +194,7 @@ public class RegisterActivity extends BaseActivity {
         }
 
     }
+
     /**
      * 点击按钮后倒计时
      */

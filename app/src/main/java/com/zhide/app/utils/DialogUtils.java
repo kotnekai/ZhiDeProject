@@ -10,6 +10,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
+import android.text.method.ScrollingMovementMethod;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,7 @@ import com.zhide.app.R;
 import com.zhide.app.delegate.IConfirmClickListener;
 import com.zhide.app.delegate.SpinerOnItemClickListener;
 import com.zhide.app.model.SpinnerSelectModel;
+import com.zhide.app.model.SystemInfoModel;
 import com.zhide.app.view.adapter.SpinerAdapter;
 
 import java.util.List;
@@ -86,14 +88,14 @@ public class DialogUtils {
      * @param title
      * @param
      */
-    public static void showTipsDialog(Context context, String hintContent,String title, boolean inputBtn, final IConfirmClickListener listener) {
+    public static void showTipsDialog(Context context, String hintContent, String title, boolean inputBtn, final IConfirmClickListener listener) {
         final AlertDialog dialog = new AlertDialog.Builder(context).create();
         View view = LayoutInflater.from(context).inflate(R.layout.tips_dialog_view, null);
 
         TextView tvOkBtn = (TextView) view.findViewById(R.id.tvOkBtn);
         TextView tvTitle = (TextView) view.findViewById(R.id.tvTitle);
         final EditText edtContent = (EditText) view.findViewById(R.id.edtContent);
-        if(hintContent!=null){
+        if (hintContent != null) {
             edtContent.setHint(hintContent);
         }
         if (title != null) {
@@ -302,6 +304,7 @@ public class DialogUtils {
 
     /**
      * 蓝牙连接提示
+     *
      * @param activity
      */
     public static void showEnableBlueToothDialog(Activity activity) {
@@ -319,6 +322,7 @@ public class DialogUtils {
 
     /**
      * 网络未连接
+     *
      * @param activity
      */
     public static void showNetWorkNotConnectDialog(Activity activity) {
@@ -332,4 +336,43 @@ public class DialogUtils {
                 }).create();
         dialog.show();
     }
+
+    public static void showApkUpdateDialog(final Context context, SystemInfoModel.SystemData apkInfoModel, final View.OnClickListener listener) {
+        final AlertDialog dialog = new AlertDialog.Builder(context).create();
+        View view = LayoutInflater.from(context).inflate(R.layout.apk_update_layout, null);
+        TextView tvApkVersion = (TextView) view.findViewById(R.id.tvApkVersion);
+
+        TextView tvUpdateTime = (TextView) view.findViewById(R.id.tvUpdateTime);
+        TextView tvUpdateContent = (TextView) view.findViewById(R.id.tvUpdateContent);
+        TextView tvCancel = (TextView) view.findViewById(R.id.tvCancel);
+        TextView tvConfirm = (TextView) view.findViewById(R.id.tvConfirm);
+        tvApkVersion.setText("版本：" + apkInfoModel.getNI_Summary());
+        tvUpdateTime.setText("更新时间：" + apkInfoModel.getNI_UpdateTime());
+        tvUpdateContent.setMovementMethod(ScrollingMovementMethod.getInstance());
+        tvUpdateContent.setText(apkInfoModel.getNI_Title());
+        dialog.setView(view);
+        dialog.setCancelable(true);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.show();
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (dialog.isShowing()) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        tvConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClick(v);
+                if (dialog.isShowing()) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+    }
+
+
 }

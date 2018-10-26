@@ -2,28 +2,32 @@ package com.zhide.app.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zhide.app.R;
+import com.zhide.app.apkUpdate.AppUpdateManager;
 import com.zhide.app.common.CommonParams;
-import com.zhide.app.logic.UserManager;
+import com.zhide.app.eventBus.SystemInfoEvent;
+import com.zhide.app.logic.MainManager;
+import com.zhide.app.model.SystemInfoModel;
+import com.zhide.app.utils.DialogUtils;
 import com.zhide.app.utils.PreferencesUtils;
-import com.zhide.app.utils.ResourceUtils;
+import com.zhide.app.utils.ToastUtil;
 import com.zhide.app.utils.UIUtils;
 import com.zhide.app.view.adapter.FragmentAdapter;
 import com.zhide.app.view.base.BaseActivity;
-import com.zhide.app.view.fragment.HomeFragment;
 import com.zhide.app.view.fragment.AboutFragment;
+import com.zhide.app.view.fragment.HomeFragment;
 import com.zhide.app.view.fragment.MineFragment;
 import com.zhide.app.view.views.NoScrollViewPager;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,8 +90,48 @@ public class MainActivity extends BaseActivity {
         adapter = new FragmentAdapter(fragmentList, getSupportFragmentManager());
         viewPager.setAdapter(adapter);
         ivHomeTab.setSelected(true);
-
+        MainManager.getInstance().getSystemInfo(CommonParams.PAGE_HOME_ACTIVITY_TYPE);
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onSystemInfoEvent(SystemInfoEvent event) {
+        SystemInfoModel infoModel = event.getInfoModel();
+        if (event.getPageType() != CommonParams.PAGE_HOME_ACTIVITY_TYPE) {
+            return;
+        }
+        if (infoModel == null) {
+            ToastUtil.showShort(getString(R.string.get_net_data_error));
+            return;
+        }
+        if (infoModel.getCode() != 1) {
+            return;
+        }
+        PreferencesUtils.putObject(CommonParams.SYSTEM_INFO, infoModel);
+        checkApkUpdate(infoModel);
+    }
+
+    /**
+     * 检查apk更新
+     * @param infoModel
+     */
+    private void checkApkUpdate(SystemInfoModel infoModel) {
+        final SystemInfoModel.SystemData systemModel = MainManager.getInstance().getSystemModel(CommonParams.SYSTEM_APK_ID, infoModel);
+        if (systemModel == null) {
+            return;
+        }
+        boolean needUpdateApk = AppUpdateManager.getInstance().needUpdateApk(systemModel);
+        if (needUpdateApk) {
+            DialogUtils.showApkUpdateDialog(this, systemModel, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AppUpdateManager.getInstance().updateNewApk(MainActivity.this, systemModel);
+                }
+            });
+        } else {
+            ToastUtil.showShort(UIUtils.getValueString(R.string.act_is_new_ver));
+        }
+    }
+
 
     @OnClick({R.id.ivHomeTab, R.id.ivAboutTab, R.id.ivMineTab, R.id.tvFourthTab})
     public void onClick(View v) {

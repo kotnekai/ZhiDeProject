@@ -10,20 +10,28 @@
         android:layout_width="230dp"
         android:layout_height="128dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:src="@mipmap/about_logo" />
+        android:layout_marginTop="40dp" />
 
-
+    <TextView
+        android:id="@+id/tvCheckVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="检查更新"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/tvVersion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/about_logo"
-        android:layout_marginTop="18dp"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:gravity="center" android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
+        android:layout_marginTop="18dp"
+        android:gravity="center"
+        android:text="23323232323232"
         android:textColor="@color/white"
         android:textSize="16dp" />
 </RelativeLayout>

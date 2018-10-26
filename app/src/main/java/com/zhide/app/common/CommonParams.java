@@ -14,6 +14,9 @@ public class CommonParams {
     public static final String PRF_NAME = "username";
     public static final String PRF_PSW_CHECK_STATE = "checkState";
     public static final String LOGIN_USER_ID = "userId";
+    public static final String SYSTEM_INFO = "system_info";
+
+
     //学校对应水表费率
     public static final String SCHOOL_WATERRATE = "school_waterRate";
     //学生余额
@@ -43,9 +46,16 @@ public class CommonParams {
     public static int PAGE_WALLET_FRAG_TYPE = 4;
     public static int PAGE_WITH_DRAW_TYPE = 5;
     public static int PAGE_CHARGE_ACTIVITY_TYPE = 6;
+    public static int PAGE_HOME_ACTIVITY_TYPE = 7;
+    public static int PAGE_VERSION_ACTIVITY_TYPE = 8;
+    public static int PAGE_REGISTER_ACTIVITY_TYPE = 9;
+
 
     //结束洗澡代码，用于返回首页
     public static int FINISH_CODE = 300;
 
+    public static int SYSTEM_APK_ID =1034;// apk更新id
+    public static int SYSTEM_AGGREE_ID =1030;// 注册协议id
+    public static int SYSTEM_PHOONE_ID =1029;// 电话id
 
 }
