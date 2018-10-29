@@ -65,7 +65,7 @@ public class AppUpdateManager {
         if (systemModel == null) {
             return false;
         }
-        String apkVersion = systemModel.getNI_Summary();
+        String apkVersion = systemModel.getNI_Title();
         VersionModel versionModel = ApplicationHolder.getInstance().getVersionModel();
         if (versionModel == null || apkVersion == null) {
             return false;

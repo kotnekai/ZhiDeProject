@@ -346,13 +346,25 @@ public class DialogUtils {
         TextView tvUpdateContent = (TextView) view.findViewById(R.id.tvUpdateContent);
         TextView tvCancel = (TextView) view.findViewById(R.id.tvCancel);
         TextView tvConfirm = (TextView) view.findViewById(R.id.tvConfirm);
-        tvApkVersion.setText("版本：" + apkInfoModel.getNI_Summary());
+
+        tvApkVersion.setText("版本：" + apkInfoModel.getNI_Title());
+
         tvUpdateTime.setText("更新时间：" + apkInfoModel.getNI_UpdateTime());
         tvUpdateContent.setMovementMethod(ScrollingMovementMethod.getInstance());
-        tvUpdateContent.setText(apkInfoModel.getNI_Title());
+        tvUpdateContent.setText(apkInfoModel.getNI_Summary());
+
         dialog.setView(view);
-        dialog.setCancelable(true);
-        dialog.setCanceledOnTouchOutside(true);
+
+        if (apkInfoModel.getNI_Index() == 1) {
+            dialog.setCanceledOnTouchOutside(false);
+            tvCancel.setVisibility(View.GONE);
+            dialog.setCancelable(false);
+        } else {
+            dialog.setCancelable(true);
+            dialog.setCanceledOnTouchOutside(true);
+            tvCancel.setVisibility(View.VISIBLE);
+        }
+
         dialog.show();
         tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override

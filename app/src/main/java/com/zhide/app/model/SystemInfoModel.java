@@ -37,12 +37,13 @@ public class SystemInfoModel implements Serializable{
 
     public class SystemData implements Serializable{
         private long NI_Id;
-        private String NI_Title;
-        private String NI_Summary;
+        private String NI_Title;//版本号
+        private String NI_Summary; // 升级说明、服务电话
         private String NI_Url;// 注册协议链接，或者apk更新链接
-        private int NI_Index;
+        private int NI_Index;//是否强制更新 0/不强制 1/强制更新
         private String NI_UpdateTime;//更新时间
         private String NI_PicUrl;//
+
 
         public long getNI_Id() {
             return NI_Id;

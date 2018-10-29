@@ -67,7 +67,7 @@
                 android:scrollbars="vertical"
                 android:textColor="@color/text_gray"
                 android:layout_marginTop="10dp"
-                android:text="安卓版本" />
+                android:text="" />
 
         </LinearLayout>
 
