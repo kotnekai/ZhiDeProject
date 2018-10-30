@@ -1,9 +1,14 @@
 package com.zhide.app.view.base;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.annotation.RequiresApi;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -19,6 +24,7 @@ import android.widget.TextView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zhide.app.R;
 import com.zhide.app.eventBus.ErrorMsgEvent;
+import com.zhide.app.utils.DialogUtils;
 import com.zhide.app.utils.ProgressUtils;
 import com.zhide.app.utils.ToastUtil;
 
@@ -83,12 +89,37 @@ public abstract class BaseActivity extends AppCompatActivity implements DrawerLa
         // 全部绑定ButterKnife
         ButterKnife.bind(this);
         checkPermission();
+        checkInstallPermission();
         // 全局注册EventBus ，，EventBus貌似不能重复注册，这里判断一下
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
         updateBaseData();
 
+    }
+
+    protected  void checkInstallPermission(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            //先获取是否有安装未知来源应用的权限
+            boolean    haveInstallPermission = getPackageManager().canRequestPackageInstalls();
+            if (!haveInstallPermission) {//没有权限
+                DialogUtils.showPermissionDialog(this, new View.OnClickListener() {
+                    @TargetApi(Build.VERSION_CODES.O)
+                    @Override
+                    public void onClick(View v) {
+                        startInstallPermissionSettingActivity();
+                    }
+                });
+            }
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void startInstallPermissionSettingActivity() {
+        Uri packageURI = Uri.parse("package:" + getPackageName());
+        //注意这个是8.0新API
+        Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, packageURI);
+        startActivityForResult(intent, 10086);
     }
 
     /**
@@ -102,14 +133,7 @@ public abstract class BaseActivity extends AppCompatActivity implements DrawerLa
         permissionItems.add(new PermissionItem(Manifest.permission.ACCESS_FINE_LOCATION, "蓝牙扫描", R.drawable.permission_ic_sensors));
         permissionItems.add(new PermissionItem(Manifest.permission.ACCESS_COARSE_LOCATION, "蓝牙定位", R.drawable.permission_ic_location));
         permissionItems.add(new PermissionItem(Manifest.permission.CAMERA, "相机拍照", R.drawable.permission_ic_camera));
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            boolean b = getPackageManager().canRequestPackageInstalls();
-            if(!b){
-                permissionItems.add(new PermissionItem(Manifest.permission.REQUEST_INSTALL_PACKAGES, "允许安装未知来源应用", R.drawable.permission_ic_phone));
-                //请求安装未知应用来源的权限
-             //   ActivityCompat.requestPermissions(appContext, new String[]{Manifest.permission.REQUEST_INSTALL_PACKAGES}, INSTALL_PACKAGES_REQUESTCODE);
-            }
-        }
+
         return permissionItems;
     }
     /**

@@ -130,6 +130,8 @@ public class DialogUtils {
         dialogWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
+
+
     public static void showConfirmDialog(Context context, String content, final View.OnClickListener listener) {
         final AlertDialog dialog = new AlertDialog.Builder(context).create();
         View view = LayoutInflater.from(context).inflate(R.layout.show_confirm_dialog, null);
@@ -151,6 +153,45 @@ public class DialogUtils {
         TextView tvConfirm = (TextView) view.findViewById(R.id.tvConfirm);
         tvContent.setText(content);
 
+
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (dialog.isShowing()) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        tvConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClick(v);
+                if (dialog.isShowing()) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+    }
+
+    public static void showPermissionDialog(Context context, final View.OnClickListener listener) {
+        final AlertDialog dialog = new AlertDialog.Builder(context).create();
+        View view = LayoutInflater.from(context).inflate(R.layout.show_permission_dialog, null);
+        dialog.setView(view);
+        dialog.show();
+        Window dialogWindow = dialog.getWindow();
+        if (dialogWindow == null) {
+            return;
+        }
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+        dialogWindow.setGravity(Gravity.CENTER_HORIZONTAL);
+        lp.width = UIUtils.dipToPx(context, 300);
+        //lp.height = UIUtils.dipToPx(context,200);
+        dialogWindow.setAttributes(lp);
+        dialogWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        TextView tvCancel = (TextView) view.findViewById(R.id.tvCancel);
+        TextView tvConfirm = (TextView) view.findViewById(R.id.tvConfirm);
 
         tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
