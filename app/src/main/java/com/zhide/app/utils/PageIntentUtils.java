@@ -30,18 +30,11 @@ public class PageIntentUtils {
         return intent;
     }
 
-    public static PendingIntent getPendIntent(Context context) {
-        if (classOfT == null) {
+    public static PendingIntent getPendIntent(Context context,Intent intent) {
+        if (intent == null) {
             return null;
         }
-        Intent intent = new Intent(context, classOfT);
         return PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-    }
-
-    private static Class classOfT;
-
-    private void setClassOfT(Class classOfT) {
-        this.classOfT = classOfT;
     }
 
 }

@@ -9,7 +9,6 @@ import android.content.pm.ApplicationInfo;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
 
-
 import com.zhide.app.R;
 
 import java.lang.reflect.Field;
@@ -100,6 +99,7 @@ public class NotificationUtil {
         builderProgress.setSmallIcon(R.mipmap.ic_launcher);
         builderProgress.setTicker("下载通知");
         builderProgress.setProgress(100, progress, false);
+        builderProgress.setAutoCancel(true);
         if(pendingIntent!=null){
             //当通知被点击的时候，跳转到pendingIntent中
             builderProgress.setContentIntent(pendingIntent);

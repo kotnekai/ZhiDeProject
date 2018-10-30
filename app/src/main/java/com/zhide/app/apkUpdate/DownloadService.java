@@ -8,7 +8,6 @@ import android.os.Environment;
 import android.os.IBinder;
 import android.widget.Toast;
 
-
 import com.zhide.app.common.ApplicationHolder;
 import com.zhide.app.common.CommonParams;
 import com.zhide.app.utils.DateUtils;
@@ -43,7 +42,8 @@ public class DownloadService extends Service {
         public void onProgress(int progress) {
             //NotificationManager的notify()可以让通知显示出来。
             //notify(),接收两个参数，第一个参数是id:每个通知所指定的id都是不同的。第二个参数是Notification对象。
-            NotificationUtil.getNotificationManager(context).notify(1, NotificationUtil.getLoadNotification(context, "下载中。。", progress, PageIntentUtils.getPendIntent(context)));
+
+            NotificationUtil.getNotificationManager(context).notify(1, NotificationUtil.getLoadNotification(context, "下载中。。", progress, null));
         }
 
         @Override
@@ -52,9 +52,12 @@ public class DownloadService extends Service {
 
             //下载成功时将前台服务通知关闭，并创建一个下载成功的通知
             stopForeground(true);
-            NotificationUtil.getNotificationManager(context).notify(1, NotificationUtil.getLoadNotification(context, "下载成功", 100, PageIntentUtils.getPendIntent(context)));
             Toast.makeText(DownloadService.this, "下载成功", Toast.LENGTH_SHORT).show();
+
+            Intent notiItent = AppUpdateManager.getInstance().getNotiItent(context, FileUtils.getFilePath(CommonParams.APK_PATH) + "/" + fileName);
+            NotificationUtil.getNotificationManager(context).notify(1, NotificationUtil.getLoadNotification(context, "下载成功", 100, PageIntentUtils.getPendIntent(context,notiItent)));
             AppUpdateManager.getInstance().installApk(ApplicationHolder.getInstance().getAppContext(), FileUtils.getFilePath(CommonParams.APK_PATH) + "/" + fileName);
+
         }
 
         @Override
@@ -63,7 +66,8 @@ public class DownloadService extends Service {
 
             //下载失败时，将前台服务通知关闭，并创建一个下载失败的通知
             stopForeground(true);
-            NotificationUtil.getNotificationManager(context).notify(1,NotificationUtil.getLoadNotification(context,"下载失败",-1,PageIntentUtils.getPendIntent(context)));
+
+            NotificationUtil.getNotificationManager(context).notify(1,NotificationUtil.getLoadNotification(context,"下载失败",-1,null));
             Toast.makeText(DownloadService.this, "下载失败", Toast.LENGTH_SHORT).show();
 
         }
@@ -106,7 +110,7 @@ public class DownloadService extends Service {
                 //启动下载任务
                 downloadTask.execute(downloadUrl, FileUtils.getFilePath(CommonParams.APK_PATH), fileName);
                 //startForeground(1, NotificationUtils.getNotification(context, "开始下载...", 0));
-                startForeground(1, NotificationUtil.getLoadNotification(context, "开始下载...", 0, PageIntentUtils.getPendIntent(context)));
+                startForeground(1, NotificationUtil.getLoadNotification(context, "开始下载...", 0, null));
 
                 Toast.makeText(DownloadService.this, "后台下载中...", Toast.LENGTH_SHORT).show();
             }

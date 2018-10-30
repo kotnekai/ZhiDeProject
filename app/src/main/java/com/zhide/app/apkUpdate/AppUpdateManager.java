@@ -109,4 +109,25 @@ public class AppUpdateManager {
         intent.setDataAndType(data, "application/vnd.android.package-archive");
         appContext.startActivity(intent);
     }
+
+   public Intent getNotiItent(Context appContext, String filePath){
+       File file = new File(filePath);
+       if (!file.exists()) {
+           return null;
+       }
+       Intent intent = new Intent(Intent.ACTION_VIEW);
+       Uri data;
+       intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+       // 判断版本大于等于7.0
+       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+           // ".fileprovider"即是在清单文件中配置的authorities
+           data = FileProvider.getUriForFile(appContext, "com.zhide.app.fileProvider", file);
+           // 给目标应用一个临时授权
+           intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+       } else {
+           data = Uri.fromFile(file);
+       }
+       intent.setDataAndType(data, "application/vnd.android.package-archive");
+       return intent;
+   }
 }
