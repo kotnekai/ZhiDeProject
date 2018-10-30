@@ -90,6 +90,7 @@ public abstract class BaseActivity extends AppCompatActivity implements DrawerLa
         updateBaseData();
 
     }
+
     /**
      * 初始化需要申请的权限
      *
@@ -101,7 +102,14 @@ public abstract class BaseActivity extends AppCompatActivity implements DrawerLa
         permissionItems.add(new PermissionItem(Manifest.permission.ACCESS_FINE_LOCATION, "蓝牙扫描", R.drawable.permission_ic_sensors));
         permissionItems.add(new PermissionItem(Manifest.permission.ACCESS_COARSE_LOCATION, "蓝牙定位", R.drawable.permission_ic_location));
         permissionItems.add(new PermissionItem(Manifest.permission.CAMERA, "相机拍照", R.drawable.permission_ic_camera));
-
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            boolean b = getPackageManager().canRequestPackageInstalls();
+            if(!b){
+                permissionItems.add(new PermissionItem(Manifest.permission.REQUEST_INSTALL_PACKAGES, "允许安装未知来源应用", R.drawable.permission_ic_phone));
+                //请求安装未知应用来源的权限
+             //   ActivityCompat.requestPermissions(appContext, new String[]{Manifest.permission.REQUEST_INSTALL_PACKAGES}, INSTALL_PACKAGES_REQUESTCODE);
+            }
+        }
         return permissionItems;
     }
     /**

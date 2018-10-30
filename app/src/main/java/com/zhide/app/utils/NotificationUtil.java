@@ -2,11 +2,13 @@ package com.zhide.app.utils;
 
 import android.app.AppOpsManager;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 
 import com.zhide.app.R;
@@ -22,6 +24,7 @@ import java.lang.reflect.Method;
 public class NotificationUtil {
     private static final String CHECK_OP_NO_THROW = "checkOpNoThrow";
     private static final String OP_POST_NOTIFICATION = "OP_POST_NOTIFICATION";
+
     /**
      * 显示一个普通的通知
      *
@@ -92,15 +95,31 @@ public class NotificationUtil {
         return (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
+    private static final String CHANNEL_ID = "push";
+    private static final String CHANNEL_NAME = "push";  // 渠道名会在通知栏权限的分类中显示
+
     public static Notification getLoadNotification(Context context, String title, int progress, PendingIntent pendingIntent) {
         //进度条通知
-        final NotificationCompat.Builder builderProgress = new NotificationCompat.Builder(context);
+        final Notification.Builder builderProgress;
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            builderProgress = new Notification.Builder(context.getApplicationContext());
+        } else {
+            NotificationManager notificationManager = (NotificationManager) context.getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+            if (notificationManager == null) {
+                return  null;
+            }
+            // 渠道名会在通知栏权限的分类中显示
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
+            notificationManager.createNotificationChannel(channel);
+            builderProgress = new Notification.Builder(context.getApplicationContext(), CHANNEL_ID);
+        }
         builderProgress.setContentTitle(title);
         builderProgress.setSmallIcon(R.mipmap.ic_launcher);
         builderProgress.setTicker("下载通知");
         builderProgress.setProgress(100, progress, false);
         builderProgress.setAutoCancel(true);
-        if(pendingIntent!=null){
+        if (pendingIntent != null) {
             //当通知被点击的时候，跳转到pendingIntent中
             builderProgress.setContentIntent(pendingIntent);
         }
@@ -161,6 +180,7 @@ public class NotificationUtil {
 
     /**
      * 通知栏权限是否开启
+     *
      * @param context
      * @return
      */
@@ -170,7 +190,7 @@ public class NotificationUtil {
         String pkg = context.getApplicationContext().getPackageName();
         int uid = appInfo.uid;
         Class appOpsClass = null;
-      /* Context.APP_OPS_MANAGER */
+        /* Context.APP_OPS_MANAGER */
         try {
             appOpsClass = Class.forName(AppOpsManager.class.getName());
             Method checkOpNoThrowMethod = appOpsClass.getMethod(CHECK_OP_NO_THROW, Integer.TYPE, Integer.TYPE, String.class);

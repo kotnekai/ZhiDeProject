@@ -86,7 +86,7 @@ public class AppUpdateManager {
         DownLoadApkFile loadApkFile = new DownLoadApkFile();
         loadApkFile.updateAPk(context, apkPath);
     }
-
+    private static final int INSTALL_PACKAGES_REQUESTCODE = 100;
     public void installApk(Context appContext, String filePath) {
         //Context appContext = ApplicationHolder.getAppContext();
         File file = new File(filePath);
@@ -98,13 +98,22 @@ public class AppUpdateManager {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         // 判断版本大于等于7.0
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+
             // ".fileprovider"即是在清单文件中配置的authorities
             data = FileProvider.getUriForFile(appContext, "com.zhide.app.fileProvider", file);
             // 给目标应用一个临时授权
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
         } else {
             data = Uri.fromFile(file);
         }
+  /*      boolean b = getPackageManager().canRequestPackageInstalls();
+        if (b) {
+            installApk();//安装应用的逻辑(写自己的就可以)
+        } else {
+            //请求安装未知应用来源的权限
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.REQUEST_INSTALL_PACKAGES}, INSTALL_PACKAGES_REQUESTCODE);
+        }*/
 
         intent.setDataAndType(data, "application/vnd.android.package-archive");
         appContext.startActivity(intent);
