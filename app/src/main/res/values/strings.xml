@@ -202,5 +202,7 @@
     <string name="depart_name">广州智得能源科技有限公司 \n 版本号：V%s</string>
     <string name="act_ver_update_checking">版本检查中...</string>
     <string name="act_is_new_ver">当前已是最新版本</string>
+    <string name="please_input_psw">请输入密码</string>
+    <string name="please_input_code">输入验证码</string>
 
 </resources>

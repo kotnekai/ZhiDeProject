@@ -49,7 +49,9 @@
                 android:maxLength="11"
                 android:paddingLeft="5dp"
                 android:text=""
-                android:textSize="15dp" />
+                android:textColorHint="@color/text_gray"
+                android:hint="@string/please_input_phone"
+                android:textSize="13dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -71,8 +73,10 @@
                     android:layout_height="match_parent"
                     android:background="@drawable/com_btn_line_black_shape"
                     android:inputType="textPassword"
+                    android:textColorHint="@color/text_gray"
                     android:paddingLeft="5dp"
-                    android:textSize="15dp" />
+                    android:hint="@string/please_input_psw"
+                    android:textSize="13dp" />
 
                 <ImageView
                     android:id="@+id/ivRightIcon"
@@ -103,8 +107,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
+                    android:padding="10dp"
                     android:autoLink="all"
                     android:text="@string/forget_psw"
                     android:textColor="@color/main_blue_color"
