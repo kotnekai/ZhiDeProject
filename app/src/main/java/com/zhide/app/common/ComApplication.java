@@ -3,6 +3,7 @@ package com.zhide.app.common;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.os.Environment;
 import android.util.Log;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -69,6 +70,10 @@ public class ComApplication extends Application {
       // ZXingLibrary.initDisplayOpinion(this);
 
         mzjApplication = this;
+
+         CrashCat.getInstance(getApplicationContext(), Environment.getExternalStorageDirectory().getPath() + CommonParams.DIRECTORY_ROOT, CommonParams.FILE_LOG).start();
+
+
     }
 
 

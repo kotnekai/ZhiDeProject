@@ -151,8 +151,6 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
 
     BluetoothDevice device;
 
-    UUID mUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-    private BluetoothSocket socket;
 
     @Override
     protected int getCenterView() {
@@ -342,16 +340,7 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
                 bluetoothAdapter.cancelDiscovery();
                 Log.d(mContext.getClass().getSimpleName(), "bluetoothAdapter.isDiscovering():" + bluetoothAdapter.isDiscovering());
             }
-            BluetoothDevice device = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(MAC);
-
-            try {
-                socket = device.createRfcommSocketToServiceRecord(mUUID);
-                mbtService.connect(device);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-
+            mbtService.connect(bluetoothAdapter.getRemoteDevice(MAC));
         }
     }
 
@@ -1097,7 +1086,7 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
         //个人账号使用次数
         downRateInfo.UseCount = 1;
         //预扣金额
-        downRateInfo.PerMoney = PerMoney;
+        downRateInfo.PerMoney = 1500;
         //1标准水表2阶梯收费
         downRateInfo.ParaTypeID = 1;
         //费率1

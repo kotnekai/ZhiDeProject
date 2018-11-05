@@ -1,5 +1,8 @@
 package com.zhide.app.common;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class CommonParams {
     public static boolean IS_WRITE_LOG = true;//是否写日志
     public static final String USER_TOKEN = "token";
@@ -57,5 +60,10 @@ public class CommonParams {
     public static int SYSTEM_APK_ID =1034;// apk更新id
     public static int SYSTEM_AGGREE_ID =1030;// 注册协议id
     public static int SYSTEM_PHOONE_ID =1029;// 电话id
+
+
+    public static String DIRECTORY_ROOT = "/com.zhide.app/log";
+    public static String FILE_LOG = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis())).toString()+".txt";
+
 
 }
