@@ -1,5 +1,6 @@
 package com.zhide.app.utils;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.text.ParseException;
@@ -487,4 +488,82 @@ public class DateUtils {
         }
         return finalTime;
     }
+
+    /**
+     * 根据字符串获取时间戳
+     *
+     * @param datestr
+     * @return
+     */
+    public static long getStringToLong(String datestr) {
+        if (TextUtils.isEmpty(datestr)) {
+            return 0;
+        }
+        SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT_YEAR2);
+        Date date = null;
+        try {
+            date = format.parse(datestr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return 0;
+        }
+
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.getTimeInMillis();
+    }
+
+    public static String getDateString(Date date, String pattern) {
+        if (date == null) {
+            date = new Date();
+        }
+        SimpleDateFormat dateFormate = new SimpleDateFormat(pattern);
+
+        return dateFormate.format(date);
+    }
+
+    /**
+     * 算出后多少天的多少点
+     *
+     * @param
+     * @param day
+     * @return
+     */
+    public static String getDayOf12clock(String str, int day, int hour) {
+        Date d = DateUtils.getDate(str);
+
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(d);
+        calendar.add(Calendar.DAY_OF_YEAR, day);
+
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        String datestr = DateUtils.getDateString(calendar.getTime(),DATE_FORMAT_YEAR2);
+        Log.i("tag", "12点datastr: " + datestr);
+        return datestr;
+    }
+
+    public static Date getDate(String dateString) {
+
+        SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT_YEAR2, Locale.CHINA);
+        Date date = null;
+        try {
+            date = formatter.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+
+    public static String getDateString(long time) {
+        String str = new SimpleDateFormat(DATE_FORMAT_YEAR2).format(time);
+        return str;
+    }
+
+
+
+
 }

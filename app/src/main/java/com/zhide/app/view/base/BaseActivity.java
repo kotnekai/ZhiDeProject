@@ -3,7 +3,10 @@ package com.zhide.app.view.base;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +15,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -453,4 +457,31 @@ public abstract class BaseActivity extends AppCompatActivity implements DrawerLa
             EventBus.getDefault().unregister(this);
         }
     }
+
+
+    private AlertDialog alertDialog;
+
+    public void showLoadingDialog() {
+        alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable());
+        alertDialog.setCancelable(false);
+        alertDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_SEARCH || keyCode == KeyEvent.KEYCODE_BACK)
+                    return true;
+                return false;
+            }
+        });
+        alertDialog.show();
+        alertDialog.setContentView(R.layout.loading_alert);
+        alertDialog.setCanceledOnTouchOutside(false);
+    }
+
+    public void dismissLoadingDialog() {
+        if (null != alertDialog && alertDialog.isShowing()) {
+            alertDialog.dismiss();
+        }
+    }
+
 }

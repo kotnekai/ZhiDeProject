@@ -1,7 +1,7 @@
 package com.zhide.app.common;
 
 public class CommonUrl {
-    //public static final String BASE_URL = "http://zdtest.zlan-ai.com"; // 测试
+//    public static final String BASE_URL = "http://zdtest.zlan-ai.com"; // 测试
     public static final String BASE_URL = "http://school.zhidn.com"; // 正式
     public static final String sendSmsCode = BASE_URL + "/Student/User_GetSmsCode";//
     public static final String sendForgetSmsCode = BASE_URL + "/Student/User_ForgetSmsCode";//

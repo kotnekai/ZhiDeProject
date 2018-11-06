@@ -113,5 +113,9 @@
         <item name="colorControlNormal">@color/divider_color</item>
         <item name="colorControlActivated">@color/divider_color</item>
     </style>
+    <style name="AppTheme.NoActionBar">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
 
 </resources>

@@ -71,7 +71,7 @@ public class CrashCat implements Thread.UncaughtExceptionHandler {
         Thread.setDefaultUncaughtExceptionHandler(this);
     }
 
-    private void writeLog(String log){
+    public void writeLog(String log){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         log = "----------"+simpleDateFormat.format(new Date(System.currentTimeMillis())).toString()+"----------"+"\n"+log+"\n";
         try {

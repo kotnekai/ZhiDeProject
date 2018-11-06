@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.zhide.app.model.VersionModel;
+import com.zhide.app.utils.PreferencesUtils;
 
 
 /**
@@ -71,6 +72,11 @@ public class ApplicationHolder {
             e.printStackTrace();
         }
         return versionModel;
+    }
+
+    public long getUserMobile() {
+        long userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID, 0);
+        return userId;
     }
 
     // 获取主线程
