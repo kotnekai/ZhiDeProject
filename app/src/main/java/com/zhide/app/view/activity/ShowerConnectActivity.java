@@ -111,8 +111,10 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     private boolean isStart = false;
     private boolean isRunning = false;
     private boolean isNetConnected = true;
-    //是否点击开始--这里做多一次查询设备，防止设备被使用而没有通知，坑
+    //是否点击开始和结束--这里做多一次查询设备，防止设备被使用而没有通知，坑
     private boolean isClickStart = false;
+    private boolean isClickStop = false;
+
     float mainBalance;
     //费率
     float waterRate;
@@ -670,14 +672,17 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
                         break;
                     case 32:
                         if (isNetConnected) {
-                            showLoadingDialog();
-                            //结束费率
-//                        ivShower.setImageResource(R.drawable.animation_shower);
-                            AnimationDrawable animationDrawable = (AnimationDrawable) ivShower.getDrawable();
-                            animationDrawable.stop();
 
-                            FileUtils.writeLog("=====点击停止动画，并执行jieshufeilv==="+"\n");
-                            ShowerManager.getInstance().jieshufeilv(mbtService, true);
+                            if (!isClickStop) {
+                                isClickStop = true;
+                                showLoadingDialog();
+                                FileUtils.writeLog("=====点击停止动画，并执行chaxueshebei 查询设备==="+"\n");
+                                ShowerManager.getInstance().chaxueshebei(mbtService, true);
+                            }
+                            else
+                            {
+
+                            }
                         } else {
                             DialogUtils.showNetWorkNotConnectDialog(ShowerConnectActivity.this);
                         }
@@ -947,7 +952,34 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
             isClickStart = false;
         }
 
+        if (isClickStop)
+        {
+            FileUtils.writeLog("=====chaxueNewshebeiOnback 查询设备返回==="+"\n");
+            FileUtils.writeLog("=====charge==="+charge+"\n");
+            FileUtils.writeLog("=====mdeviceid==="+mdeviceid+"\n");
+            FileUtils.writeLog("=====mproductid==="+mproductid+"\n");
+            FileUtils.writeLog("=====maccountid==="+maccountid+"\n");
+            FileUtils.writeLog("=====macType==="+macType+"\n");
+            FileUtils.writeLog("=====lType==="+lType+"\n");
+            FileUtils.writeLog("=====constype==="+constype+"\n");
+            FileUtils.writeLog("=====macTime==="+macTime+"\n");
 
+            AnimationDrawable animationDrawable = (AnimationDrawable) ivShower.getDrawable();
+            animationDrawable.stop();
+
+            if (charge == DEVICE_USING) {
+                FileUtils.writeLog("=====正常结算==执行jieshufeilv===charge==1" + "\n");
+                //结束费率
+                ShowerManager.getInstance().jieshufeilv(mbtService, true);
+
+            } else if (charge == DEVICE_CAIJI) {
+                FileUtils.writeLog("=====非正常结算==水表扣不了钱==执行caijishuju===charge==3" + "\n");
+                //采集数据
+                ShowerManager.getInstance().caijishuju(mbtService, true);
+            }
+            isClickStop = false;
+            return;
+        }
 
         Log.d(mContext.getClass().getSimpleName(), "mdeviceid:" + mdeviceid);
         Log.d(mContext.getClass().getSimpleName(), "mproductid:" + mproductid);
