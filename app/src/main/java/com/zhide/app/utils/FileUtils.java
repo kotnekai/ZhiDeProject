@@ -1,6 +1,5 @@
 package com.zhide.app.utils;
 
-import android.bluetooth.BluetoothClass;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Environment;
@@ -8,8 +7,6 @@ import android.util.Log;
 
 import com.zhide.app.common.ApplicationHolder;
 import com.zhide.app.common.ComApplication;
-
-import org.jaaksi.pickerview.util.DateUtil;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -345,10 +342,10 @@ public class FileUtils {
             if (isWriteSystemLog) {
 
                 StringBuilder sb = new StringBuilder();
-                sb.append("userId:").append(ApplicationHolder.getInstance().getUserMobile() + "")
+               /* sb.append("userId:").append(ApplicationHolder.getInstance().getUserMobile() + "")
                         .append(" , 手机型号:").append(SystemUtil.getmobileVersion())
                         .append(" , 系统版本号:").append(SystemUtil.getSystemVersion())
-                        .append(" , app版本号:").append(SystemUtil.getVersionCode());
+                        .append(" , app版本号:").append(SystemUtil.getVersionCode());*/
 
                 bufWriter.write(sb.toString());
                 bufWriter.newLine();

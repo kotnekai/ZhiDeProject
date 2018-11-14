@@ -27,7 +27,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class WithdrawActivity extends BaseActivity {
+public class WithdrawActivity extends BaseActivity{
 
     @BindView(R.id.edtPayeeName)
     EditText edtPayeeName;
@@ -147,6 +147,7 @@ public class WithdrawActivity extends BaseActivity {
         }
         int code = responseModel.getCode();
         ToastUtil.showShort(responseModel.getMsg());
+
         if (code == 1) {
             finish();
         }

@@ -125,6 +125,12 @@ public class MineFragment extends BaseFragment implements AdapterView.OnItemClic
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        UserManager.getInstance().getUserInfoById(userId, CommonParams.PAGE_MINE_FRAG_TYPE);
+    }
+
+    @Override
     protected int setFrgContainView() {
         return R.layout.fragment_mine;
 
@@ -146,6 +152,7 @@ public class MineFragment extends BaseFragment implements AdapterView.OnItemClic
         rlDayHeader.setOnKeyboardStateChangedListener(this);
 
     }
+
 
     @Override
     public void onKeyboardStateChanged(int state) {
