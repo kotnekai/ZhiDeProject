@@ -91,7 +91,7 @@
     <string name="charge_act_introduce"> 充值活动说明：</string>
     <string name="charge_introduce"> 充值说明：</string>
     <string name="charge_IntroContent"> 新用户首次充值不得低于100元;\n旧用户首次充值不得低于30元;</string>
-    <string name="with_draw_title">提现</string>
+    <string name="with_draw_title">退款</string>
     <string name="reset_password_title">密码重置</string>
     <!-- WXPayEntryActivity -->
     <string name="pay_result_tip">支付结果</string>
@@ -140,7 +140,7 @@
     <string name="pay_str">支出</string>
     <string name="select_fault_device_tip">请先选择故障设备</string>
     <string name="submit_ing">提交中...</string>
-    <string name="can_withdraw_money">可提现金额为0</string>
+    <string name="can_withdraw_money">可退款金额为0</string>
     <string name="please_bind_school_tip">请先绑定学校</string>
     <string name="login_out">退出登录</string>
     <string name="tel_phone_hint">电话号码/Tel：</string>
