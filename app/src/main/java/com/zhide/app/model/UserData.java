@@ -41,6 +41,12 @@ public class UserData implements Serializable{
     private String SI_IsRefund;//  是否退款 是或否
     private String SI_UseMode;//  是否退款 是或否
     private String SI_RechargeMoney;//  允许充值的金额
+    private int SI_Deducting;//  允许充值的金额
+    private int SI_WaterRate;//  允许充值的金额
+    private int SI_MaxTurnCount;//  允许充值的金额
+    private int SI_Minchargeunit;//  脉冲信息，用于洗澡
+    private String WXAppId;//  微信APP KEY
+
 
     public String getSI_RechargeMoney() {
         return SI_RechargeMoney;
@@ -309,5 +315,45 @@ public class UserData implements Serializable{
 
     public void setUSI_TotalBalance(Float USI_TotalBalance) {
         this.USI_TotalBalance = USI_TotalBalance;
+    }
+
+    public int getSI_Deducting() {
+        return SI_Deducting;
+    }
+
+    public void setSI_Deducting(int SI_Deducting) {
+        this.SI_Deducting = SI_Deducting;
+    }
+
+    public int getSI_WaterRate() {
+        return SI_WaterRate;
+    }
+
+    public void setSI_WaterRate(int SI_WaterRate) {
+        this.SI_WaterRate = SI_WaterRate;
+    }
+
+    public int getSI_MaxTurnCount() {
+        return SI_MaxTurnCount;
+    }
+
+    public void setSI_MaxTurnCount(int SI_MaxTurnCount) {
+        this.SI_MaxTurnCount = SI_MaxTurnCount;
+    }
+
+    public int getSI_Minchargeunit() {
+        return SI_Minchargeunit;
+    }
+
+    public void setSI_Minchargeunit(int SI_Minchargeunit) {
+        this.SI_Minchargeunit = SI_Minchargeunit;
+    }
+
+    public String getWXAppId() {
+        return WXAppId;
+    }
+
+    public void setWXAppId(String WXAppId) {
+        this.WXAppId = WXAppId;
     }
 }

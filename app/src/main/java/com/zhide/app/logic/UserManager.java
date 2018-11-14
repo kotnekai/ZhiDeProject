@@ -2,6 +2,7 @@ package com.zhide.app.logic;
 
 import android.util.Log;
 
+import com.zhide.app.common.CommonParams;
 import com.zhide.app.common.CommonUrl;
 import com.zhide.app.eventBus.ErrorMsgEvent;
 import com.zhide.app.eventBus.LoginEvent;
@@ -265,6 +266,8 @@ public class UserManager {
                         if (userData1 == null) {
                             return;
                         }
+                        //设置全局脉冲值，用于洗澡计费单位
+                        CommonParams.SI_Minchargeunit = userData1.getSI_Minchargeunit();
                         EventBus.getDefault().post(new UserInfoEvent(userData1, fromPage));
                     }
                 });

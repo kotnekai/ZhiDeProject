@@ -10,6 +10,9 @@ public class CommonParams {
     public static final String WECHAT_PARTNERID = "1514789911";// 微信支付分配的商户号
     public static final String WECHAT_PAY_PACKAGEVALUE = "Sign=WXPay";// 微信支付分配的商户号
 
+    public static int SI_Minchargeunit = 10;
+
+
     //apk的路径
     public static final String  APK_PATH = "/apk";
 

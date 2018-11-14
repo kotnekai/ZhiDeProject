@@ -1149,7 +1149,7 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
         //计费方式0 /17（16进制 0x00计时 0x11计量）
         downRateInfo.ChargeMethod = 17;
         //计费单位
-        downRateInfo.MinChargeUnit = 10;
+        downRateInfo.MinChargeUnit = CommonParams.SI_Minchargeunit;
         //自动断开时间（秒），6的倍数
         downRateInfo.AutoDisConTime = 1;
 
