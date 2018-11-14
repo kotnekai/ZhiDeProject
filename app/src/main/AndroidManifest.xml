@@ -83,7 +83,7 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:scheme="wxac87d65c49952574" />
+                <data android:scheme="wx637d024e071f822a" />
             </intent-filter>
         </activity>
         <activity

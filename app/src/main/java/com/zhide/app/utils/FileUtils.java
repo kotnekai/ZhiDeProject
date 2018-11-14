@@ -342,10 +342,10 @@ public class FileUtils {
             if (isWriteSystemLog) {
 
                 StringBuilder sb = new StringBuilder();
-               /* sb.append("userId:").append(ApplicationHolder.getInstance().getUserMobile() + "")
+                sb.append("userId:").append(ApplicationHolder.getInstance().getUserMobile() + "")
                         .append(" , 手机型号:").append(SystemUtil.getmobileVersion())
                         .append(" , 系统版本号:").append(SystemUtil.getSystemVersion())
-                        .append(" , app版本号:").append(SystemUtil.getVersionCode());*/
+                        .append(" , app版本号:").append(SystemUtil.getVersionCode());
 
                 bufWriter.write(sb.toString());
                 bufWriter.newLine();
