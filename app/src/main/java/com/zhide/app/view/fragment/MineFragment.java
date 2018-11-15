@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.zhide.app.R;
 import com.zhide.app.common.CommonParams;
 import com.zhide.app.eventBus.MineAccountEvent;
+import com.zhide.app.eventBus.RoomInfoEvent;
 import com.zhide.app.eventBus.SaveInfoEvent;
 import com.zhide.app.eventBus.SchoolInfoEvent;
 import com.zhide.app.eventBus.UserInfoEvent;
@@ -21,11 +22,14 @@ import com.zhide.app.logic.MainManager;
 import com.zhide.app.logic.UserManager;
 import com.zhide.app.model.AccountInfoModel;
 import com.zhide.app.model.ResponseModel;
+import com.zhide.app.model.RoomInfoModel;
 import com.zhide.app.model.SchoolInfoModel;
+import com.zhide.app.model.SpinnerSelectModel;
 import com.zhide.app.model.UserData;
 import com.zhide.app.utils.DataUtils;
 import com.zhide.app.utils.DialogUtils;
 import com.zhide.app.utils.EmptyUtil;
+import com.zhide.app.utils.PickViewUtil;
 import com.zhide.app.utils.PreferencesUtils;
 import com.zhide.app.utils.ToastUtil;
 import com.zhide.app.utils.UIUtils;
@@ -42,6 +46,8 @@ import com.zhide.app.view.views.SpinerPopWindow;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.jaaksi.pickerview.dataset.OptionDataSet;
+import org.jaaksi.pickerview.picker.OptionPicker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +55,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class MineFragment extends BaseFragment implements AdapterView.OnItemClickListener,KeyboardListenRelativeLayout.IOnKeyboardStateChangedListener {
+public class MineFragment extends BaseFragment implements AdapterView.OnItemClickListener, KeyboardListenRelativeLayout.IOnKeyboardStateChangedListener {
 
     @BindView(R.id.tvRecharge)
     TextView tvRecharge;
@@ -102,6 +108,16 @@ public class MineFragment extends BaseFragment implements AdapterView.OnItemClic
     @BindView(R.id.rlDayHeader)
     KeyboardListenRelativeLayout rlDayHeader;
 
+    @BindView(R.id.tvSeat)
+    TextView tvSeat;
+
+    @BindView(R.id.tvFloor)
+    TextView tvFloor;
+
+    @BindView(R.id.tvRoom)
+    TextView tvRoom;
+
+
     private float mainMoney;
     private long userId;
     private UserData userData;
@@ -117,6 +133,8 @@ public class MineFragment extends BaseFragment implements AdapterView.OnItemClic
         if (userData != null) {
             updateUserInfoUI();
         }
+        MainManager.getInstance().getSchoolRoom(29, 0, CommonParams.REQUEST_TYPE_SEAT);
+
     }
 
     @Override
@@ -312,7 +330,8 @@ public class MineFragment extends BaseFragment implements AdapterView.OnItemClic
     }
 
 
-    @OnClick({R.id.tvGender, R.id.tvBindSchool, R.id.tvSaveInfo, R.id.tvRecharge, R.id.tvWithdraw, R.id.tvMyBill, R.id.llSchool, R.id.tvResetPsw, R.id.tvLoginOut})
+    @OnClick({R.id.tvGender, R.id.tvBindSchool, R.id.tvSaveInfo, R.id.tvRecharge, R.id.tvWithdraw, R.id.tvMyBill, R.id.llSchool, R.id.tvResetPsw, R.id.tvLoginOut
+            , R.id.tvSeat, R.id.tvFloor, R.id.tvRoom})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tvRecharge:
@@ -375,7 +394,100 @@ public class MineFragment extends BaseFragment implements AdapterView.OnItemClic
                 mSpinerPopWindow.setWidth(tvGender.getWidth());
                 mSpinerPopWindow.showAsDropDown(tvGender, 0, 0, Gravity.CENTER_HORIZONTAL);
                 break;
+            case R.id.tvSeat:
+                //{"USI_Id":29,"SDI_ParentId":0,"SDI_Type":"幢座"}
+                if (selectSeatList == null) {
+                    MainManager.getInstance().getSchoolRoom(userId, 0, CommonParams.REQUEST_TYPE_SEAT);
+                    return;
+                }
+                PickViewUtil.showSelectPickDialog(getActivity(), selectSeatList, 1, new OptionPicker.OnOptionSelectListener() {
+                    @Override
+                    public void onOptionSelect(OptionPicker picker, int[] selectedPosition, OptionDataSet[] selectedOptions) {
+                        SpinnerSelectModel selectedOption = (SpinnerSelectModel) selectedOptions[0];
+                        selectSeatId = selectedOption.getId();
+                        MainManager.getInstance().getSchoolRoom(userId, selectSeatId, CommonParams.REQUEST_TYPE_FLOOR);
+                    }
+                });
+                break;
+            case R.id.tvFloor:
+                if (selectFloorList == null || selectFloorList.size() == 0) {
+                    ToastUtil.showShort(getString(R.string.have_no_data));
+                    return;
+                }
+                PickViewUtil.showSelectPickDialog(getActivity(), selectFloorList, 1, new OptionPicker.OnOptionSelectListener() {
+                    @Override
+                    public void onOptionSelect(OptionPicker picker, int[] selectedPosition, OptionDataSet[] selectedOptions) {
+                        SpinnerSelectModel selectedOption = (SpinnerSelectModel) selectedOptions[0];
+                        selectFloorId = selectedOption.getId();
+                        MainManager.getInstance().getSchoolRoom(userId, selectFloorId, CommonParams.REQUEST_TYPE_ROOM);
+                    }
+                });
+                break;
+            case R.id.tvRoom:
+                if (selectRoomList == null || selectRoomList.size() == 0) {
+                    ToastUtil.showShort(getString(R.string.have_no_data));
+                    return;
+                }
+                PickViewUtil.showSelectPickDialog(getActivity(), selectFloorList, 1, new OptionPicker.OnOptionSelectListener() {
+                    @Override
+                    public void onOptionSelect(OptionPicker picker, int[] selectedPosition, OptionDataSet[] selectedOptions) {
+                        SpinnerSelectModel selectedOption = (SpinnerSelectModel) selectedOptions[0];
+                        selectRoomId = selectedOption.getId();
+                    }
+                });
+
+                break;
         }
+    }
+
+    private long selectSeatId;
+    private long selectFloorId;
+    private long selectRoomId;
+
+
+    private List<SpinnerSelectModel> selectSeatList = new ArrayList<>();
+    private List<SpinnerSelectModel> selectFloorList = new ArrayList<>();
+    private List<SpinnerSelectModel> selectRoomList = new ArrayList<>();
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onRoomInfoEvent(RoomInfoEvent event) {
+        RoomInfoModel infoModel = event.getInfoModel();
+        String requestType = event.getRequestType();
+
+        if (infoModel == null) {
+            ToastUtil.showShort(getString(R.string.get_net_data_error));
+            return;
+        }
+        List<RoomInfoModel.DataModel> data = infoModel.getData();
+        if (data == null || data.size() == 0) {
+            ToastUtil.showShort(getString(R.string.have_no_data));
+            return;
+        }
+
+        switch (requestType) {
+            case CommonParams.REQUEST_TYPE_SEAT:
+                selectSeatList.clear();
+                for (int i = 0; i < data.size(); i++) {
+                    SpinnerSelectModel selectModel = new SpinnerSelectModel(data.get(i).getSDI_ParentId(), data.get(i).getSDI_Name());
+                    selectSeatList.add(selectModel);
+                }
+                break;
+            case CommonParams.REQUEST_TYPE_FLOOR:
+                selectFloorList.clear();
+                for (int i = 0; i < data.size(); i++) {
+                    SpinnerSelectModel selectModel = new SpinnerSelectModel(data.get(i).getSDI_ParentId(), data.get(i).getSDI_Name());
+                    selectFloorList.add(selectModel);
+                }
+                break;
+            case CommonParams.REQUEST_TYPE_ROOM:
+                selectRoomList.clear();
+                for (int i = 0; i < data.size(); i++) {
+                    SpinnerSelectModel selectModel = new SpinnerSelectModel(data.get(i).getSDI_ParentId(), data.get(i).getSDI_Name());
+                    selectRoomList.add(selectModel);
+                }
+                break;
+        }
+
     }
 
     private String guidStr;
@@ -419,12 +531,12 @@ public class MineFragment extends BaseFragment implements AdapterView.OnItemClic
             return;
         }
         String idCard = edtIdCard.getText().toString();
-         if(!EmptyUtil.isEmpty(idCard)){
-             if (!DataUtils.isValidIdNo(idCard)) {
-                 ToastUtil.showShort("身份证格式错误，请重新输入");
-                 return;
-             }
-         }
+        if (!EmptyUtil.isEmpty(idCard)) {
+            if (!DataUtils.isValidIdNo(idCard)) {
+                ToastUtil.showShort("身份证格式错误，请重新输入");
+                return;
+            }
+        }
         UserData userData = new UserData();
         userData.setUSI_Id(userId);
         userData.setUSI_TrueName(edtUserName.getText().toString());
@@ -437,6 +549,9 @@ public class MineFragment extends BaseFragment implements AdapterView.OnItemClic
         if (guidStr != null) {
             userData.setSI_Code(guidStr);
         }
+        userData.setSelectSeatId(selectSeatId);
+        userData.setSelectFloorId(selectFloorId);
+        userData.setSelectRoomId(selectRoomId);
         MainManager.getInstance().savePersonInfo(userData);
 
     }

@@ -167,8 +167,8 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                       android:minHeight="40dp"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:minHeight="40dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -182,17 +182,17 @@
                         android:id="@+id/edtUserName"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="50dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
+                        android:layout_marginLeft="50dp"
                         android:layout_marginRight="15dp"
                         android:background="@color/white"
                         android:gravity="center|right"
                         android:hint="请输入姓名"
+                        android:maxLines="60"
                         android:minWidth="100dp"
                         android:paddingRight="10dp"
                         android:text=""
-                        android:maxLines="60"
                         android:textColor="@color/text_color"
                         android:textSize="14dp" />
 
@@ -279,6 +279,39 @@
                         android:text="地址"
                         android:textSize="14dp" />
 
+                    <TextView
+                        android:id="@+id/tvSeat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="15dp"
+                        android:drawablePadding="5dp"
+                        android:layout_alignParentRight="true"
+                        android:drawableRight="@mipmap/drop_down"
+                        android:hint="幢/座" />
+
+                    <TextView
+                        android:id="@+id/tvFloor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toLeftOf="@id/tvSeat"
+                        android:drawablePadding="2dp"
+                        android:drawableRight="@mipmap/drop_down"
+                        android:hint="层/楼" />
+
+                    <TextView
+                        android:id="@+id/tvRoom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/tvFloor"
+                        android:drawablePadding="5dp"
+                        android:drawableRight="@mipmap/drop_down"
+                        android:hint="室/房" />
+
                     <EditText
                         android:id="@+id/edtRoomAddress"
                         android:layout_width="wrap_content"
@@ -294,7 +327,8 @@
                         android:paddingRight="10dp"
                         android:text=""
                         android:textColor="@color/text_color"
-                        android:textSize="14dp" />
+                        android:textSize="14dp"
+                        android:visibility="gone" />
 
                 </RelativeLayout>
 
@@ -492,19 +526,19 @@
                 android:background="@drawable/com_bg_blue_gray_selector"
                 android:gravity="center"
                 android:text="保存"
-                android:textSize="15dp"
-                android:textColor="@drawable/com_text_white_black_selector" />
+                android:textColor="@drawable/com_text_white_black_selector"
+                android:textSize="15dp" />
 
             <TextView
                 android:id="@+id/tvLoginOut"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_margin="15dp"
-                android:textSize="15dp"
                 android:background="@drawable/com_btn_red_10r_bg_shape"
                 android:gravity="center"
                 android:text="注销退出"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="15dp" />
 
         </LinearLayout>
 

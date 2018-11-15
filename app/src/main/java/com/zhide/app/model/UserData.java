@@ -47,6 +47,33 @@ public class UserData implements Serializable{
     private int SI_Minchargeunit;//  脉冲信息，用于洗澡
     private String WXAppId;//  微信APP KEY
 
+     private long selectSeatId;
+     private long selectFloorId;
+     private long selectRoomId;
+
+    public long getSelectSeatId() {
+        return selectSeatId;
+    }
+
+    public void setSelectSeatId(long selectSeatId) {
+        this.selectSeatId = selectSeatId;
+    }
+
+    public long getSelectFloorId() {
+        return selectFloorId;
+    }
+
+    public void setSelectFloorId(long selectFloorId) {
+        this.selectFloorId = selectFloorId;
+    }
+
+    public long getSelectRoomId() {
+        return selectRoomId;
+    }
+
+    public void setSelectRoomId(long selectRoomId) {
+        this.selectRoomId = selectRoomId;
+    }
 
     public String getSI_RechargeMoney() {
         return SI_RechargeMoney;

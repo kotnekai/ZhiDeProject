@@ -69,4 +69,7 @@ public class CommonParams {
     public static String FILE_LOG = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis())).toString()+".txt";
 
 
+    public static final String REQUEST_TYPE_SEAT = "幢座";
+    public static final String REQUEST_TYPE_FLOOR = "楼层";
+    public static final String REQUEST_TYPE_ROOM = "宿舍";
 }

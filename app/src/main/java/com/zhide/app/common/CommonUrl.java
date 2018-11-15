@@ -1,8 +1,8 @@
 package com.zhide.app.common;
 
 public class CommonUrl {
-//    public static final String BASE_URL = "http://zdtest.zlan-ai.com"; // 测试
-    public static final String BASE_URL = "http://school.zhidn.com"; // 正式
+   public static final String BASE_URL = "http://zdtest.zlan-ai.com"; // 测试
+   // public static final String BASE_URL = "http://school.zhidn.com"; // 正式
     public static final String sendSmsCode = BASE_URL + "/Student/User_GetSmsCode";//
     public static final String sendForgetSmsCode = BASE_URL + "/Student/User_ForgetSmsCode";//
     public static final String login = BASE_URL + "/Student/User_Login";
@@ -34,6 +34,9 @@ public class CommonUrl {
 
     // 用户协议
     public static final String user_agreement = BASE_URL + "/Wap/NewsContent?niid=1030";
+
+    public static final String getSchoolRoom = BASE_URL + "/School/Get_School_Dorm_Info";
+
 
 
 }

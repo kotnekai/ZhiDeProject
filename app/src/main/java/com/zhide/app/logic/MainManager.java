@@ -6,12 +6,14 @@ import com.zhide.app.eventBus.ErrorMsgEvent;
 import com.zhide.app.eventBus.GuideModelEvent;
 import com.zhide.app.eventBus.NewsModelEvent;
 import com.zhide.app.eventBus.OkResponseEvent;
+import com.zhide.app.eventBus.RoomInfoEvent;
 import com.zhide.app.eventBus.SaveInfoEvent;
 import com.zhide.app.eventBus.SystemInfoEvent;
 import com.zhide.app.model.BreakdownModel;
 import com.zhide.app.model.GuideModel;
 import com.zhide.app.model.NewsModel;
 import com.zhide.app.model.ResponseModel;
+import com.zhide.app.model.RoomInfoModel;
 import com.zhide.app.model.SystemInfoModel;
 import com.zhide.app.model.UserData;
 import com.zhide.app.okhttp.DataManager;
@@ -230,4 +232,27 @@ public class MainManager {
         return systemData;
     }
 
+    public void getSchoolRoom(long userId, long parentId, final String type){
+        JSONObject params = new JSONObject();
+        try {
+            params.put("USI_Id", userId);
+            params.put("SDI_ParentId", parentId);
+            params.put("SDI_Type", type);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        dataInstance.sendPostRequestData(CommonUrl.getSchoolRoom, params)
+                .execute(new GenericsCallback<RoomInfoModel>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Response response, Call call, Exception e, int id) {
+                        String message = e.getMessage();
+                        EventBus.getDefault().post(new ErrorMsgEvent(message));
+                    }
+
+                    @Override
+                    public void onResponse(RoomInfoModel response, int id) {
+                         EventBus.getDefault().post(new RoomInfoEvent(response,type));
+                    }
+                });
+    }
 }
