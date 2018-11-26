@@ -206,4 +206,6 @@
     <string name="please_input_code">输入验证码</string>
 
     <string name="have_no_data">暂无数据</string>
+    <string name="wechat_scheme">%s</string>
+
 </resources>

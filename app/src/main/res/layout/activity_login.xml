@@ -49,6 +49,7 @@
                 android:maxLength="11"
                 android:paddingLeft="5dp"
                 android:text=""
+                android:inputType="number"
                 android:textColorHint="@color/text_gray"
                 android:hint="@string/please_input_phone"
                 android:textSize="13dp" />

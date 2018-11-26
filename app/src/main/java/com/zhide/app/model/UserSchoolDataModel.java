@@ -78,7 +78,8 @@ public class UserSchoolDataModel {
        private String SI_State;//状态：可用，注销
        private Float SI_Deducting; //学校设定的预扣费金额，以里为单位如：5000 为5元
        private Float SI_WaterRate; //学校设定用水费率，以里为单位，如：5000 为5元
-
+        private int SI_Minchargeunit;//  脉冲信息，用于洗澡
+        private String WXAppId;//  微信APP KEY
 
 
 
@@ -432,6 +433,22 @@ public class UserSchoolDataModel {
        public void setSI_WaterRate(Float SI_WaterRate) {
            this.SI_WaterRate = SI_WaterRate;
        }
-   }
+
+        public int getSI_Minchargeunit() {
+            return SI_Minchargeunit;
+        }
+
+        public void setSI_Minchargeunit(int SI_Minchargeunit) {
+            this.SI_Minchargeunit = SI_Minchargeunit;
+        }
+
+        public String getWXAppId() {
+            return WXAppId;
+        }
+
+        public void setWXAppId(String WXAppId) {
+            this.WXAppId = WXAppId;
+        }
+    }
 
 }
