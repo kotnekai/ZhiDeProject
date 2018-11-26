@@ -8,7 +8,7 @@ import java.util.Date;
 public class CommonParams {
     public static boolean IS_WRITE_LOG = true;//是否写日志
     public static final String USER_TOKEN = "token";
-    public static  String WECHAT_APPID ;//ComApplication.getApp().getString(R.string.wechat_scheme);//微信支付appId
+    public static  String WECHAT_APPID = "wxac87d65c49952574";//微信支付appId
     public static final String WECHAT_PARTNERID = "1514789911";// 微信支付分配的商户号
     public static final String WECHAT_PAY_PACKAGEVALUE = "Sign=WXPay";// 微信支付分配的商户号
 

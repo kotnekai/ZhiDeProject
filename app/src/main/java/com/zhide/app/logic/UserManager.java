@@ -275,10 +275,10 @@ public class UserManager {
                         //设置全局脉冲值，用于洗澡计费单位
                         CommonParams.SI_Minchargeunit = userData1.getSI_Minchargeunit();
                         //设置微信APP——ID
-                        CommonParams.WECHAT_APPID = userData1.getWXAppId();
-
-                        String wechat_key = ComApplication.getApp().getResources().getString(R.string.wechat_scheme);
-                        wechat_key = String.format(wechat_key,  userData1.getWXAppId());
+//                        CommonParams.WECHAT_APPID = userData1.getWXAppId();
+//
+//                        String wechat_key = ComApplication.getApp().getResources().getString(R.string.wechat_scheme);
+//                        wechat_key = String.format(wechat_key,  userData1.getWXAppId());
 
                         EventBus.getDefault().post(new UserInfoEvent(userData1, fromPage));
                     }
@@ -314,12 +314,12 @@ public class UserManager {
                                 //设置全局脉冲值，用于洗澡计费单位
                                 CommonParams.SI_Minchargeunit = response.getData().getSI_Minchargeunit();
                             }
-                            if (!TextUtils.isEmpty(response.getData().getWXAppId())) {
-                                //设置微信APP——ID
-                                CommonParams.WECHAT_APPID = response.getData().getWXAppId();
-                                String wechat_key = ComApplication.getApp().getResources().getString(R.string.wechat_scheme);
-                                wechat_key = String.format(wechat_key,  response.getData().getWXAppId());
-                            }
+//                            if (!TextUtils.isEmpty(response.getData().getWXAppId())) {
+//                                //设置微信APP——ID
+//                                CommonParams.WECHAT_APPID = response.getData().getWXAppId();
+//                                String wechat_key = ComApplication.getApp().getResources().getString(R.string.wechat_scheme);
+//                                wechat_key = String.format(wechat_key,  response.getData().getWXAppId());
+//                            }
                         }
 
                         EventBus.getDefault().post(new UserInfoSchoolInfoEvent(response, fromPage));

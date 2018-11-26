@@ -83,7 +83,7 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:scheme="@string/wechat_scheme" />
+                <data android:scheme="wxac87d65c49952574" />
             </intent-filter>
         </activity>
         <activity
