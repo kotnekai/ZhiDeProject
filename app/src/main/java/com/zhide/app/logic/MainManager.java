@@ -4,6 +4,7 @@ import com.zhide.app.common.CommonUrl;
 import com.zhide.app.eventBus.BreakdownEvent;
 import com.zhide.app.eventBus.ErrorMsgEvent;
 import com.zhide.app.eventBus.GuideModelEvent;
+import com.zhide.app.eventBus.HomeBannerEvent;
 import com.zhide.app.eventBus.NewsModelEvent;
 import com.zhide.app.eventBus.OkResponseEvent;
 import com.zhide.app.eventBus.RoomInfoEvent;
@@ -157,7 +158,7 @@ public class MainManager {
 
                     @Override
                     public void onResponse(SystemInfoModel response, int id) {
-                        EventBus.getDefault().post(new SystemInfoEvent(response,pageType));
+                        EventBus.getDefault().post(new SystemInfoEvent(response, pageType));
                     }
                 });
     }
@@ -214,10 +215,11 @@ public class MainManager {
 
     /**
      * apk 信息
+     *
      * @param infoModel
      * @return
      */
-    public  SystemInfoModel.SystemData getSystemModel(int type,SystemInfoModel infoModel) {
+    public SystemInfoModel.SystemData getSystemModel(int type, SystemInfoModel infoModel) {
         List<SystemInfoModel.SystemData> data = infoModel.getData();
         SystemInfoModel.SystemData systemData = null;
         if (data == null || data.size() == 0) {
@@ -232,7 +234,7 @@ public class MainManager {
         return systemData;
     }
 
-    public void getSchoolRoom(long userId, long parentId, final String type){
+    public void getSchoolRoom(long userId, long parentId, final String type) {
         JSONObject params = new JSONObject();
         try {
             params.put("USI_Id", userId);
@@ -251,7 +253,33 @@ public class MainManager {
 
                     @Override
                     public void onResponse(RoomInfoModel response, int id) {
-                         EventBus.getDefault().post(new RoomInfoEvent(response,type));
+                        EventBus.getDefault().post(new RoomInfoEvent(response, type));
+                    }
+                });
+    }
+
+
+    /**
+     * 获取广告banner轮播数据
+     */
+    public void getHomeBanner() {
+        JSONObject params = new JSONObject();
+        try {
+            params.put("ActionMethod", "banner");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        dataInstance.sendPostRequestData(CommonUrl.home_banner, params)
+                .execute(new GenericsCallback<SystemInfoModel>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Response response, Call call, Exception e, int id) {
+                        String message = e.getMessage();
+                        EventBus.getDefault().post(new ErrorMsgEvent(message));
+                    }
+
+                    @Override
+                    public void onResponse(SystemInfoModel response, int id) {
+                        EventBus.getDefault().post(new HomeBannerEvent(response));
                     }
                 });
     }

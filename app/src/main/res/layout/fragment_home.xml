@@ -159,7 +159,15 @@
                 android:layout_height="160dp"
                 android:layout_marginBottom="3dp"
                 android:layout_marginTop="3dp"
+                android:visibility="gone"
                 android:background="@mipmap/guide" />
+            <com.youth.banner.Banner
+                android:id="@+id/banner"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="3dp" />
+
         </RelativeLayout>
 
 

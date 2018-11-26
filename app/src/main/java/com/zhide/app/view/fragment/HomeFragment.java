@@ -13,18 +13,24 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.youth.banner.Banner;
+import com.youth.banner.listener.OnBannerListener;
 import com.zhide.app.R;
 import com.zhide.app.common.CommonParams;
+import com.zhide.app.eventBus.HomeBannerEvent;
 import com.zhide.app.eventBus.NewsModelEvent;
 import com.zhide.app.eventBus.UserInfoEvent;
 import com.zhide.app.eventBus.UserInfoSchoolInfoEvent;
 import com.zhide.app.logic.MainManager;
 import com.zhide.app.logic.UserManager;
 import com.zhide.app.model.NewsModel;
+import com.zhide.app.model.SystemInfoModel;
 import com.zhide.app.model.UserData;
 import com.zhide.app.model.UserSchoolDataModel;
 import com.zhide.app.utils.EmptyUtil;
+import com.zhide.app.utils.GlideImageLoader;
 import com.zhide.app.utils.PreferencesUtils;
 import com.zhide.app.utils.ToastUtil;
 import com.zhide.app.utils.UIUtils;
@@ -38,6 +44,7 @@ import com.zhide.app.view.base.WebViewActivity;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -71,6 +78,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     @BindView(R.id.ivGuide)
     ImageView ivGuide;
     Unbinder unbinder;
+    @BindView(R.id.banner)
+    Banner banner;
     private UserData userData;
 
     @Override
@@ -86,6 +95,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         if (userData != null) {
             updateInfoUI();
         }
+        MainManager.getInstance().getHomeBanner();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -170,6 +180,48 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     }
 
+    /**
+     * 轮播图
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onGetBannerEvent(HomeBannerEvent event) {
+        List<SystemInfoModel.SystemData>  bannerList = new ArrayList<>();
+        List<String> images = new ArrayList<>();
+        SystemInfoModel infoModel = event.getInfoModel();
+        if (infoModel!=null)
+        {
+            bannerList = infoModel.getData();
+            for (SystemInfoModel.SystemData data:bannerList) {
+                if (!TextUtils.isEmpty(data.getNI_PicUrl()))
+                {
+                    images.add(data.getNI_PicUrl()) ;
+                }
+            }
+        }
+
+        //设置图片加载器
+        banner.setImageLoader(new GlideImageLoader());
+        //设置图片集合
+        banner.setImages(images);
+        //banner设置方法全部调用完毕时最后调用
+        banner.start();
+
+        //增加点击事件
+        final List<SystemInfoModel.SystemData> finalBannerList = bannerList;
+        banner.setOnBannerListener(new OnBannerListener() {
+            @Override
+            public void OnBannerClick(int position) {
+                getActivity().startActivity(WebViewActivity.makeIntent(getActivity(), finalBannerList.get(position).getNI_Title(), finalBannerList.get(position).getNI_Url()));
+
+            }
+        });
+    }
+
+
+
+
     @Override
     public void onResume() {
         super.onResume();
@@ -226,7 +278,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
 
     @Override
-    @OnClick({R.id.llRecharge, R.id.llShower, R.id.tvNewsMore,R.id.ivGuide})
+    @OnClick({R.id.llRecharge, R.id.llShower, R.id.tvNewsMore, R.id.ivGuide})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.llRecharge:

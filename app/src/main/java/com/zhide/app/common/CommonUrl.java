@@ -36,7 +36,8 @@ public class CommonUrl {
     public static final String user_agreement = BASE_URL + "/Wap/NewsContent?niid=1030";
 
     public static final String getSchoolRoom = BASE_URL + "/School/Get_School_Dorm_Info";
-
+    //广告轮播图
+    public static final String home_banner = BASE_URL + "/News/Get_BannerInfoList";
 
 
 }
