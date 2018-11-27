@@ -531,12 +531,12 @@ public class MineFragment extends BaseFragment implements AdapterView.OnItemClic
             return;
         }
         String idCard = edtIdCard.getText().toString();
-        if (!EmptyUtil.isEmpty(idCard)) {
-            if (!DataUtils.isValidIdNo(idCard)) {
-                ToastUtil.showShort("身份证格式错误，请重新输入");
-                return;
-            }
-        }
+//        if (!EmptyUtil.isEmpty(idCard)) {
+//            if (!DataUtils.isValidIdNo(idCard)) {
+//                ToastUtil.showShort("身份证格式错误，请重新输入");
+//                return;
+//            }
+//        }
         UserData userData = new UserData();
         userData.setUSI_Id(userId);
         userData.setUSI_TrueName(edtUserName.getText().toString());
