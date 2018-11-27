@@ -276,7 +276,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:paddingLeft="10dp"
-                        android:text="地址"
+                        android:text="宿舍地址"
                         android:textSize="14dp" />
 
                     <TextView

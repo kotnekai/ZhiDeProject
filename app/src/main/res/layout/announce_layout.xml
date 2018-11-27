@@ -16,11 +16,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:textColor="@color/main_page_number_color"
-
             android:gravity="center_vertical"
-            android:text="版本升级提示"
+
             android:paddingLeft="10dp"
+            android:text="标题"
+            android:textColor="@color/main_page_number_color"
             android:textSize="17sp" />
 
         <View
@@ -29,48 +29,25 @@
             android:layout_marginTop="5dp"
             android:background="@color/text_divide_color" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tvUpdateContent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:orientation="vertical">
+            android:minHeight="100dp"
+            android:layout_marginTop="10dp"
+            android:scrollbars="vertical"
+            android:text=""
+            android:textColor="@color/text_gray" />
 
-            <TextView
-                android:id="@+id/tvApkVersion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="版本：2.0"
-                android:textColor="@color/main_page_number_color" />
-
-            <TextView
-                android:id="@+id/tvUpdateTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/main_page_number_color"
-
-                android:layout_marginTop="10dp"
-                android:text="更新时间：" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textColor="@color/main_page_number_color"
-                android:text="更新说明：" />
-
-            <TextView
-                android:id="@+id/tvUpdateContent"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_marginBottom="10dp"
-                android:scrollbars="vertical"
-                android:textColor="@color/text_gray"
-                android:layout_marginTop="10dp"
-                android:text="" />
-
-        </LinearLayout>
-
+        <TextView
+            android:id="@+id/tvContentUrl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:scrollbars="vertical"
+            android:text=""
+            android:textColor="@color/light_text_blue_color" />
 
         <View
             android:layout_width="match_parent"

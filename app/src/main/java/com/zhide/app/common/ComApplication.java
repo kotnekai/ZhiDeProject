@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.util.Log;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -57,6 +58,7 @@ public class ComApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
         ApplicationHolder.getInstance().setAppContext(this);
         // CrashManager.getInstance().init(this); //初始化本地崩溃日志收集
 
@@ -70,12 +72,21 @@ public class ComApplication extends Application {
       // ZXingLibrary.initDisplayOpinion(this);
 
         mzjApplication = this;
-
-         CrashCat.getInstance(getApplicationContext(), Environment.getExternalStorageDirectory().getPath() + CommonParams.DIRECTORY_ROOT, CommonParams.FILE_LOG).start();
-
+        initCrashCat();
 
     }
 
+    private void initCrashCat(){
+
+        ThreadPoolManager.getInstance().getSingleThreadPool().execute(new Runnable() {
+           @Override
+           public void run() {
+               String path = Environment.getExternalStorageDirectory().getPath();
+               Log.d("xyc", "initCrashCat: path="+path);
+               CrashCat.getInstance(getApplicationContext(),  path+ CommonParams.DIRECTORY_ROOT, CommonParams.FILE_LOG).start();
+           }
+       });
+    }
 
     /**
      * 获取application实例

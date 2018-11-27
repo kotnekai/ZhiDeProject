@@ -31,6 +31,7 @@ import com.zhide.app.delegate.SpinerOnItemClickListener;
 import com.zhide.app.model.SpinnerSelectModel;
 import com.zhide.app.model.SystemInfoModel;
 import com.zhide.app.view.adapter.SpinerAdapter;
+import com.zhide.app.view.base.WebViewActivity;
 
 import java.util.List;
 
@@ -129,7 +130,6 @@ public class DialogUtils {
         dialogWindow.setGravity(Gravity.CENTER_HORIZONTAL);
         dialogWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
-
 
 
     public static void showConfirmDialog(Context context, String content, final View.OnClickListener listener) {
@@ -381,12 +381,15 @@ public class DialogUtils {
     public static void showApkUpdateDialog(final Context context, SystemInfoModel.SystemData apkInfoModel, final View.OnClickListener listener) {
         final AlertDialog dialog = new AlertDialog.Builder(context).create();
         View view = LayoutInflater.from(context).inflate(R.layout.apk_update_layout, null);
+
         TextView tvApkVersion = (TextView) view.findViewById(R.id.tvApkVersion);
 
         TextView tvUpdateTime = (TextView) view.findViewById(R.id.tvUpdateTime);
         TextView tvUpdateContent = (TextView) view.findViewById(R.id.tvUpdateContent);
+
         TextView tvCancel = (TextView) view.findViewById(R.id.tvCancel);
         TextView tvConfirm = (TextView) view.findViewById(R.id.tvConfirm);
+
 
         tvApkVersion.setText("版本：" + apkInfoModel.getNI_Title());
 
@@ -427,5 +430,70 @@ public class DialogUtils {
 
     }
 
+    public static void showAnnouncementDialog(final Context context, final String contentUrl, boolean isForce, String title, final String content, final View.OnClickListener listener) {
+        final AlertDialog dialog = new AlertDialog.Builder(context).create();
+        View view = LayoutInflater.from(context).inflate(R.layout.announce_layout, null);
+
+        TextView tvTitle = (TextView) view.findViewById(R.id.tvTitle);
+        final TextView tvContentUrl = (TextView) view.findViewById(R.id.tvContentUrl);
+        TextView tvUpdateContent = (TextView) view.findViewById(R.id.tvUpdateContent);
+
+        TextView tvCancel = (TextView) view.findViewById(R.id.tvCancel);
+        TextView tvConfirm = (TextView) view.findViewById(R.id.tvConfirm);
+        tvTitle.setText(title);
+        tvUpdateContent.setMovementMethod(ScrollingMovementMethod.getInstance());
+        if (EmptyUtil.isEmpty(content)) {
+            tvUpdateContent.setText("暂无公告详情");
+
+        } else {
+            tvUpdateContent.setText(content);
+
+        }
+
+        if (EmptyUtil.isEmpty(contentUrl)) {
+            tvContentUrl.setVisibility(View.GONE);
+        } else {
+            tvContentUrl.setVisibility(View.VISIBLE);
+            tvContentUrl.setText(contentUrl);
+        }
+
+        dialog.setView(view);
+
+        if (isForce) {
+            dialog.setCanceledOnTouchOutside(false);
+            tvCancel.setVisibility(View.GONE);
+            dialog.setCancelable(false);
+        } else {
+            dialog.setCancelable(true);
+            dialog.setCanceledOnTouchOutside(true);
+            tvCancel.setVisibility(View.VISIBLE);
+        }
+
+        dialog.show();
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (dialog.isShowing()) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        tvConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClick(v);
+                if (dialog.isShowing()) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        tvContentUrl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                context.startActivity(WebViewActivity.makeIntent(context, "", contentUrl));
+            }
+        });
+
+    }
 
 }

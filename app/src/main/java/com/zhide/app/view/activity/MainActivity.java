@@ -108,10 +108,48 @@ public class MainActivity extends BaseActivity {
         }
         PreferencesUtils.putObject(CommonParams.SYSTEM_INFO, infoModel);
         checkApkUpdate(infoModel);
+        showAnnouncementDialog(infoModel);
+    }
+
+
+    /**
+     * 弹出公告信息
+     *
+     * @param infoModel
+     */
+    private void showAnnouncementDialog(SystemInfoModel infoModel) {
+        final SystemInfoModel.SystemData systemModel = MainManager.getInstance().getSystemModel(CommonParams.SYSTEM_ANNOUNCEMENT_ID, infoModel);
+        if (systemModel == null) {
+            return;
+        }
+        boolean isForce;
+        boolean isShow;
+        systemModel.setNI_Index(1);
+        if (systemModel.getNI_Index() == 0) {
+            isForce = false;
+            isShow = false;
+        } else if (systemModel.getNI_Index() == 1) {
+            isForce = false;
+            isShow = true;
+        } else {
+            isForce = true;
+            isShow = true;
+        }
+        if (!isShow) {
+            return;
+        }
+
+        DialogUtils.showAnnouncementDialog(this, systemModel.getNI_Url(), isForce, systemModel.getNI_Title(), systemModel.getNI_Summary(), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     /**
      * 检查apk更新
+     *
      * @param infoModel
      */
     private void checkApkUpdate(SystemInfoModel infoModel) {

@@ -1,5 +1,6 @@
 package com.zhide.app.logic;
 
+import com.zhide.app.common.CommonParams;
 import com.zhide.app.common.CommonUrl;
 import com.zhide.app.eventBus.BreakdownEvent;
 import com.zhide.app.eventBus.ErrorMsgEvent;
@@ -18,6 +19,7 @@ import com.zhide.app.model.RoomInfoModel;
 import com.zhide.app.model.SystemInfoModel;
 import com.zhide.app.model.UserData;
 import com.zhide.app.okhttp.DataManager;
+import com.zhide.app.utils.PreferencesUtils;
 import com.zhide.okhttputils.callback.GenericsCallback;
 import com.zhide.okhttputils.request.JsonGenericsSerializator;
 
@@ -36,8 +38,11 @@ import okhttp3.Response;
 public class MainManager {
     private static MainManager instance = null;
     private static DataManager dataInstance = null;
+    private final long userId;
 
     private MainManager() {
+        userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID, 0);
+
     }
 
     public static MainManager getInstance() {
@@ -59,6 +64,8 @@ public class MainManager {
         JSONObject params = new JSONObject();
         try {
             params.put("ActionMethod", "news");
+            params.put("USI_Id", userId);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -120,6 +127,7 @@ public class MainManager {
         JSONObject params = new JSONObject();
         try {
             params.put("ActionMethod", "guide");
+            params.put("USI_Id", userId);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -145,6 +153,8 @@ public class MainManager {
         JSONObject params = new JSONObject();
         try {
             params.put("ActionMethod", "systeminfo");
+            params.put("USI_Id", userId);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
