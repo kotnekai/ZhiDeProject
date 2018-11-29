@@ -134,7 +134,7 @@ public class MineFragment extends BaseFragment implements AdapterView.OnItemClic
         if (userData != null) {
             updateUserInfoUI();
         }
-        MainManager.getInstance().getSchoolRoom(29, 0, CommonParams.REQUEST_TYPE_SEAT);
+        MainManager.getInstance().getSchoolRoom(userId, 0, CommonParams.REQUEST_TYPE_SEAT);
     }
 
     @Override
