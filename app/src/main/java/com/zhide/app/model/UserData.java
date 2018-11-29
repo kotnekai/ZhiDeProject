@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Create by Admin on 2018/9/13
  */
-public class UserData implements Serializable{
+public class UserData implements Serializable {
 
 
     private long USI_Id;//用户id
@@ -47,9 +47,20 @@ public class UserData implements Serializable{
     private int SI_Minchargeunit;//  脉冲信息，用于洗澡
     private String WXAppId;//  微信APP KEY
 
-     private long selectSeatId;
-     private long selectFloorId;
-     private long selectRoomId;
+    private long selectSeatId;
+    private long selectFloorId;
+    private long selectRoomId;
+
+    private long SDI_Id;// 学校宿舍id
+
+
+    public long getSDI_Id() {
+        return SDI_Id;
+    }
+
+    public void setSDI_Id(long SDI_Id) {
+        this.SDI_Id = SDI_Id;
+    }
 
     public long getSelectSeatId() {
         return selectSeatId;
@@ -180,7 +191,6 @@ public class UserData implements Serializable{
     public void setUSI_State(String USI_State) {
         this.USI_State = USI_State;
     }
-
 
 
     public String getUSI_Card_SN_PIN() {

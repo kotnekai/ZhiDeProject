@@ -9,6 +9,7 @@ import com.zhide.app.eventBus.HomeBannerEvent;
 import com.zhide.app.eventBus.NewsModelEvent;
 import com.zhide.app.eventBus.OkResponseEvent;
 import com.zhide.app.eventBus.RoomInfoEvent;
+import com.zhide.app.eventBus.RoomInfoEvent2;
 import com.zhide.app.eventBus.SaveInfoEvent;
 import com.zhide.app.eventBus.SystemInfoEvent;
 import com.zhide.app.model.BreakdownModel;
@@ -95,13 +96,13 @@ public class MainManager {
         try {
             params.put("USI_Id", userData.getUSI_Id());
             params.put("USI_TrueName", userData.getUSI_TrueName());
-            params.put("USI_TrueName", userData.getUSI_TrueName());
             params.put("USI_SchoolNo", userData.getUSI_SchoolNo());
             params.put("USI_SchoolRoomNo", userData.getUSI_SchoolRoomNo());
             params.put("USI_Sex", userData.getUSI_Sex());
             params.put("USI_IDCard", userData.getUSI_IDCard());
             params.put("SI_Code", userData.getSI_Code());
             params.put("USI_Card_SN_PIN", userData.getUSI_Card_SN_PIN());
+            params.put("SDI_Id",userData.getSDI_Id());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -264,6 +265,33 @@ public class MainManager {
                     @Override
                     public void onResponse(RoomInfoModel response, int id) {
                         EventBus.getDefault().post(new RoomInfoEvent(response, type));
+                    }
+                });
+    }
+
+    /**
+     * 请求宿舍信息2
+     * @param sdiId
+     */
+    public void getSchoolRoom2(long sdiId){
+        JSONObject params = new JSONObject();
+        try {
+            params.put("SDI_Id", sdiId);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        dataInstance.sendPostRequestData(CommonUrl.getSchoolRoom2, params)
+                .execute(new GenericsCallback<RoomInfoModel>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Response response, Call call, Exception e, int id) {
+                        String message = e.getMessage();
+                        EventBus.getDefault().post(new ErrorMsgEvent(message));
+                    }
+
+                    @Override
+                    public void onResponse(RoomInfoModel response, int id) {
+                        EventBus.getDefault().post(new RoomInfoEvent2(response));
                     }
                 });
     }

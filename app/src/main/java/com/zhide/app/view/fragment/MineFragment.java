@@ -15,6 +15,7 @@ import com.zhide.app.R;
 import com.zhide.app.common.CommonParams;
 import com.zhide.app.eventBus.MineAccountEvent;
 import com.zhide.app.eventBus.RoomInfoEvent;
+import com.zhide.app.eventBus.RoomInfoEvent2;
 import com.zhide.app.eventBus.SaveInfoEvent;
 import com.zhide.app.eventBus.SchoolInfoEvent;
 import com.zhide.app.eventBus.UserInfoEvent;
@@ -134,7 +135,6 @@ public class MineFragment extends BaseFragment implements AdapterView.OnItemClic
             updateUserInfoUI();
         }
         MainManager.getInstance().getSchoolRoom(29, 0, CommonParams.REQUEST_TYPE_SEAT);
-
     }
 
     @Override
@@ -252,6 +252,10 @@ public class MineFragment extends BaseFragment implements AdapterView.OnItemClic
         }
         userData = userInfo;
         updateUserInfoUI();
+        selectRoomId = userData.getSDI_Id();
+
+        MainManager.getInstance().getSchoolRoom2(selectRoomId);
+
         PreferencesUtils.putObject(CommonParams.USER_INFO, userInfo);
     }
 
@@ -394,7 +398,7 @@ public class MineFragment extends BaseFragment implements AdapterView.OnItemClic
                 mSpinerPopWindow.setWidth(tvGender.getWidth());
                 mSpinerPopWindow.showAsDropDown(tvGender, 0, 0, Gravity.CENTER_HORIZONTAL);
                 break;
-            case R.id.tvSeat:
+            case R.id.tvSeat://
                 //{"USI_Id":29,"SDI_ParentId":0,"SDI_Type":"幢座"}
                 if (selectSeatList == null) {
                     MainManager.getInstance().getSchoolRoom(userId, 0, CommonParams.REQUEST_TYPE_SEAT);
@@ -449,6 +453,11 @@ public class MineFragment extends BaseFragment implements AdapterView.OnItemClic
     private List<SpinnerSelectModel> selectFloorList = new ArrayList<>();
     private List<SpinnerSelectModel> selectRoomList = new ArrayList<>();
 
+    /**
+     * 处理宿舍地址返回的结果信息
+     *
+     * @param event
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onRoomInfoEvent(RoomInfoEvent event) {
         RoomInfoModel infoModel = event.getInfoModel();
@@ -490,11 +499,44 @@ public class MineFragment extends BaseFragment implements AdapterView.OnItemClic
 
     }
 
+    /**
+     * 处理宿舍地址返回的结果信息
+     *
+     * @param event2
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onRoomInfoEvent2(RoomInfoEvent2 event2) {
+        RoomInfoModel infoModel = event2.getInfoModel();
+
+        List<RoomInfoModel.DataModel> data = infoModel.getData();
+        if (data == null || data.size() == 0) {
+            return;
+        }
+        for (int i = 0; i < data.size(); i++) {
+            String sdi_type = data.get(i).getSDI_Type();
+
+            if (sdi_type.equals("宿舍")) {
+                tvRoom.setText(data.get(i).getSDI_Name());
+                selectRoomId = data.get(i).getSDI_Id();
+            } else if (sdi_type.equals("楼层")) {
+                tvFloor.setText(data.get(i).getSDI_Name());
+            } else {
+                tvSeat.setText(data.get(i).getSDI_Name());
+            }
+
+        }
+
+    }
+
+
     private String guidStr;
     private final int REQUEST_CODE = 101;
     public static final String QR_DATA = "data";
     public static final int RESULT_CODE = 200;
 
+    /**
+     * 处理二维码扫描结果
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -505,9 +547,7 @@ public class MineFragment extends BaseFragment implements AdapterView.OnItemClic
         if (bundle == null) {
             return;
         }
-        /**
-         * 处理二维码扫描结果
-         */
+
         String result = bundle.getString(QR_DATA);
         Log.d("admin", "onActivityResult: result=" + result);
         if (result != null) {
@@ -524,6 +564,9 @@ public class MineFragment extends BaseFragment implements AdapterView.OnItemClic
         }
     }
 
+    /**
+     * 提交个人信息
+     */
     private void submitPersonInfo() {
         long userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
         if (userId == 0) {
@@ -551,7 +594,7 @@ public class MineFragment extends BaseFragment implements AdapterView.OnItemClic
         }
         userData.setSelectSeatId(selectSeatId);
         userData.setSelectFloorId(selectFloorId);
-        userData.setSelectRoomId(selectRoomId);
+        userData.setSDI_Id(selectRoomId);
         MainManager.getInstance().savePersonInfo(userData);
 
     }

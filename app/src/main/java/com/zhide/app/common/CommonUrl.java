@@ -29,6 +29,7 @@ public class CommonUrl {
     public static final String getUserInfoSchoolInfo = BASE_URL + "/Student/Get_UserInfo_Detail";
     public static final String payToCard = BASE_URL + "/Student/User_MainBalanceTurnCardBalance";
 
+
     public static final String resetLoginPsw = BASE_URL + "/Student/User_ResetPwd";
     public static final String forgetPassword = BASE_URL + "/Student/User_ForgetResetPwd";
 
@@ -36,7 +37,9 @@ public class CommonUrl {
     public static final String user_agreement = BASE_URL + "/Wap/NewsContent?niid=1030";
 
     public static final String getSchoolRoom = BASE_URL + "/School/Get_School_Dorm_Info";
-    //广告轮播图
+    public static final String getSchoolRoom2 = BASE_URL + "/School/Get_School_Dorm_Info2";
+
+ //广告轮播图
     public static final String home_banner = BASE_URL + "/News/Get_BannerInfoList";
 
 

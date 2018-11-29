@@ -124,7 +124,6 @@ public class MainActivity extends BaseActivity {
         }
         boolean isForce;
         boolean isShow;
-        systemModel.setNI_Index(1);
         if (systemModel.getNI_Index() == 0) {
             isForce = false;
             isShow = false;
