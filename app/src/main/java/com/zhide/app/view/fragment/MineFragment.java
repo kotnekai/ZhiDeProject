@@ -399,6 +399,8 @@ public class MineFragment extends BaseFragment implements AdapterView.OnItemClic
                 mSpinerPopWindow.showAsDropDown(tvGender, 0, 0, Gravity.CENTER_HORIZONTAL);
                 break;
             case R.id.tvSeat://
+                tvSaveInfo.setEnabled(false);
+                tvSaveInfo.setSelected(false);
                 //{"USI_Id":29,"SDI_ParentId":0,"SDI_Type":"幢座"}
                 if (selectSeatList == null) {
                     MainManager.getInstance().getSchoolRoom(userId, 0, CommonParams.REQUEST_TYPE_SEAT);
@@ -407,13 +409,18 @@ public class MineFragment extends BaseFragment implements AdapterView.OnItemClic
                 PickViewUtil.showSelectPickDialog(getActivity(), selectSeatList, 1, new OptionPicker.OnOptionSelectListener() {
                     @Override
                     public void onOptionSelect(OptionPicker picker, int[] selectedPosition, OptionDataSet[] selectedOptions) {
+
                         SpinnerSelectModel selectedOption = (SpinnerSelectModel) selectedOptions[0];
                         selectSeatId = selectedOption.getId();
+                        tvSeat.setText(selectedOption.getName());
                         MainManager.getInstance().getSchoolRoom(userId, selectSeatId, CommonParams.REQUEST_TYPE_FLOOR);
+
                     }
                 });
                 break;
             case R.id.tvFloor:
+                tvSaveInfo.setEnabled(false);
+                tvSaveInfo.setSelected(false);
                 if (selectFloorList == null || selectFloorList.size() == 0) {
                     ToastUtil.showShort(getString(R.string.have_no_data));
                     return;
@@ -421,8 +428,10 @@ public class MineFragment extends BaseFragment implements AdapterView.OnItemClic
                 PickViewUtil.showSelectPickDialog(getActivity(), selectFloorList, 1, new OptionPicker.OnOptionSelectListener() {
                     @Override
                     public void onOptionSelect(OptionPicker picker, int[] selectedPosition, OptionDataSet[] selectedOptions) {
+
                         SpinnerSelectModel selectedOption = (SpinnerSelectModel) selectedOptions[0];
                         selectFloorId = selectedOption.getId();
+                        tvFloor.setText(selectedOption.getName());
                         MainManager.getInstance().getSchoolRoom(userId, selectFloorId, CommonParams.REQUEST_TYPE_ROOM);
                     }
                 });
@@ -432,11 +441,14 @@ public class MineFragment extends BaseFragment implements AdapterView.OnItemClic
                     ToastUtil.showShort(getString(R.string.have_no_data));
                     return;
                 }
-                PickViewUtil.showSelectPickDialog(getActivity(), selectFloorList, 1, new OptionPicker.OnOptionSelectListener() {
+                PickViewUtil.showSelectPickDialog(getActivity(), selectRoomList, 1, new OptionPicker.OnOptionSelectListener() {
                     @Override
                     public void onOptionSelect(OptionPicker picker, int[] selectedPosition, OptionDataSet[] selectedOptions) {
                         SpinnerSelectModel selectedOption = (SpinnerSelectModel) selectedOptions[0];
+                        tvSaveInfo.setEnabled(true);
+                        tvSaveInfo.setSelected(true);
                         selectRoomId = selectedOption.getId();
+                        tvRoom.setText(selectedOption.getName());
                     }
                 });
 
@@ -477,21 +489,22 @@ public class MineFragment extends BaseFragment implements AdapterView.OnItemClic
             case CommonParams.REQUEST_TYPE_SEAT:
                 selectSeatList.clear();
                 for (int i = 0; i < data.size(); i++) {
-                    SpinnerSelectModel selectModel = new SpinnerSelectModel(data.get(i).getSDI_ParentId(), data.get(i).getSDI_Name());
+                    SpinnerSelectModel selectModel = new SpinnerSelectModel(data.get(i).getSDI_Id(), data.get(i).getSDI_Name());
                     selectSeatList.add(selectModel);
+                    tvSeat.setText(data.get(i).getSDI_Name());
                 }
                 break;
             case CommonParams.REQUEST_TYPE_FLOOR:
                 selectFloorList.clear();
                 for (int i = 0; i < data.size(); i++) {
-                    SpinnerSelectModel selectModel = new SpinnerSelectModel(data.get(i).getSDI_ParentId(), data.get(i).getSDI_Name());
+                    SpinnerSelectModel selectModel = new SpinnerSelectModel(data.get(i).getSDI_Id(), data.get(i).getSDI_Name());
                     selectFloorList.add(selectModel);
                 }
                 break;
             case CommonParams.REQUEST_TYPE_ROOM:
                 selectRoomList.clear();
                 for (int i = 0; i < data.size(); i++) {
-                    SpinnerSelectModel selectModel = new SpinnerSelectModel(data.get(i).getSDI_ParentId(), data.get(i).getSDI_Name());
+                    SpinnerSelectModel selectModel = new SpinnerSelectModel(data.get(i).getSDI_Id(), data.get(i).getSDI_Name());
                     selectRoomList.add(selectModel);
                 }
                 break;
