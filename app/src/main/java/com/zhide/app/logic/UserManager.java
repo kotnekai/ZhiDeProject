@@ -24,6 +24,7 @@ import com.zhide.app.model.UserInfoModel;
 import com.zhide.app.model.UserSchoolDataModel;
 import com.zhide.app.model.WithdrawModel;
 import com.zhide.app.okhttp.DataManager;
+import com.zhide.app.utils.PreferencesUtils;
 import com.zhide.okhttputils.callback.GenericsCallback;
 import com.zhide.okhttputils.request.JsonGenericsSerializator;
 
@@ -279,6 +280,8 @@ public class UserManager {
 //
 //                        String wechat_key = ComApplication.getApp().getResources().getString(R.string.wechat_scheme);
 //                        wechat_key = String.format(wechat_key,  userData1.getWXAppId());
+
+                        PreferencesUtils.putLong(CommonParams.USER_SID, userData1.getSDI_Id());
 
                         EventBus.getDefault().post(new UserInfoEvent(userData1, fromPage));
                     }

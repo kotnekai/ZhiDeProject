@@ -284,10 +284,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="15dp"
                         android:drawablePadding="5dp"
-                        android:layout_alignParentRight="true"
+                        android:layout_toLeftOf="@id/tvFloor"
                         android:drawableRight="@mipmap/drop_down"
                         android:hint="幢/座" />
 
@@ -297,8 +295,8 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="20dp"
-                        android:layout_toLeftOf="@id/tvSeat"
                         android:drawablePadding="2dp"
+                        android:layout_toLeftOf="@id/tvRoom"
                         android:drawableRight="@mipmap/drop_down"
                         android:hint="层/楼" />
 
@@ -307,7 +305,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_toLeftOf="@id/tvFloor"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="15dp"
                         android:drawablePadding="5dp"
                         android:drawableRight="@mipmap/drop_down"
                         android:hint="室/房" />

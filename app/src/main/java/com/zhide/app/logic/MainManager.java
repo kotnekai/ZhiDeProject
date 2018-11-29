@@ -264,6 +264,7 @@ public class MainManager {
 
                     @Override
                     public void onResponse(RoomInfoModel response, int id) {
+
                         EventBus.getDefault().post(new RoomInfoEvent(response, type));
                     }
                 });

@@ -40,6 +40,8 @@ public class RoomInfoModel {
         private String SDI_UpdateBy;
         private long SDI_Id;
         private String SDI_Remark;
+        private String SDI_Device1;
+        private String SDI_Device2;
         private long SI_Id;
         private String SDI_Type;
         private String SDI_NatureType;
@@ -124,6 +126,22 @@ public class RoomInfoModel {
 
         public void setSI_Name(String SI_Name) {
             this.SI_Name = SI_Name;
+        }
+
+        public String getSDI_Device1() {
+            return SDI_Device1;
+        }
+
+        public void setSDI_Device1(String SDI_Device1) {
+            this.SDI_Device1 = SDI_Device1;
+        }
+
+        public String getSDI_Device2() {
+            return SDI_Device2;
+        }
+
+        public void setSDI_Device2(String SDI_Device2) {
+            this.SDI_Device2 = SDI_Device2;
         }
     }
 }

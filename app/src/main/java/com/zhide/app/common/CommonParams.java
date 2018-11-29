@@ -42,6 +42,9 @@ public class CommonParams {
     //用户信息，暂存一下
     public static final String USER_INFO = "user_info";
 
+    public static final String USER_SID = "user_sid";
+    public static final String USER_DEVICE_ID = "user_device_id";
+
 
     public static long currentUserId;
 
@@ -75,4 +78,5 @@ public class CommonParams {
     public static final String REQUEST_TYPE_SEAT = "幢座";
     public static final String REQUEST_TYPE_FLOOR = "楼层";
     public static final String REQUEST_TYPE_ROOM = "宿舍";
+
 }

@@ -21,11 +21,13 @@ import com.zhide.app.R;
 import com.zhide.app.common.CommonParams;
 import com.zhide.app.eventBus.HomeBannerEvent;
 import com.zhide.app.eventBus.NewsModelEvent;
+import com.zhide.app.eventBus.RoomInfoEvent2;
 import com.zhide.app.eventBus.UserInfoEvent;
 import com.zhide.app.eventBus.UserInfoSchoolInfoEvent;
 import com.zhide.app.logic.MainManager;
 import com.zhide.app.logic.UserManager;
 import com.zhide.app.model.NewsModel;
+import com.zhide.app.model.RoomInfoModel;
 import com.zhide.app.model.SystemInfoModel;
 import com.zhide.app.model.UserData;
 import com.zhide.app.model.UserSchoolDataModel;
@@ -177,8 +179,38 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         userData = userInfo;
         updateInfoUI();
         PreferencesUtils.putObject(CommonParams.USER_INFO, userInfo);
+        //宿舍信息
+
+        long selectRoomId = userData.getSDI_Id();
+        MainManager.getInstance().getSchoolRoom2(selectRoomId);
+    }
+
+    /**
+     * 处理宿舍地址返回的结果信息
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onRoomInfoEvent2(RoomInfoEvent2 event) {
+        RoomInfoModel infoModel = event.getInfoModel();
+
+        List<RoomInfoModel.DataModel> data = infoModel.getData();
+        if (data == null || data.size() == 0) {
+            return;
+        }
+        for (int i = 0; i < data.size(); i++) {
+            RoomInfoModel.DataModel dataModel =  data.get(i);
+            String sdi_type = dataModel.getSDI_Type();
+
+            if (sdi_type.equals("宿舍")) {
+                PreferencesUtils.putString(CommonParams.USER_DEVICE_ID,  dataModel.getSDI_Device1());
+            }
+
+        }
 
     }
+
+
 
     /**
      * 轮播图

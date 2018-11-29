@@ -910,8 +910,31 @@ public class ShowerConnectActivity extends BaseActivity implements WaterCodeList
     @Override
     public void chaxueNewshebeiOnback(boolean b, int charge, int mdeviceid, int mproductid, int maccountid,
                                       byte[] macBuffer, byte[] tac_timeBuffer, int macType, int lType, int constype, int macTime) {
-        mChargeType = charge;
 
+        try {
+            //查询绑定水表是否相同
+            String SI_Id =String.valueOf(PreferencesUtils.getLong(CommonParams.USER_SID));
+            String SDI_Device1 = PreferencesUtils.getString(CommonParams.USER_DEVICE_ID);
+
+            String deviceId = String.valueOf(mdeviceid);
+            String productId = String.valueOf(mproductid);
+
+            //学生APP端洗澡前检查自己绑定的房号与DeviceId和ProjectId是否匹配。是的话可以洗澡，不是的不允许使洗澡。
+            if (!SI_Id.equals(productId) && !SDI_Device1.equals(deviceId))
+            {
+                DialogUtils.showDeviceNotMatchDialog(ShowerConnectActivity.this);
+            }
+
+        }
+        catch(Exception ei)
+        {
+            ei.printStackTrace();
+            return;
+        }
+
+
+
+        mChargeType = charge;
         int USBiD = PreferencesUtils.getInt(CommonParams.CURRENT_ACCOUNT_ID, 0);
 
         //这里点击开始洗澡时，做多一次查询设备，以防止其它用户使用了，SDK不返回状态

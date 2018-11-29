@@ -496,4 +496,23 @@ public class DialogUtils {
 
     }
 
+
+    /**
+     * 设备不匹配
+     *
+     * @param activity
+     */
+    public static void showDeviceNotMatchDialog(final Activity activity) {
+        AlertDialog dialog = new AlertDialog.Builder(activity)
+                .setMessage(R.string.dialog_device_no_match)
+                .setPositiveButton(activity.getString(R.string.sure), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        activity.finish();
+                    }
+                }).create();
+        dialog.show();
+    }
+
 }

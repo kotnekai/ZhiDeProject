@@ -208,4 +208,6 @@
     <string name="have_no_data">暂无数据</string>
     <string name="wechat_scheme">%s</string>
 
+    <string name="dialog_device_no_match">连接的设备与宿舍绑定的设备不一致</string>
+
 </resources>
