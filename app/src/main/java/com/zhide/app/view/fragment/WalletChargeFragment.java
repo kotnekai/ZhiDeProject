@@ -35,6 +35,7 @@ import com.zhide.app.view.views.SelectItemView;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -217,7 +218,7 @@ public class WalletChargeFragment extends BaseFragment {
             otherMaxFloat = Float.parseFloat(otherMax);
         }
         String otherTips = getString(R.string.input_other_tip);
-        final String formatTip = String.format(otherTips, otherMinFloat+"", otherMaxFloat+"");
+        final String formatTip = String.format(otherTips, otherMinFloat + "", otherMaxFloat + "");
 
         if (selectName.startsWith(getString(R.string.other))) {
             DialogUtils.showTipsDialog(getActivity(), formatTip, getString(R.string.input_other_money_tip), true, new IConfirmClickListener() {
@@ -287,7 +288,10 @@ public class WalletChargeFragment extends BaseFragment {
                     return;
                 }
                 if (cbSelectWxPay.isChecked()) {
-                    PreferencesUtils.putFloat("selectAmount",selectAmount);
+                    DecimalFormat decimalFormat = new DecimalFormat(".00");//构造方法的字符格式这里如果小数不足2位,会以0补足.
+                    String p = decimalFormat.format(selectAmount);//format 返回的是字符串
+                    selectAmount = Float.parseFloat(p);
+                    PreferencesUtils.putFloat("selectAmount", selectAmount);
                     PayManager.getInstance().getWxPayParams(selectAmount, userId);
                 } else if (cbSelectAliPay.isChecked()) {
                     boolean isInstallAliPay = ClientInstallUtils.checkAliPayInstalled(getActivity());
