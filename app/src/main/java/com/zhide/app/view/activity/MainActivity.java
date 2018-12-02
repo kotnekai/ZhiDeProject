@@ -165,7 +165,7 @@ public class MainActivity extends BaseActivity {
                 }
             });
         } else {
-            ToastUtil.showShort(UIUtils.getValueString(R.string.act_is_new_ver));
+//            ToastUtil.showShort(UIUtils.getValueString(R.string.act_is_new_ver));
         }
     }
 

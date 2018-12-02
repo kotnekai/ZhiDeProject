@@ -245,7 +245,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         banner.setOnBannerListener(new OnBannerListener() {
             @Override
             public void OnBannerClick(int position) {
-                getActivity().startActivity(WebViewActivity.makeIntent(getActivity(), finalBannerList.get(position).getNI_Title(), finalBannerList.get(position).getNI_Url()));
+                getActivity().startActivity(WebViewActivity.makeIntent(getActivity(), "", finalBannerList.get(position).getNI_Url()));
 
             }
         });
