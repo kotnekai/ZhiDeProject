@@ -21,6 +21,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
+
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -48,9 +50,14 @@ public class ChargeManager {
 
     public void getWeChatPayParams(float amount, long userId) {
         Log.d("admin", "getWeChatPayParams: amount=" + amount);
+        DecimalFormat decimalFormat = new DecimalFormat(".00");//构造方法的字符格式这里如果小数不足2位,会以0补足.
+        String p = decimalFormat.format(amount);//format 返回的是字符串
+       double amounts = Double.parseDouble(p);
+
+
         JSONObject params = new JSONObject();
         try {
-            params.put("USR_Money", amount);
+            params.put("USR_Money", amounts);
             params.put("USI_Id", userId);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -72,9 +79,14 @@ public class ChargeManager {
     }
 
     public void getAliPayParams(float amount,long userId) {
+        Log.d("admin", "getWeChatPayParams: amount=" + amount);
+        DecimalFormat decimalFormat = new DecimalFormat(".00");//构造方法的字符格式这里如果小数不足2位,会以0补足.
+        String p = decimalFormat.format(amount);//format 返回的是字符串
+        double amounts = Double.parseDouble(p);
+
         JSONObject params = new JSONObject();
         try {
-            params.put("USR_Money", amount);
+            params.put("USR_Money", amounts);
             params.put("USI_Id", userId);
         } catch (JSONException e) {
             e.printStackTrace();

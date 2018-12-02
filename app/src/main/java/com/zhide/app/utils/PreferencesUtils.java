@@ -82,6 +82,7 @@ public class PreferencesUtils {
         return editor.commit();
     }
 
+
     public static float getFloat(String key) {
         return getFloat(key, -1f);
     }
