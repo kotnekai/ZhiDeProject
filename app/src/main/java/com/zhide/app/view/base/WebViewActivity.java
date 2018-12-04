@@ -81,7 +81,7 @@ public class WebViewActivity extends BaseActivity {
             webView = null;
         }
         super.onDestroy();
-        Log.d("xyc", "onDestroy: ");
+        Log.d("admin", "onDestroy: ");
     }
 
     private void initData() {

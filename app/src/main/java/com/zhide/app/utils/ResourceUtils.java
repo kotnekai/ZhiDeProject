@@ -95,7 +95,7 @@ public class ResourceUtils {
         try {
             imageView.setImageResource(resId);
         } catch (OutOfMemoryError e) {
-            Log.i("xyc", "ResourceUtils setImageResource e = " + e);
+            Log.i("admin", "ResourceUtils setImageResource e = " + e);
             imageView.setImageDrawable(getDefaultImage());
         }
     }

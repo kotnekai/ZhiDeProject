@@ -107,7 +107,7 @@ public class WalletChargeFragment extends BaseFragment {
         alipayResult = new IGetAliPayResult() {
             @Override
             public void getResult(Map<String, String> result) {
-                Log.d("xyc", "getResult: result=" + result);
+                Log.d("admin", "getResult: result=" + result);
                 String resultStatus = result.get("resultStatus");
 
                 if (resultStatus.equals("9000")) {

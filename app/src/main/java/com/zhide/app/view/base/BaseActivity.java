@@ -159,7 +159,7 @@ public abstract class BaseActivity extends AppCompatActivity implements DrawerLa
                 .checkMutiPermission(new PermissionCallback() {
                     @Override
                     public void onClose() {
-                        Log.d("xyc", "onClose: 1");
+                        Log.d("admin", "onClose: 1");
                     }
 
                     @Override
@@ -168,12 +168,12 @@ public abstract class BaseActivity extends AppCompatActivity implements DrawerLa
 
                     @Override
                     public void onDeny(String permission, int position) {
-                        Log.d("xyc", "onDeny:1 ");
+                        Log.d("admin", "onDeny:1 ");
                     }
 
                     @Override
                     public void onGuarantee(String permission, int position) {
-                        Log.d("xyc", "onGuarantee:1 ");
+                        Log.d("admin", "onGuarantee:1 ");
                     }
                 });
     }

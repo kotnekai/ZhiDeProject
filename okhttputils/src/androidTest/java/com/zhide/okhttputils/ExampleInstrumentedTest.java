@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.xyc.okhttputils.test", appContext.getPackageName());
+        assertEquals("com.admin.okhttputils.test", appContext.getPackageName());
     }
 }

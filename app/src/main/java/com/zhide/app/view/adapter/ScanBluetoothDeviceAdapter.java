@@ -98,6 +98,7 @@ public class ScanBluetoothDeviceAdapter extends BaseAdapter {
                     intent.setClass(mContext, ShowerConnectActivity.class);
                     intent.putExtra(ShowerConnectActivity.DEVICE_MAC, bDevice.getAddress());
                     intent.putExtra(ShowerConnectActivity.DEVICE_NAME, bDevice.getName());
+                    ((Activity) mContext).startActivityForResult(intent, CommonParams.FINISH_CODE);
 
 //                    dialogBuilder
 //                            .withTitle(mContext.getString(R.string.dialog_tips_title))

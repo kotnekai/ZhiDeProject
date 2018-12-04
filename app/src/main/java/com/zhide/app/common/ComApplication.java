@@ -82,7 +82,7 @@ public class ComApplication extends Application {
            @Override
            public void run() {
                String path = Environment.getExternalStorageDirectory().getPath();
-               Log.d("xyc", "initCrashCat: path="+path);
+               Log.d("admin", "initCrashCat: path="+path);
                CrashCat.getInstance(getApplicationContext(),  path+ CommonParams.DIRECTORY_ROOT, CommonParams.FILE_LOG).start();
            }
        });

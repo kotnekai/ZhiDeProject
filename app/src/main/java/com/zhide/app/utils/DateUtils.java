@@ -152,7 +152,7 @@ public class DateUtils {
     public static int getCurrentMonth() {
         Calendar c = Calendar.getInstance();//
         int month = c.get(Calendar.MONTH) + 1; // 获取当前月份
-        Log.d("xyc", "getCurrentMonth: month=" + month);
+        Log.d("admin", "getCurrentMonth: month=" + month);
         if (month < 1 || month > 12) { // 做个系统时间异常保护
             return 1;
         }
@@ -189,7 +189,7 @@ public class DateUtils {
             return 0;
         }
         long time1 = date.getTime();
-        Log.d("xyc", "getLongDate: time1=" + time1);
+        Log.d("admin", "getLongDate: time1=" + time1);
         return date.getTime();
     }
 

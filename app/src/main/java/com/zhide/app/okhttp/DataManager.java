@@ -189,7 +189,7 @@ public class DataManager {
         PostFileBuilder postFileBuilder = OkHttpUtils.postFile();
         postFileBuilder.isFormSubmitFile = true;
         postFileBuilder.mediaType(MediaType.parse(MULTIPART_FORM_DATA));
-        Log.d("xyc", "okHttpUpload: file=" + file);
+        Log.d("admin", "okHttpUpload: file=" + file);
         postFileBuilder.addHeader("X-Authorization", "bearer " + token);
         postFileBuilder.file(file);
         postFileBuilder.url(url);

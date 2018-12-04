@@ -19,7 +19,7 @@ public class MyOkhttpUtils {
 
     public static final long CONNECT_TIMEOUT = 15000L;
     public static final long READ_TIMEOUT = 15000L;
-    public static final String TAG = "xyc";
+    public static final String TAG = "admin";
     public static OkHttpClient mOkHttpClient = null;
 
     public static void initOkhttp(Context context) {
