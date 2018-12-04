@@ -94,39 +94,44 @@ public class ScanBluetoothDeviceAdapter extends BaseAdapter {
                     DialogUtils.showEnableBlueToothDialog((Activity) mContext);
                 } else {
                     final BluetoothDevice bDevice = (BluetoothDevice) v.getTag();
-                    dialogBuilder
-                            .withTitle(mContext.getString(R.string.dialog_tips_title))
-                            .withMessage(
-                                    mContext.getString(R.string.dialog_bluetooth_bind))
-                            .withEffect(Effectstype.Fadein)
-                            .isCancelable(false)
-                            .withButton1Text(
-                                    mContext.getString(R.string.cancel))
-                            .setButton1Click(new OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    dialogBuilder.dismiss();
-                                }
-                            })
-                            .withButton2Text(mContext.getString(R.string.sure))
-                            .setButton2Click(new OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    try {
-                                        dialogBuilder.dismiss();
+                    Intent intent = new Intent();
+                    intent.setClass(mContext, ShowerConnectActivity.class);
+                    intent.putExtra(ShowerConnectActivity.DEVICE_MAC, bDevice.getAddress());
+                    intent.putExtra(ShowerConnectActivity.DEVICE_NAME, bDevice.getName());
 
-                                        Intent intent = new Intent();
-                                        intent.setClass(mContext, ShowerConnectActivity.class);
-                                        intent.putExtra(ShowerConnectActivity.DEVICE_MAC, bDevice.getAddress());
-                                        intent.putExtra(ShowerConnectActivity.DEVICE_NAME, bDevice.getName());
-
-                                        ((Activity) mContext).startActivityForResult(intent, CommonParams.FINISH_CODE);
-                                    }catch (Exception ei)
-                                    {
-                                        ei.printStackTrace();
-                                    }
-                                }
-                            }).show();
+//                    dialogBuilder
+//                            .withTitle(mContext.getString(R.string.dialog_tips_title))
+//                            .withMessage(
+//                                    mContext.getString(R.string.dialog_bluetooth_bind))
+//                            .withEffect(Effectstype.Fadein)
+//                            .isCancelable(false)
+//                            .withButton1Text(
+//                                    mContext.getString(R.string.cancel))
+//                            .setButton1Click(new OnClickListener() {
+//                                @Override
+//                                public void onClick(View v) {
+//                                    dialogBuilder.dismiss();
+//                                }
+//                            })
+//                            .withButton2Text(mContext.getString(R.string.sure))
+//                            .setButton2Click(new OnClickListener() {
+//                                @Override
+//                                public void onClick(View v) {
+//                                    try {
+//                                        dialogBuilder.dismiss();
+//
+//                                        Intent intent = new Intent();
+//                                        intent.setClass(mContext, ShowerConnectActivity.class);
+//                                        intent.putExtra(ShowerConnectActivity.DEVICE_MAC, bDevice.getAddress());
+//                                        intent.putExtra(ShowerConnectActivity.DEVICE_NAME, bDevice.getName());
+//
+//                                        ((Activity) mContext).startActivityForResult(intent, CommonParams.FINISH_CODE);
+//                                    }catch (Exception ei)
+//                                    {
+//                                        ei.printStackTrace();
+//                                    }
+//                                }
+//                            }).show();
                 }
             }
         });
