@@ -124,6 +124,9 @@ public class MineFragment extends BaseFragment implements AdapterView.OnItemClic
     private String selectSex;
     private SpinerPopWindow mSpinerPopWindow;
 
+    boolean isClickSeat = false, isClickFloor = false, isClickRoom = false;
+
+
     @Override
     protected void initData() {
         userId = PreferencesUtils.getLong(CommonParams.LOGIN_USER_ID);
@@ -408,6 +411,9 @@ public class MineFragment extends BaseFragment implements AdapterView.OnItemClic
                 tvSaveInfo.setSelected(false);
                 //{"USI_Id":29,"SDI_ParentId":0,"SDI_Type":"幢座"}
                 if (selectSeatList == null || selectSeatList.size() == 0) {
+                    isClickSeat = true;
+                    isClickFloor = false;
+                    isClickRoom = false;
                     MainManager.getInstance().getSchoolRoom(userId, 0, CommonParams.REQUEST_TYPE_SEAT);
                     return;
                 }
@@ -426,8 +432,15 @@ public class MineFragment extends BaseFragment implements AdapterView.OnItemClic
             case R.id.tvFloor:
                 tvSaveInfo.setEnabled(false);
                 tvSaveInfo.setSelected(false);
+//                if (selectFloorList == null || selectFloorList.size() == 0) {
+//                    ToastUtil.showShort(getString(R.string.have_no_data));
+//                    return;
+//                }
                 if (selectFloorList == null || selectFloorList.size() == 0) {
-                    ToastUtil.showShort(getString(R.string.have_no_data));
+                    isClickSeat = false;
+                    isClickFloor = true;
+                    isClickRoom = false;
+                    MainManager.getInstance().getSchoolRoom(userId, selectSeatId, CommonParams.REQUEST_TYPE_FLOOR);
                     return;
                 }
                 PickViewUtil.showSelectPickDialog(getActivity(), selectFloorList, 1, new OptionPicker.OnOptionSelectListener() {
@@ -442,8 +455,15 @@ public class MineFragment extends BaseFragment implements AdapterView.OnItemClic
                 });
                 break;
             case R.id.tvRoom:
+//                if (selectRoomList == null || selectRoomList.size() == 0) {
+//                    ToastUtil.showShort(getString(R.string.have_no_data));
+//                    return;
+//                }
                 if (selectRoomList == null || selectRoomList.size() == 0) {
-                    ToastUtil.showShort(getString(R.string.have_no_data));
+                    isClickSeat = false;
+                    isClickFloor = false;
+                    isClickRoom = true;
+                    MainManager.getInstance().getSchoolRoom(userId, selectFloorId, CommonParams.REQUEST_TYPE_ROOM);
                     return;
                 }
                 PickViewUtil.showSelectPickDialog(getActivity(), selectRoomList, 1, new OptionPicker.OnOptionSelectListener() {
@@ -515,6 +535,47 @@ public class MineFragment extends BaseFragment implements AdapterView.OnItemClic
                 break;
         }
 
+
+        if (isClickSeat) {
+            PickViewUtil.showSelectPickDialog(getActivity(), selectSeatList, 1, new OptionPicker.OnOptionSelectListener() {
+                @Override
+                public void onOptionSelect(OptionPicker picker, int[] selectedPosition, OptionDataSet[] selectedOptions) {
+
+                    SpinnerSelectModel selectedOption = (SpinnerSelectModel) selectedOptions[0];
+                    selectSeatId = selectedOption.getId();
+                    tvSeat.setText(selectedOption.getName());
+                    MainManager.getInstance().getSchoolRoom(userId, selectSeatId, CommonParams.REQUEST_TYPE_FLOOR);
+
+                }
+            });
+        } else if (isClickFloor) {
+            PickViewUtil.showSelectPickDialog(getActivity(), selectFloorList, 1, new OptionPicker.OnOptionSelectListener() {
+                @Override
+                public void onOptionSelect(OptionPicker picker, int[] selectedPosition, OptionDataSet[] selectedOptions) {
+
+                    SpinnerSelectModel selectedOption = (SpinnerSelectModel) selectedOptions[0];
+                    selectFloorId = selectedOption.getId();
+                    tvFloor.setText(selectedOption.getName());
+                    MainManager.getInstance().getSchoolRoom(userId, selectFloorId, CommonParams.REQUEST_TYPE_ROOM);
+                }
+            });
+        } else if (isClickRoom) {
+            PickViewUtil.showSelectPickDialog(getActivity(), selectRoomList, 1, new OptionPicker.OnOptionSelectListener() {
+                @Override
+                public void onOptionSelect(OptionPicker picker, int[] selectedPosition, OptionDataSet[] selectedOptions) {
+                    SpinnerSelectModel selectedOption = (SpinnerSelectModel) selectedOptions[0];
+                    tvSaveInfo.setEnabled(true);
+                    tvSaveInfo.setSelected(true);
+                    selectRoomId = selectedOption.getId();
+                    tvRoom.setText(selectedOption.getName());
+                }
+            });
+
+        }
+        isClickSeat = false;
+        isClickFloor = false;
+        isClickRoom = false;
+
     }
 
     /**
@@ -538,8 +599,10 @@ public class MineFragment extends BaseFragment implements AdapterView.OnItemClic
                 selectRoomId = data.get(i).getSDI_Id();
             } else if (sdi_type.equals("楼层")) {
                 tvFloor.setText(data.get(i).getSDI_Name());
+                selectFloorId = data.get(i).getSDI_Id();
             } else {
                 tvSeat.setText(data.get(i).getSDI_Name());
+                selectSeatId = data.get(i).getSDI_Id();
             }
 
         }

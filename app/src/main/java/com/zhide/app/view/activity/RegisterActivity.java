@@ -173,6 +173,9 @@ public class RegisterActivity extends BaseActivity {
         if (registerModel.getCode() == 1) {
             startActivity(MainActivity.makeIntent(this));
             ComApplication.getApp().removeAllActivity();//登录成功，把登录，，注册页finish
+
+
+
         }
     }
 
