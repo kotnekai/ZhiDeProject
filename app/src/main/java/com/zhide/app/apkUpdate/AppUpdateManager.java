@@ -103,18 +103,9 @@ public class AppUpdateManager {
             data = FileProvider.getUriForFile(appContext, "com.zhide.app.fileProvider", file);
             // 给目标应用一个临时授权
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-
         } else {
             data = Uri.fromFile(file);
         }
-  /*      boolean b = getPackageManager().canRequestPackageInstalls();
-        if (b) {
-            installApk();//安装应用的逻辑(写自己的就可以)
-        } else {
-            //请求安装未知应用来源的权限
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.REQUEST_INSTALL_PACKAGES}, INSTALL_PACKAGES_REQUESTCODE);
-        }*/
-
         intent.setDataAndType(data, "application/vnd.android.package-archive");
         appContext.startActivity(intent);
     }

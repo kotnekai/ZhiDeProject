@@ -27,7 +27,6 @@ import com.zhide.app.model.RoomInfoModel;
 import com.zhide.app.model.SchoolInfoModel;
 import com.zhide.app.model.SpinnerSelectModel;
 import com.zhide.app.model.UserData;
-import com.zhide.app.utils.DataUtils;
 import com.zhide.app.utils.DialogUtils;
 import com.zhide.app.utils.EmptyUtil;
 import com.zhide.app.utils.PickViewUtil;
@@ -134,7 +133,6 @@ public class MineFragment extends BaseFragment implements AdapterView.OnItemClic
         if (userData != null) {
             updateUserInfoUI();
         }
-        MainManager.getInstance().getSchoolRoom(userId, 0, CommonParams.REQUEST_TYPE_SEAT);
     }
 
     @Override
@@ -254,9 +252,14 @@ public class MineFragment extends BaseFragment implements AdapterView.OnItemClic
         updateUserInfoUI();
         selectRoomId = userData.getSDI_Id();
 
-        MainManager.getInstance().getSchoolRoom2(selectRoomId);
+        if (userData.getSDI_Id() == 0) {
+            MainManager.getInstance().getSchoolRoom(userId, 0, CommonParams.REQUEST_TYPE_SEAT);
+        } else {
+            MainManager.getInstance().getSchoolRoom2(selectRoomId);
+        }
 
         PreferencesUtils.putObject(CommonParams.USER_INFO, userInfo);
+
     }
 
     private void updateUserInfoUI() {
@@ -402,7 +405,7 @@ public class MineFragment extends BaseFragment implements AdapterView.OnItemClic
                 tvSaveInfo.setEnabled(false);
                 tvSaveInfo.setSelected(false);
                 //{"USI_Id":29,"SDI_ParentId":0,"SDI_Type":"幢座"}
-                if (selectSeatList == null) {
+                if (selectSeatList == null||selectSeatList.size()==0) {
                     MainManager.getInstance().getSchoolRoom(userId, 0, CommonParams.REQUEST_TYPE_SEAT);
                     return;
                 }
